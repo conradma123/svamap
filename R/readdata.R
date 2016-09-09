@@ -1,6 +1,6 @@
-##' Read in the sample data and clean it
+##' Read in point data and clean it
 ##' 
-##' @title read_data
+##' @title read_point_data
 ##'
 ##' This function reads in data from SVA's database on CWD
 ##' submittions. The default is to read in a fake dataset that has the
@@ -31,11 +31,11 @@
 ##' @param proj4str projection of points in file
 ##' @param long text string of the variable name that is longitude
 ##' @param lat text string of the variable name that is latitude
-read_data <- function(path = system.file("sample_data_cwd.csv", package = "svamap"),
-                      encoding = "UTF-8",
-                      proj4str = "+init=epsg:3021 +proj=tmerc +lat_0=0 +lon_0=15.80827777777778 +k=1 +x_0=1500000 +y_0=0 +ellps=bessel +towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +units=m +no_defs",
-                      long = "Gisy",
-                      lat = "Gisx") {
+read_point_data <- function(path = system.file("sample_data_cwd.csv", package = "svamap"),
+                            encoding = "UTF-8",
+                            proj4str = "+init=epsg:3021 +proj=tmerc +lat_0=0 +lon_0=15.80827777777778 +k=1 +x_0=1500000 +y_0=0 +ellps=bessel +towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +units=m +no_defs",
+                            long = "Gisy",
+                            lat = "Gisx") {
     df <- read.csv2(path,
                     header = TRUE,
                     stringsAsFactors = FALSE,
@@ -48,12 +48,19 @@ read_data <- function(path = system.file("sample_data_cwd.csv", package = "svama
 }
 ##' Write a geojson file from a dataset
 ##' 
-##' @title write_data 
+##' @title write_data
+##' @import rgeos
+##' @export
 ##' @param object A spatial polygon or point dataframe
-##' @param file 
-##' @return 
+##' @param file The path to where the geojson will be written
+##' @return path to the file
 ##' @author Thomas Rosendal
 write_data <- function(object,
-                       file) {
-    
+                       file = tempfile()) {
+    writeOGR(object,
+             file,
+             layer = "main",
+             driver = "GeoJSON",
+             check_exists = FALSE)
+    return(file)
 }

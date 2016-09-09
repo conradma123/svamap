@@ -11,6 +11,9 @@
 The dataset contains administrative units (NUTS) in Sweden in
 European terminology in scale 1 : 20 Million.
 }
+\details{
+Reprojected to WGS84
+}
 \examples{
 
 data(NUTS_20M)
