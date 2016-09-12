@@ -84,17 +84,17 @@ write_page <- function(data,
                        path = tempdir(),
                        overwrite = FALSE,
                        browse = TRUE) {
-    pathmap <- paste0(path,"/map")
+    pathmap <- file.path(path, "map")
     dir.create(pathmap, showWarnings = FALSE)
     file.copy(from = data,
-              to = paste0(pathmap,"/data.js"),
+              to = file.path(pathmap,"data.js"),
               overwrite = overwrite)
     file.copy(from = list.files(system.file("map", package = "svamap"), full.names = TRUE),
               to = pathmap,
               overwrite = overwrite,
               recursive = FALSE)
     if(browse) {
-        browseURL(paste0("file://", pathmap, "/map.html"))
+        browseURL(paste0("file://", file.path(pathmap, "map.html")))
     }
     return(path)
 }
