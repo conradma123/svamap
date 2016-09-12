@@ -65,8 +65,11 @@
 	
 	function onEachPolygon(feature, layer) {
 	    var popupContent = feature.properties.name;
-	    if (feature.properties.count >=1) {
-		popupContent += "<br>" + String(feature.properties.count) + " negativa prov";
+	    if (feature.properties.count ==1) {
+		popupContent += "<br>" + String(feature.properties.count) + " negativt prov";
+	    }
+	    else if (feature.properties.count >=1) {
+		popupContent += "<br>" + String(feature.properties.count) + " negativa prover";
 	    }
 	    layer.bindPopup(popupContent);
 	}
@@ -91,13 +94,13 @@
 	}).addTo(counties_layer);
 	
 	var baseLayers = {
-	    "Streets": streets,
-	    "Topo": topo,
-	    "Satelite image": Esri_WorldImagery
+	    "Vägkarta": streets,
+	    "Terräng": topo,
+	    "Flygfoto": Esri_WorldImagery
 	};
 	
 	var overlays = {
-	    "Counties": counties_layer
+	    "CWD provtagning": counties_layer
 	};
 	
 	var map = L.map('map', {
