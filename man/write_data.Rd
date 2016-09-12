@@ -4,10 +4,12 @@
 \alias{write_data}
 \title{write_data}
 \usage{
-write_data(object, file = tempfile())
+write_data(object, varname = "data1", file = tempfile())
 }
 \arguments{
 \item{object}{A spatial polygon or point dataframe}
+
+\item{varname}{The name of the variable to be given to the geojson oject in javascript.}
 
 \item{file}{The path to where the geojson will be written}
 }

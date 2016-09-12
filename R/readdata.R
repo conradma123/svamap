@@ -52,15 +52,49 @@ read_point_data <- function(path = system.file("sample_data_cwd.csv", package = 
 ##' @import rgeos
 ##' @export
 ##' @param object A spatial polygon or point dataframe
+##' @param varname The name of the variable to be given to the geojson oject in javascript.
 ##' @param file The path to where the geojson will be written
 ##' @return path to the file
 ##' @author Thomas Rosendal
 write_data <- function(object,
+                       varname = "data1",
                        file = tempfile()) {
     writeOGR(object,
              file,
              layer = "main",
              driver = "GeoJSON",
              check_exists = FALSE)
+    geojson <- readLines(file)
+    js <- c(varname, " = ", geojson)
+    writeLines(js, file)
     return(file)
+}
+##' write a webpage
+##'
+##' Copy the files to a direcetory
+##' @title write_page
+##' @export
+##' @param data path to data
+##' @param path path to new webpage
+##' @param overwrite Do you want to overwrite files in the destination directory?
+##' @param browse Pop the brwoser and view the page?
+##' @return 
+##' @author Thomas Rosendal
+write_page <- function(data,
+                       path = tempdir(),
+                       overwrite = FALSE,
+                       browse = TRUE) {
+    pathmap <- paste0(path,"/map")
+    dir.create(pathmap, showWarnings = FALSE)
+    file.copy(from = data,
+              to = paste0(pathmap,"/data.js"),
+              overwrite = overwrite)
+    file.copy(from = list.files(system.file("map", package = "svamap"), full.names = TRUE),
+              to = pathmap,
+              overwrite = overwrite,
+              recursive = FALSE)
+    if(browse) {
+        browseURL(paste0("file://", pathmap, "/map.html"))
+    }
+    return(path)
 }
