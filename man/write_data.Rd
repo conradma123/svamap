@@ -4,10 +4,10 @@
 \alias{write_data}
 \title{write_data}
 \usage{
-write_data(object, varname = "data1", file = tempfile())
+write_data(object, varname = "data", file = tempfile())
 }
 \arguments{
-\item{object}{A spatial polygon or point dataframe}
+\item{object}{A list of spatial polygon or point dataframes list may be of length 1}
 
 \item{varname}{The name of the variable to be given to the geojson oject in javascript.}
 

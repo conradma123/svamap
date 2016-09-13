@@ -51,21 +51,25 @@ read_point_data <- function(path = system.file("sample_data_cwd.csv", package = 
 ##' @title write_data
 ##' @import rgeos
 ##' @export
-##' @param object A spatial polygon or point dataframe
+##' @param object A list of spatial polygon or point dataframes list may be of length 1
 ##' @param varname The name of the variable to be given to the geojson oject in javascript.
 ##' @param file The path to where the geojson will be written
 ##' @return path to the file
 ##' @author Thomas Rosendal
 write_data <- function(object,
-                       varname = "data1",
+                       varname = "data",
                        file = tempfile()) {
-    writeOGR(object,
-             file,
-             layer = "main",
-             driver = "GeoJSON",
-             check_exists = FALSE)
-    geojson <- readLines(file)
-    js <- c(varname, " = ", geojson)
+    stopifnot(identical(class(object), "list"))
+    js <- do.call('c', lapply(seq_len(length(object)), function(x){
+        innerfile <- tempfile()
+        writeOGR(object[[x]],
+                 innerfile,
+                 layer = "main",
+                 driver = "GeoJSON",
+                 check_exists = FALSE)
+        geojson <- readLines(innerfile)
+        js <- c(paste0(varname,x), " = ", geojson)
+    }))
     writeLines(js, file)
     return(file)
 }
