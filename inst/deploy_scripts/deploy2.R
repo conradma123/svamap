@@ -1,0 +1,7 @@
+library(svamap)
+data(NUTS_20M)
+pts <- read_point_data("/media/t/Falkenrapporter/E16-036 Grundrapport.csv")
+pts@data <- data.frame(pts@data$Djurslag, stringsAsFactors = FALSE)
+polys <- svamap::match_to_county(pts, NUTS_20M, "NUTS_ID")
+path_to_data <- svamap::write_data(list(polys, pts))
+svamap::write_page(data = path_to_data, path = "/media/ESS_webpages/CWD2/", template = "map2", overwrite = TRUE, browse = FALSE)
