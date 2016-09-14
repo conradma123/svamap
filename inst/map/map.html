@@ -64,13 +64,7 @@
 	});
 	
 	function onEachPolygon(feature, layer) {
-	    var popupContent = feature.properties.name;
-	    if (feature.properties.count ==1) {
-		popupContent += "<br>" + String(feature.properties.count) + " negativt prov";
-	    }
-	    else if (feature.properties.count >=1) {
-		popupContent += "<br>" + String(feature.properties.count) + " negativa prover";
-	    }
+	    var popupContent = feature.properties.popup_text;
 	    layer.bindPopup(popupContent);
 	}
 	

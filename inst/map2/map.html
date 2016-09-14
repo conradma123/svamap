@@ -64,13 +64,7 @@
 	});
 	
 	function onEachPolygon(feature, layer) {
-	    var popupContent = feature.properties.name;
-	    if (feature.properties.count ==1) {
-		popupContent += "<br>" + String(feature.properties.count) + " negativt prov";
-	    }
-	    else if (feature.properties.count >=1) {
-		popupContent += "<br>" + String(feature.properties.count) + " negativa prover";
-	    }
+	    var popupContent = feature.properties.popup_text;
 	    layer.bindPopup(popupContent);
 	}
 	
@@ -90,15 +84,15 @@
 		return {color: "#939393", fillColor: "#0000FF", opacity: 1, weight : 1,
 			fillOpacity: getOpacity(feature.properties.count)};
 	    },
-	    onEachFeature: onEachPolygon,
+	    onEachFeature: onEachPolygon
 	}).addTo(counties_layer);
 
 	var points_layer = new L.LayerGroup();
-
 	L.geoJson(data2, {
 	    style: function (feature) {
 		return feature.proporties && feature.properties.style;
 	    },
+	    onEachFeature: onEachPolygon,
 	    pointToLayer: function (feature, latlng) {
 		return L.circleMarker(latlng, {
 		    radius: 3,
