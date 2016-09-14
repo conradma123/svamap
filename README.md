@@ -26,7 +26,7 @@ path_to_data <- write_data(polys)
 svamap::write_page(path_to_data, template = "map", overwrite = TRUE, browse = TRUE)
 ```
 
-Second a map with both a point and polygon layer. Notice the you
+[A Second map](https://sva-se.github.io/svamap/map.html) with both a point and polygon layer. Notice the you
 submit the multiple layers as a list to the `write_data()` function
 
 ```{r eval = FALSE}
