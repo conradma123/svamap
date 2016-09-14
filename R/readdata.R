@@ -59,7 +59,14 @@ read_point_data <- function(path = system.file("sample_data_cwd.csv", package = 
 write_data <- function(object,
                        varname = "data",
                        file = tempfile()) {
-    stopifnot(identical(class(object), "list"))
+    stopifnot(all(class(object) %in% c("list",
+                                   "SpatialPointsDataFrame",
+                                   "SpatialLinesDataFrame",
+                                   "SpatialPolygonsDataFrame"))
+              )
+    if(class(object) != "list") {
+        object <- list(object)
+    }
     js <- do.call('c', lapply(seq_len(length(object)), function(x){
         innerfile <- tempfile()
         writeOGR(object[[x]],
@@ -80,12 +87,16 @@ write_data <- function(object,
 ##' @export
 ##' @param data path to data
 ##' @param path path to new webpage
+##' @param template the name of the map template. This is a directory in the inst folder of the map you want to use
+##' @param owntemplate path to you own template. This would include everything you map needs but the data
 ##' @param overwrite Do you want to overwrite files in the destination directory?
 ##' @param browse Pop the brwoser and view the page?
-##' @return 
+##' @return The path to the map 
 ##' @author Thomas Rosendal
 write_page <- function(data,
                        path = tempdir(),
+                       template = "map",
+                       owntemplate = NULL,
                        overwrite = FALSE,
                        browse = TRUE) {
     pathmap <- file.path(path, "map")
@@ -93,10 +104,17 @@ write_page <- function(data,
     file.copy(from = data,
               to = file.path(pathmap,"data.js"),
               overwrite = overwrite)
-    file.copy(from = list.files(system.file("map", package = "svamap"), full.names = TRUE),
-              to = pathmap,
-              overwrite = overwrite,
-              recursive = FALSE)
+    if(is.null(owntemplate)) {
+        file.copy(from = list.files(system.file(template, package = "svamap"), full.names = TRUE),
+                  to = pathmap,
+                  overwrite = overwrite,
+                  recursive = FALSE)
+    } else {
+        file.copy(from = list.files(owntemplate, full.names = TRUE),
+                  to = pathmap,
+                  overwrite = overwrite,
+                  recursive = FALSE)
+    }
     if(browse) {
         browseURL(paste0("file://", file.path(pathmap, "map.html")))
     }

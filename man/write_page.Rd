@@ -4,16 +4,24 @@
 \alias{write_page}
 \title{write_page}
 \usage{
-write_page(data, path = tempdir(), overwrite = FALSE, browse = TRUE)
+write_page(data, path = tempdir(), template = "map", owntemplate = NULL,
+  overwrite = FALSE, browse = TRUE)
 }
 \arguments{
 \item{data}{path to data}
 
 \item{path}{path to new webpage}
 
+\item{template}{the name of the map template. This is a directory in the inst folder of the map you want to use}
+
+\item{owntemplate}{path to you own template. This would include everything you map needs but the data}
+
 \item{overwrite}{Do you want to overwrite files in the destination directory?}
 
 \item{browse}{Pop the brwoser and view the page?}
+}
+\value{
+The path to the map
 }
 \description{
 write a webpage
