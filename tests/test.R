@@ -1,7 +1,0 @@
-library(svamap)
-data(NUTS_20M)
-pts <- read_point_data()
-pts@data <- data.frame(pts@data$Djurslag, stringsAsFactors = FALSE)
-polys <- svamap::match_to_county(pts, NUTS_20M, "NUTS_ID")
-path_to_data <- write_data(list(polys, pts))
-svamap::write_page(path_to_data, path = "/tmp", template = "map2", overwrite = TRUE, browse = FALSE)
