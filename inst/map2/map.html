@@ -129,7 +129,37 @@
 	    maxWidth: 300,
 	    imperial: false
 	}).addTo(map);
+
+
+	var chorolegend = L.control({position: 'bottomright'});
+      
+	chorolegend.onAdd = function (map) {
+	    var div = L.DomUtil.create('div', 'info legend'),
+		grades = [1, 10, 20, 30, 40, 50],
+		labels = ["Antal Provtagna"],
+		labs = ['1-9', '10-19', '20-29', '30-39', '40-49', '50+'];
+	    for (var i = 0; i < grades.length; i++) {
+		value = grades[i];
+		labels.push(
+		    '<i style="background-color: rgba(0, 0, 255, '+ getOpacity(value) +')"></i> ' +
+			labs[i]);
+	    }
+	    div.innerHTML = labels.join('<br>');
+	    return div;
+	};
+	chorolegend.addTo(map);
 	
+	map.on('overlayadd', function (eventLayer) {
+	    if (eventLayer.name == 'CWD provtagning') {
+		chorolegend.addTo(map);
+	    }
+	})
+	map.on('overlayremove', function (eventLayer) {
+	    if (eventLayer.name == 'CWD provtagning') {
+		map.removeControl(chorolegend);
+	    }
+	})
+
       </script>
     </div>
   </body>
