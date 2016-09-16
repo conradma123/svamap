@@ -39,6 +39,12 @@
 	  margin-right: 8px;
 	  opacity: 0.7;
       }
+      .legend .circle {
+	  border-radius: 50%;
+	  width: 10px;
+	  height: 10px;
+	  margin-top: 8px;
+      }
     </style>
   </head>
   <body>
@@ -112,8 +118,8 @@
 	};
 	
 	var overlays = {
-	    "CWD provtagning": counties_layer,
-	    "Individprov": points_layer
+	    "Individprov platser": points_layer,
+	    "CWD provtagning": counties_layer
 	};
 	
 	var map = L.map('map', {
@@ -148,18 +154,37 @@
 	    return div;
 	};
 	chorolegend.addTo(map);
+
+	var dotlegend = L.control({position: 'bottomright'});
+	dotlegend.onAdd = function (map) {
+	    var div = L.DomUtil.create('div', 'info legend'),
+		grades = [0],
+		labels = ["Individprov platser<br>- observera att<br>vilda hjortdjur<br> kan ha et bred<br> hemområde"];
+	    for (var i = 0; i < grades.length; i++) {
+		value = grades[i];
+		labels.push(
+		    '<i class="circle" style="background:' + '#595959' + '"></i> ');
+	    }
+	    div.innerHTML = labels.join('<br>');
+	    return div;
+	};
 	
 	map.on('overlayadd', function (eventLayer) {
 	    if (eventLayer.name == 'CWD provtagning') {
 		chorolegend.addTo(map);
+	    }
+	    else if  (eventLayer.name == 'Individprov platser') {
+		dotlegend.addTo(map);
 	    }
 	})
 	map.on('overlayremove', function (eventLayer) {
 	    if (eventLayer.name == 'CWD provtagning') {
 		map.removeControl(chorolegend);
 	    }
+	    else if (eventLayer.name == 'Individprov platser') {
+		map.removeControl(dotlegend);
+	    }
 	})
-
       </script>
     </div>
   </body>
