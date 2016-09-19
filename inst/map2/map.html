@@ -112,20 +112,20 @@
 	}).addTo(points_layer);
 
 	var baseLayers = {
-	    "Vägkarta": streets,
 	    "Terräng": topo,
+	    "Vägkarta": streets,
 	    "Flygfoto": Esri_WorldImagery
 	};
 	
 	var overlays = {
-	    "Individprov platser": points_layer,
+	    "Provtagna djur": points_layer,
 	    "CWD provtagning": counties_layer
 	};
 	
 	var map = L.map('map', {
 	    center: [63.0, 17.5],
 	    zoom: 5,
-	    layers: [streets, counties_layer]
+	    layers: [topo, counties_layer]
 	});
 
 	L.control.layers(baseLayers, overlays, {collapsed:false}).addTo(map);
@@ -142,7 +142,7 @@
 	chorolegend.onAdd = function (map) {
 	    var div = L.DomUtil.create('div', 'info legend'),
 		grades = [1, 10, 20, 30, 40, 50],
-		labels = ["Antal Provtagna"],
+		labels = ["<b>Antal Provtagna</b>"],
 		labs = ['1-9', '10-19', '20-29', '30-39', '40-49', '50+'];
 	    for (var i = 0; i < grades.length; i++) {
 		value = grades[i];
@@ -159,7 +159,7 @@
 	dotlegend.onAdd = function (map) {
 	    var div = L.DomUtil.create('div', 'info legend'),
 		grades = [0],
-		labels = ["Individprov platser<br>- observera att<br>vilda hjortdjur<br> kan ha et bred<br> hemområde"];
+		labels = ["<b>Provtagna djur</b><br>- observera att<br>vilda hjortdjur<br> kan röra sig över<br> stora områden"];
 	    for (var i = 0; i < grades.length; i++) {
 		value = grades[i];
 		labels.push(
@@ -173,7 +173,7 @@
 	    if (eventLayer.name == 'CWD provtagning') {
 		chorolegend.addTo(map);
 	    }
-	    else if  (eventLayer.name == 'Individprov platser') {
+	    else if  (eventLayer.name == 'Provtagna djur') {
 		dotlegend.addTo(map);
 	    }
 	})
@@ -181,7 +181,7 @@
 	    if (eventLayer.name == 'CWD provtagning') {
 		map.removeControl(chorolegend);
 	    }
-	    else if (eventLayer.name == 'Individprov platser') {
+	    else if (eventLayer.name == 'Provtagna djur') {
 		map.removeControl(dotlegend);
 	    }
 	})
