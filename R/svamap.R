@@ -17,3 +17,22 @@
 ##' plot(NUTS_20M)
 ##'
 NULL
+##' Administrative (NUTS) units in Sweden (1 : 20 Million)
+##'
+##' The dataset contains administrative units (NUTS) in Sweden in
+##' European terminology in scale 1 : 20 Million.
+##'
+##' Reprojected to WGS84
+##'
+##' @name kommuner
+##' @docType data
+##' @source
+##' \url{http://www.scb.se/Grupp/Produkter_Tjanster/Verktyg/_Dokument/Shape-svenska.zip}
+##' @import sp
+##' @keywords datasets
+##' @examples
+##'
+##' data(kommuner)
+##' plot(kommuner)
+##'
+NULL
