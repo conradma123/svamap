@@ -16,7 +16,7 @@ pts$popup_text <- paste0(pts$Djurslag, "<br>Ankomstdatum: ", as.Date(pts$Ankomst
 ##
 ##Count points per polygon
 ########################
-polys <- svamap::match_to_county(pts, NUTS_20M, "NUTS_ID")
+polys <- svamap::match_to_county(pts, NUTS_20M, "NUTS_ID")$polygons
 ##
 ## Drop data that you don't want to display from points
 ########################
@@ -40,3 +40,12 @@ svamap::write_page(data = path_to_data,
                    template = "map2",
                    overwrite = TRUE,
                    browse = FALSE)
+
+##
+##test Deploy map
+########################
+## svamap::write_page(data = path_to_data,
+##                    path = "/tmp/",
+##                    template = "map2",
+##                    overwrite = TRUE,
+##                    browse = TRUE)
