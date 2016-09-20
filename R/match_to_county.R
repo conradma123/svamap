@@ -23,7 +23,9 @@ match_to_county <- function(pts,
     polygons$count <- df$count[match(polygons@data[,id], df$id)]
     if(!nrow(pts2)==0){
         warning("Some of the points supplied are not contained within the polygon layer.\nThey will be in the second list item of the object returned from this function")
+        final <- list(polygons = polygons, outlier_pts = pts2)
+        return(final)
     }
-    final <- list(polygons = polygons, outlier_pts = pts2)
+    final <- list(polygons = polygons, outlier_pts = NULL)
     return(final)
 }
