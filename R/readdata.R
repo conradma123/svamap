@@ -25,6 +25,7 @@
 ##' @import utils
 ##' @import sp
 ##' @import rgdal
+##' @import stats
 ##' @export
 ##' @param path Path to file
 ##' @param encoding Ecoding of the text file
