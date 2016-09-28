@@ -3,9 +3,8 @@ warnings_are_errors: false
 sudo: required
 
 before_install:
-  - sudo apt-get install aptitude
-  - sudo aptitude install libgdal-dev
-  - sudo aptitude install libproj-dev
+  - sudo apt-get -y install libgdal1-dev libgdal-dev libgeos-c1=3.3.3-1.1 libspatialite3=3.1.0~rc2-1ubuntu1
+
 r_packages:
   - covr
 
