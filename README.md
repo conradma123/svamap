@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/SVA-SE/svamap.svg?branch=master)](https://travis-ci.org/SVA-SE/svamap)
+
+
 # svamap - leaflet maps from R datasets
 
 The design of this package is that you read in your data to R and
