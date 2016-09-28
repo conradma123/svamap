@@ -40,6 +40,11 @@ read_point_data <- function(path = system.file("sample_data_cwd.csv", package = 
                     header = TRUE,
                     stringsAsFactors = FALSE,
                     encoding = encoding)
+    missing_coords <- length(which(!complete.cases(df[,c(long,lat)])))
+    if(length(missing_coords)>0){
+        warning(paste(missing_coords, "of the submitted points are missing coordinates"))
+    }
+    df <- df[complete.cases(df[,c(long,lat)]),]
     pts <- SpatialPoints(cbind(df[,long], df[,lat]))
     proj4string(pts) <- proj4str
     pts <- spTransform(pts, CRSobj = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
