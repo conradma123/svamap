@@ -3,7 +3,9 @@ warnings_are_errors: false
 sudo: required
 
 before_install:
-  - sudo apt-get install libhdf5-7 libhdf5-dev libhdf5-serial-dev libgdal1h libnetcdf-dev libgdal-dev libhdf4-alt-dev libproj-dev
+  - sudo apt-get install aptitude
+  - sudo aptitude install libgdal-dev
+  - sudo aptitude install libproj-dev
 r_packages:
   - covr
 
