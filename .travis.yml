@@ -3,12 +3,9 @@ warnings_are_errors: false
 sudo: required
 
 before_install:
-
-addons:
-  apt:
-    packages:
-      - libgdal-dev
-      - libproj-dev
+  - sudo apt-get -y install aptitude
+  - sudo aptitude -y install libgdal-dev
+  - sudo aptitude -y install libproj-dev
 
 r_packages:
   - covr
