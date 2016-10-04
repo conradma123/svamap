@@ -8,7 +8,7 @@ pts <- read_point_data("/media/t/Falkenrapporter/E16-036 Grundrapport.csv")
 ##
 ## Drop the points that are not "Vilt (Jakt - fiske - natur)"
 ########################
-pts <- pts[pts$Djurhållning == "Vilt (Jakt - fiske - natur)",]
+## pts <- pts[pts$Djurhållning == "Vilt (Jakt - fiske - natur)",]
 ##
 ## Define the text to go in the popup for the point data
 ########################
