@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Map</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="IE=edge" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" /> -->
+    <link rel="stylesheet" href="leaflet.css" />
+    
+    <style>
+      #map {
+      width: 100%;
+      height: 800px;
+      float: left;
+      }
+      .info {
+	  padding: 6px 8px;
+	  font: 14px/16px Arial, Helvetica, sans-serif;
+	  background: white;
+	  background: rgba(255,255,255,0.8);
+	  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+	  border-radius: 5px;
+      }
+      .info h4 {
+	  margin: 0 0 5px;
+	  color: #777;
+      }
+      
+      .legend {
+	  text-align: left;
+	  line-height: 18px;
+	  color: #555;
+      }
+      .legend i {
+	  width: 18px;
+	  height: 18px;
+	  float: left;
+	  margin-right: 8px;
+	  opacity: 0.7;
+      }
+      .legend .circle {
+	  border-radius: 50%;
+	  width: 10px;
+	  height: 10px;
+	  margin-top: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map">
+      <!-- <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script> -->
+      <script src="leaflet.js"></script>
+      <!-- <script src="leaflet.ajax.min.js"</script> -->
+      <script src="data.js"></script>
+      <script>
+    	
+	var streets = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	    maxZoom: 18,
+	    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+		'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+	}),
+	topo = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+	    maxZoom: 18,
+	    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'
+	}),
+	Esri_WorldImagery = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	    maxZoom: 16,
+	    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+	});
+	
+	function onEachPolygon(feature, layer) {
+	    var popupContent = feature.properties.popup_text;
+	    layer.bindPopup(popupContent);
+	}
+	
+	function getOpacity(d) {
+	    return d == 0  ? 0.7 :
+		d == 1  ? 1.0 :
+		0;
+	}
+
+	function getColor(d) {
+	    return d == 0  ? "#3182bd" :
+		d == 1  ? "#FF0000" :
+		"#939393";
+	}
+	
+	var moose_layer = new L.LayerGroup();
+	L.geoJson(data2, {
+	    style: function (feature) {
+		return feature.proporties && feature.properties.style;
+	    },
+	    onEachFeature: onEachPolygon,
+	    pointToLayer: function (feature, latlng) {
+		return L.circleMarker(latlng, {
+		    radius: 3,
+		    fillColor: getColor(feature.properties.result),
+		    color: getColor(feature.properties.result),
+		    weight: 1,
+		    opacity: getOpacity(feature.properties.result),
+		    fillOpacity: 0.8
+		});
+	    }
+	}).addTo(moose_layer);
+
+	var deer_layer = new L.LayerGroup();
+	L.geoJson(data3, {
+	    style: function (feature) {
+		return feature.proporties && feature.properties.style;
+	    },
+	    onEachFeature: onEachPolygon,
+	    pointToLayer: function (feature, latlng) {
+		return L.circleMarker(latlng, {
+		    radius: 3,
+		    fillColor: getColor(feature.properties.result),
+		    color: getColor(feature.properties.result),
+		    weight: 1,
+		    opacity: 1,
+		    fillOpacity: 0.8
+		});
+	    }
+	}).addTo(deer_layer);
+
+	var reddeer_layer = new L.LayerGroup();
+	L.geoJson(data4, {
+	    style: function (feature) {
+		return feature.proporties && feature.properties.style;
+	    },
+	    onEachFeature: onEachPolygon,
+	    pointToLayer: function (feature, latlng) {
+		return L.circleMarker(latlng, {
+		    radius: 3,
+		    fillColor: getColor(feature.properties.result),
+		    color: getColor(feature.properties.result),
+		    weight: 1,
+		    opacity: 1,
+		    fillOpacity: 0.8
+		});
+	    }
+	}).addTo(reddeer_layer);
+
+	var baseLayers = {
+	    "Terräng": topo,
+	    "Vägkarta": streets,
+	    "Flygfoto": Esri_WorldImagery
+	};
+	
+	var overlays = {
+	    "Älg": moose_layer,
+	    "Rådjur": deer_layer,
+	    "Kronhjort":reddeer_layer
+	    
+	};
+	
+	var map = L.map('map', {
+	    center: [63.0, 17.5],
+	    zoom: 5,
+	    layers: [topo, moose_layer, deer_layer, reddeer_layer]
+	});
+
+	L.control.layers(baseLayers, overlays, {collapsed:false}).addTo(map);
+	
+	L.control.scale({
+	    position: 'bottomright',
+	    maxWidth: 300,
+	    imperial: false
+	}).addTo(map);
+
+
+	var chorolegend = L.control({position: 'bottomright'});
+      
+	var dotlegend = L.control({position: 'bottomright'});
+	dotlegend.onAdd = function (map) {
+	    var div = L.DomUtil.create('div', 'info legend'),
+		grades = [0],
+		labels = ["<b>Provtagna djur</b><br>- observera att<br>vilda hjortdjur<br> kan röra sig över<br> stora områden"],
+		labs = ['<b>CWD Negativa</b>','<b>CWD Positiva</b>'];
+	    for (var i = 0; i < grades.length; i++) {
+		value = grades[i];
+		labels.push(
+		    '<i class="circle" style="background:' + getColor(i) + '"></i> ' + labs[i]);
+	    }
+	    div.innerHTML = labels.join('<br>');
+	    return div;
+	};
+	dotlegend.addTo(map);
+      </script>
+    </div>
+  </body>
+</html>
+
+
