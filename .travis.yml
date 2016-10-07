@@ -4,6 +4,7 @@ sudo: required
 
 before_install:
   - sudo apt-get -y install aptitude
+  - sudo apt-get -y install libhdf5-dev
   - sudo apt-get -y install libhdf5-serial-dev
   - sudo aptitude -y install libgdal-dev
   - sudo aptitude -y install libproj-dev
