@@ -5,6 +5,13 @@ data(NUTS_20M)
 ##Read in the point data
 ########################
 pts <- read_point_data("/media/t/Falkenrapporter/E16-036 Grundrapport.csv")
+##########################
+## REMOVE ALL POSITIVES###
+##########################
+## This is done in order to prevent results being published prior to a
+## press release. We will discuss individual positives and when to add
+## them to a map as needed
+pts <- pts[pts@data$Status..numerisk. == 0,]
 ##pts <- read_point_data()
 ##
 ## Drop the points that are not "Vilt (Jakt - fiske - natur)"

@@ -167,13 +167,27 @@
 	    imperial: false
 	}).addTo(map);
 
-
 	var chorolegend = L.control({position: 'bottomright'});
-      
+
+	// Add a legend of the points. Just negative if there are no positives
+
+	var result = data1.features.map(function(i) {
+	    return i.properties.result;
+	});
+
+	var anypos = result.some(function(x) { return x == 1; });
+
+	function getGrades(d) {
+	    return d == false  ? [0] :
+		d == true  ? [0, 1] :
+		[0];
+	}
+
+	console.log(anypos)
 	var dotlegend = L.control({position: 'bottomright'});
 	dotlegend.onAdd = function (map) {
 	    var div = L.DomUtil.create('div', 'info legend'),
-		grades = [0],
+		grades = getGrades(anypos),
 		labels = ["<b>Provtagna djur</b><br>- observera att<br>vilda hjortdjur<br> kan röra sig över<br> stora områden"],
 		labs = ['<b>CWD Negativa</b>','<b>CWD Positiva</b>'];
 	    for (var i = 0; i < grades.length; i++) {
