@@ -159,6 +159,19 @@
 	    layers: [topo, moose_layer, deer_layer, reddeer_layer]
 	});
 
+      // Show linkto github project
+      var info = L.control({position: 'topright'});
+      
+      info.onAdd = function (map) {
+	  this._div = L.DomUtil.create('div', 'info');
+	  this.update();
+	  return this._div;
+      };
+      
+      info.update = function () {
+      	  this._div.innerHTML = '<a href="https://github.com/SVA-SE/svamap"><img style="vertical-align:middle" src="GitHub_Logo.png" height ="18"</a>';
+      };
+
 	L.control.layers(baseLayers, overlays, {collapsed:false}).addTo(map);
 	
 	L.control.scale({
