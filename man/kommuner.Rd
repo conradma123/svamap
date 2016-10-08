@@ -15,9 +15,6 @@ Reprojected to WGS84
 }
 \examples{
 
-data(kommuner)
-plot(kommuner)
-
 }
 \keyword{datasets}
 

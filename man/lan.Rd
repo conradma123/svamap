@@ -15,8 +15,6 @@ Reprojected to WGS84
 }
 \examples{
 
-data(lan)
-plot(lan)
 
 }
 \keyword{datasets}

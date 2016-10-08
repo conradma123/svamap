@@ -11,10 +11,6 @@
 ##' \url{http://epp.eurostat.ec.europa.eu/portal/page/portal/gisco_Geographical_information_maps/popups/references/administrative_units_statistical_units_1}
 ##' @import sp
 ##' @keywords datasets
-##' @examples
-##'
-##' data(NUTS_20M)
-##' plot(NUTS_20M)
 ##'
 NULL
 ##' Administrative units in Sweden (Kommun)
@@ -29,16 +25,11 @@ NULL
 ##' \url{http://www.scb.se/Grupp/Produkter_Tjanster/Verktyg/_Dokument/Shape-svenska.zip}
 ##' @import sp
 ##' @keywords datasets
-##' @examples
-##'
-##' data(kommuner)
-##' plot(kommuner)
 ##'
 NULL
 ##' Administrative units in Sweden (Lan)
 ##'
 ##' The dataset contains boundaries of lan in Sweden
-
 ##'
 ##' Reprojected to WGS84
 ##'
@@ -48,9 +39,6 @@ NULL
 ##' \url{http://www.scb.se/Grupp/Produkter_Tjanster/Verktyg/_Dokument/Shape-svenska.zip}
 ##' @import sp
 ##' @keywords datasets
-##' @examples
 ##'
-##' data(lan)
-##' plot(lan)
 ##'
 NULL
