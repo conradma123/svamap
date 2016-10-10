@@ -1,4 +1,5 @@
 library(svamap)
+library(sp)
 ##
 data(NUTS_20M)
 ##
