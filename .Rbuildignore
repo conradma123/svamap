@@ -1,3 +1,5 @@
 Makefile
 .travis.yml
 ^appveyor\.yml$
+^.*\.Rproj$
+^\.Rproj\.user$
