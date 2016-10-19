@@ -4,19 +4,29 @@
 \alias{write_page}
 \title{write_page}
 \usage{
-write_page(data, path = tempdir(), template = "map", owntemplate = NULL,
-  overwrite = FALSE, browse = TRUE)
+write_page(data, path = tempdir(), ftp = NULL, template = "map",
+  owntemplate = NULL, overwrite = FALSE, browse = TRUE)
 }
 \arguments{
 \item{data}{path to data}
 
-\item{path}{path to new webpage}
+\item{path}{path to new webpage does not end in a "/"}
 
-\item{template}{the name of the map template. This is a directory in the inst folder of the map you want to use}
+\item{ftp}{NULL if you want to you a path to a directory,
+otherwise specify the ftp server with credentials like:
+"ftp://User:Password@servername/Destination". This is the
+directory on the ftp server that the files will be placed. It
+must end in a '/' and will be expanded when called by
+ftpUpload from the RCurl library.}
 
-\item{owntemplate}{path to you own template. This would include everything you map needs but the data}
+\item{template}{the name of the map template. This is a directory
+in the inst folder of the map you want to use}
 
-\item{overwrite}{Do you want to overwrite files in the destination directory?}
+\item{owntemplate}{path to you own template. This would include
+everything your map needs but the data}
+
+\item{overwrite}{Do you want to overwrite files in the destination
+directory?}
 
 \item{browse}{Pop the brwoser and view the page?}
 }

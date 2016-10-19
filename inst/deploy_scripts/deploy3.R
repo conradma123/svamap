@@ -49,6 +49,6 @@ svamap::write_page(data = path_to_data,
 ########################
 ## svamap::write_page(data = path_to_data,
 ##                    path = "/tmp/",
-##                    template = "map2",
+##                    template = "map3",
 ##                    overwrite = TRUE,
 ##                    browse = TRUE)

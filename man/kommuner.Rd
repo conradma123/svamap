@@ -13,8 +13,5 @@ The dataset contains boundaries of kommun in Sweden
 \details{
 Reprojected to WGS84
 }
-\examples{
-
-}
 \keyword{datasets}
 
