@@ -92,37 +92,54 @@ write_data <- function(object,
 ##' @title write_page
 ##' @export
 ##' @param data path to data
-##' @param path path to new webpage
-##' @param template the name of the map template. This is a directory in the inst folder of the map you want to use
-##' @param owntemplate path to you own template. This would include everything you map needs but the data
-##' @param overwrite Do you want to overwrite files in the destination directory?
+##' @param path path to new webpage does not end in a "/"
+##' @param ftp NULL if you want to you a path to a directory,
+##'     otherwise specify the ftp server with credentials like:
+##'     "ftp://User:Password@servername/Destination". This is the
+##'     directory on the ftp server that the files will be placed. It
+##'     must end in a '/' and will be expanded when called by
+##'     ftpUpload from the RCurl library.
+##' @param template the name of the map template. This is a directory
+##'     in the inst folder of the map you want to use
+##' @param owntemplate path to you own template. This would include
+##'     everything your map needs but the data
+##' @param overwrite Do you want to overwrite files in the destination
+##'     directory?
 ##' @param browse Pop the brwoser and view the page?
-##' @return The path to the map 
+##' @return The path to the map
+##' @import RCurl
 ##' @author Thomas Rosendal
 write_page <- function(data,
                        path = tempdir(),
+                       ftp = NULL,
                        template = "map",
                        owntemplate = NULL,
                        overwrite = FALSE,
                        browse = TRUE) {
-    pathmap <- file.path(path, "map")
-    dir.create(pathmap, showWarnings = FALSE)
-    file.copy(from = data,
-              to = file.path(pathmap,"data.js"),
-              overwrite = overwrite)
     if(is.null(owntemplate)) {
-        file.copy(from = list.files(system.file(template, package = "svamap"), full.names = TRUE),
-                  to = pathmap,
-                  overwrite = overwrite,
-                  recursive = FALSE)
+        from <- list.files(system.file(template, package = "svamap"), full.names = TRUE)
     } else {
-        file.copy(from = list.files(owntemplate, full.names = TRUE),
+        from <- list.files(owntemplate, full.names = TRUE)
+    }
+    if(is.null(ftp)) {
+        pathmap <- file.path(path, "map")
+        dir.create(pathmap, showWarnings = FALSE)
+        file.copy(from = data,
+                  to = file.path(pathmap,"data.js"),
+                  overwrite = overwrite)
+        file.copy(from = from,
                   to = pathmap,
                   overwrite = overwrite,
                   recursive = FALSE)
+        if(browse) {
+            browseURL(paste0("file://", file.path(pathmap, "map.html")))
+        }
+        return(path)
+    } else {
+        ftpUpload(data, paste0(ftp, "data.js"))
+        for (i in from) {
+            ftpUpload(i, paste0(ftp, basename(i)))
+        }
     }
-    if(browse) {
-        browseURL(paste0("file://", file.path(pathmap, "map.html")))
-    }
-    return(path)
+    return(ftp)
 }

@@ -10,7 +10,7 @@
     <style>
       #map {
       width: 100%;
-      height: 800px;
+      height: 98vh;
       float: left;
       }
       .info {
@@ -153,6 +153,7 @@
 	var map = L.map('map', {
 	    center: [63.0, 17.5],
 	    zoom: 5,
+	    maxBounds: [[54,4],[70,31]],
 	    layers: [topo, moose_layer, deer_layer, reddeer_layer]
 	});
 

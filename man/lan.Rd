@@ -13,9 +13,5 @@ The dataset contains boundaries of lan in Sweden
 \details{
 Reprojected to WGS84
 }
-\examples{
-
-
-}
 \keyword{datasets}
 
