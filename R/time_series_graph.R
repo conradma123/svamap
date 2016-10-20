@@ -9,7 +9,6 @@
 ##' @author Giampaolo Cocca
 ##' @import utils
 ##' @import dygraphs
-##' @import PerformanceAnalytics
 ##' @export
 ##' @param path Path to file
 ##' @param encoding Ecoding of the text file

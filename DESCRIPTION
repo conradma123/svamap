@@ -18,6 +18,5 @@ Imports:
     rgdal,
     rgeos,
     RCurl,
-    PerformanceAnalytics,
     dygraphs,
     xts
