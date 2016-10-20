@@ -45,32 +45,3 @@ notifications:
   email:
     on_success: change
     on_failure: change
-
-
-
-
-
-
-
-
-
-
-
-language: r
-
-cache: packages
-
-sudo: required
-
-warnings_are_errors: true
-
-r_packages:
-  - rgdal
-  - roxygen2
-  - rmarkdown
-
-r_github_packages: 
-  - jimhester/covr
-
-after_success:
-  - Rscript -e 'covr::codecov()'
