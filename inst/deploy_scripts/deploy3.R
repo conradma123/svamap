@@ -44,7 +44,7 @@ svamap::write_page(data = path_to_data,
                    template = "map3",
                    overwrite = TRUE,
                    browse = FALSE)
-##
+
 ##test Deploy map
 ########################
 ## svamap::write_page(data = path_to_data,

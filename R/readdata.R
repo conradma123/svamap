@@ -73,6 +73,7 @@ write_data <- function(object,
     if(class(object) != "list") {
         object <- list(object)
     }
+    time <- paste0("timestamp = \"", as.character(Sys.time()), "\"")
     js <- do.call('c', lapply(seq_len(length(object)), function(x){
         innerfile <- tempfile()
         writeOGR(object[[x]],
@@ -83,6 +84,7 @@ write_data <- function(object,
         geojson <- readLines(innerfile)
         js <- c(paste0(varname,x), " = ", geojson)
     }))
+    js <- c(time, js)
     writeLines(js, file)
     return(file)
 }

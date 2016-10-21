@@ -200,13 +200,14 @@
 	dotlegend.onAdd = function (map) {
 	    var div = L.DomUtil.create('div', 'info legend'),
 		grades = getGrades(anypos),
-		labels = ["<b>Provtagna djur</b><br>- observera att<br>vilda hjortdjur<br> kan röra sig över<br> stora områden"],
+		labels = ["<b>Provtagna djur</b>"],
 		labs = ['<b>CWD Negativa</b>','<b>CWD Positiva</b>'];
 	    for (var i = 0; i < grades.length; i++) {
 		value = grades[i];
 		labels.push(
 		    '<i class="circle" style="background:' + getColor(i) + '"></i> ' + labs[i]);
 	    }
+	    labels.push("<br>Karta opdateret:<br>" + timestamp)
 	    div.innerHTML = labels.join('<br>');
 	    return div;
 	};
