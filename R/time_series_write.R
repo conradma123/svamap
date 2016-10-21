@@ -1,11 +1,11 @@
 ##' Generate a time series (xts) object
 ##' 
-##' @title read_time_series
+##' @title write_time_series
 ##'
 ##' This function reads in data from SVA's database and produce 
 ##' an xts object 
 ##' 
-##' @return A data.frame
+##' @return A data.frame object
 ##' @author Giampaolo Cocca
 ##' @import utils
 ##' @import xts
@@ -37,14 +37,12 @@ write_time_series <- function(path = system.file("sample_data_cwd.csv", package 
     warning(paste(date_wrong, "of the submitted records has/have a date in the wrong format"))
   }
   
-  
-  time <- as.POSIXct(paste(df$date, df$extime), format = "%Y-%m-%d %H:%M:%OS")
   value <- df[, target]
   
   time_serie <- xts(value, date_format)
   
   colnames(time_serie) <- target
   
-  return(time_serie)
+  return(list(date_format, time_serie))
   
 }
