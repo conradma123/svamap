@@ -12,12 +12,8 @@
 ##' @import dygraphs
 ##' @import xts
 ##' @export
-##' @param path Path to file
-##' @param encoding Ecoding of the text file
-##' @param date_in dataset field with dates
+##' @param xts_object foo 
 ##' @param target numeric value to be plotted 
-
-
 time_series_graph <- function(xts_object = write_time_series()[[2]],
                               target = colnames(write_time_series()[[2]][,1])){
 

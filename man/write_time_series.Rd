@@ -2,7 +2,7 @@
 % Please edit documentation in R/time_series_write.R
 \name{write_time_series}
 \alias{write_time_series}
-\title{read_time_series
+\title{write_time_series
 
 This function reads in data from SVA's database and produce 
 an xts object}
@@ -21,7 +21,7 @@ write_time_series(path = system.file("sample_data_cwd.csv", package =
 \item{target}{numeric value to be plotted}
 }
 \value{
-A data.frame
+A data.frame object
 }
 \description{
 Generate a time series (xts) object
