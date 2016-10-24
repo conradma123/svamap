@@ -31,7 +31,7 @@ directory?}
 \item{browse}{Pop the brwoser and view the page?}
 }
 \value{
-The path to the map
+The path to the map or NULL if ftp
 }
 \description{
 write a webpage

@@ -108,7 +108,7 @@ write_data <- function(object,
 ##' @param overwrite Do you want to overwrite files in the destination
 ##'     directory?
 ##' @param browse Pop the brwoser and view the page?
-##' @return The path to the map
+##' @return The path to the map or NULL if ftp
 ##' @import RCurl
 ##' @author Thomas Rosendal
 write_page <- function(data,
@@ -143,5 +143,5 @@ write_page <- function(data,
             ftpUpload(i, paste0(ftp, basename(i)))
         }
     }
-    return(ftp)
+    return(NULL)
 }
