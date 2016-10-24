@@ -37,14 +37,24 @@ kronhjort <- pts[pts@data$species == "Kronhjort",]
 ########################
 path_to_data <- svamap::write_data(list(pts, moose, deer, kronhjort))
 ##
-##Deploy map
+##Deploy map to internal server
 ########################
 svamap::write_page(data = path_to_data,
                    path = "/media/ESS_webpages/CWD3/",
                    template = "map3",
                    overwrite = TRUE,
                    browse = FALSE)
-
+##
+## Deploy map to Azure server. This is SVA's external website and is
+## administered by a company "Episerver hosting" the contact for this
+## company at SVA is the communications department.
+temp <- readLines("~/.svaftp_credentials")
+cred <- paste0("ftp://", temp[2], ":", temp[3], "@", temp[1], "/MAPS/CWD/")
+svamap::write_page(data = path_to_data,
+                   template = "map3",
+                   overwrite = TRUE,
+                   browse = FALSE,
+                   ftp = cred)
 ##test Deploy map
 ########################
 ## svamap::write_page(data = path_to_data,
