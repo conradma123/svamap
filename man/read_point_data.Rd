@@ -25,6 +25,7 @@ WGS84 is
 read_point_data(path = system.file("sample_data_cwd.csv", package = "svamap"),
   encoding = "UTF-8",
   proj4str = "+init=epsg:3021 +proj=tmerc +lat_0=0 +lon_0=15.80827777777778 +k=1 +x_0=1500000 +y_0=0 +ellps=bessel +towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +units=m +no_defs",
+  output_proj = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
   long = "Gisy", lat = "Gisx")
 }
 \arguments{
@@ -34,12 +35,14 @@ read_point_data(path = system.file("sample_data_cwd.csv", package = "svamap"),
 
 \item{proj4str}{projection of points in file}
 
+\item{output_proj}{the projection of the returned dataframe (default WGS84)}
+
 \item{long}{text string of the variable name that is longitude}
 
 \item{lat}{text string of the variable name that is latitude}
 }
 \value{
-A data.frame
+A SpatialPointsDataframe
 }
 \description{
 Read in point data and clean it
