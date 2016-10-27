@@ -6,18 +6,24 @@ data(NUTS_20M)
 ##Read in the point data
 ########################
 pts <- read_point_data("/media/t/Falkenrapporter/E16-036 Grundrapport.csv")
-##########################
-## REMOVE ALL POSITIVES###
-##########################
-## This is done in order to prevent results being published prior to a
-## press release. We will discuss individual positives and when to add
-## them to a map as needed
-pts <- pts[pts@data$Status..numerisk. == 0,]
+########################################################
+## REMOVE ALL POSITIVES if Publicera flagg isn't "Ja"###
+########################################################
+##
+## Keep only values "Ja" and "Nej"
+pts@data$Publicera <- factor(pts@data$Publicera, levels = c("Ja", "Nej"))
+##
+##Now keep all negatives unless Publicera is "Nej"; Drop all Positives unless Publicera is "Ja"
+##
+pts <- pts[(pts@data$Status..numerisk. == 0 &
+            (pts@data$Publicera != "Nej" | is.na(pts@data$Publicera))
+           ) |
+           (pts@data$Publicera == "Ja" & !is.na(pts@data$Publicera)),]
 ##pts <- read_point_data()
 ##
 ## Drop the points that are not "Vilt (Jakt - fiske - natur)"
 ########################
-pts <- pts[pts$Djurhållning == "Vilt (Jakt - fiske - natur)",]
+pts <- pts[pts$Djurhållning == "Vilt (Jakt - fiske - natur)" & !is.na(pts$Djurhållning),]
 ##
 ## Define the text to go in the popup for the point data
 ########################
