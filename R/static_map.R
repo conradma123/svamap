@@ -36,6 +36,7 @@
 ##'     a legend
 ##' @param legend_position The x y position of the legend in the same
 ##'     coordinate system as the map
+##' @param legcex The size of the legend text
 ##' @return A path to the pdf file of the map
 ##' @author Thomas Rosendal
 ##' @import utils
@@ -58,7 +59,8 @@ point_map <- function(pts,
                       border_lwd = 0.5,
                       legend = FALSE,
                       legend_labs = levels(pts@data[,by]),
-                      legend_position = c(1150405, 7532675)){
+                      legend_position = c(1150405, 7532675),
+                      legcex = 1.0){
     stopifnot(class(pts) == "SpatialPointsDataFrame")
     temp <- data(list = basemap, package = "svamap")
     assign("background", get(temp))
@@ -78,7 +80,7 @@ point_map <- function(pts,
     if (legend & !is.null(by)){
         legend(x = legend_position[1], y = legend_position[2],
                legend=legend_labs,
-               pch = pch, cex = 1.5*cex, col = col, bg = col,
+               pch = pch, cex = legcex, pt.cex = cex, col = col, bg = col,
                bty = "n")
     }
     dev.off()
