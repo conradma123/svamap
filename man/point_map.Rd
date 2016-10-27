@@ -18,15 +18,22 @@ WGS84 is
 
 "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"}
 \usage{
-point_map(pts,
+point_map(pts, by = NULL,
   map_proj = "+init=epsg:3021 +proj=tmerc +lat_0=0 +lon_0=15.80827777777778 +k=1 +x_0=1500000 +y_0=0 +ellps=bessel +towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +units=m +no_defs",
   basemap = "NUTS_20M", path_to_file = tempfile(fileext = ".pdf"),
-  height = 7, width = 5, pch = 20, col = "#67841E", cex = 1)
+  height = 7, width = 5, pch = 20, col = c("#67841E"), cex = 1,
+  border_col = "grey30", border_lwd = 0.5, legend = FALSE,
+  legend_labs = levels(pts@data[, by]), legend_position = c(1150405,
+  7532675))
 }
 \arguments{
 \item{pts}{a spatialopointsdataframe}
 
-\item{map_proj}{The projection of those output map (represented in proj4string)}
+\item{by}{an optional argument indicating the value to use to
+assign colours. A factor.}
+
+\item{map_proj}{The projection of those output map (represented in
+proj4string)}
 
 \item{basemap}{The name of the basemap}
 
@@ -38,9 +45,23 @@ point_map(pts,
 
 \item{pch}{The plotting character}
 
-\item{col}{The col of the plotting character}
+\item{col}{The col of the plotting character. If 'by' is specified
+then it should be a vector with length == levels(by)}
 
 \item{cex}{The size of the plotting character}
+
+\item{border_col}{the colour of the polygon borders}
+
+\item{border_lwd}{The thicknes of the polygon borders}
+
+\item{legend}{Want a legend ? TRUE or FALSE}
+
+\item{legend_labs}{A vector of the legend labels. Default is the
+levels of the by variable. There must be a by variable to get
+a legend}
+
+\item{legend_position}{The x y position of the legend in the same
+coordinate system as the map}
 }
 \value{
 A path to the pdf file of the map
