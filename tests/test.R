@@ -1,10 +1,14 @@
 library(svamap)
-
-## Test 1
+##
+## Test 1 - Check for the data readfunction and succeful removal of postives
+##
 pts <- read_point_data()
+pts <- pts[pts@data$Status..numerisk. == 0,]
+stopifnot(all(pts@data$Status..numerisk. == 0))
 rm(list = ls())
-
-## Test 2
+##
+## Test 2 - Check for the warning for data without coordinates
+##
 temp <- read.csv2(system.file("sample_data_cwd.csv", package = "svamap"))
 temp$Gisx[2] <- NA
 path <- tempfile()
@@ -14,6 +18,10 @@ res <- tools::assertWarning(
 stopifnot(length(grep("1 of the submitted points are missing coordinates",
                      res[[1]]$message)) > 0)
 rm(list = ls())
-## Test 3
+##
+## Test 3 - The static map
+##
 pts <- svamap::read_point_data(output_proj = "+init=epsg:3021 +proj=tmerc +lat_0=0 +lon_0=15.80827777777778 +k=1 +x_0=1500000 +y_0=0 +ellps=bessel +towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +units=m +no_defs")
 point_map(pts = pts, basemap = "lan", cex = 0.7)
+##
+##Test4
