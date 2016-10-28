@@ -42,3 +42,15 @@ NULL
 ##'
 ##'
 NULL
+##' Administrative (NUTS) units in Sweden (1 : 10 Million)
+##'
+##' The dataset contains administrative units (NUTS) in Sweden in
+##' European terminology in scale 1 : 10 Million.
+##'
+##' @name NUTS_10M
+##' @docType data
+##' @source
+##' \url{http://epp.eurostat.ec.europa.eu/portal/page/portal/gisco_Geographical_information_maps/popups/references/administrative_units_statistical_units_1}
+##' @import sp
+##' @keywords datasets
+NULL

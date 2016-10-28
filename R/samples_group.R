@@ -12,7 +12,7 @@
 ##' @param by Dataframe's field used to compute count and cumulative sum. Default to "status"
 samples_group <- function (data_sample = read_falken(),
                      breaks = c("week", "month", "day"),
-                     by = c("status", "Överordnat_uppdrag", "material"))
+                     by = c("status", "material"))
 {
   
   breaks <- match.arg(breaks)
@@ -23,7 +23,6 @@ samples_group <- function (data_sample = read_falken(),
   ## TODO: Fix groups of overordnat uppdrag separated by ','
   data_sample$label <- switch(by,
                        status = data_sample$status,
-                       overordnat_uppdrag = data_sample$Överordnat_uppdrag,
                        material =  data_sample$Materialnamn)
   data_sample <- unique(data_sample[, c("when", "Provid", "label"), drop=FALSE])
   
