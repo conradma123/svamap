@@ -5,7 +5,7 @@
 \title{samples_group}
 \usage{
 samples_group(data_sample = read_falken(), breaks = c("week", "month",
-  "day"), by = c("status", "Överordnat_uppdrag", "material"))
+  "day"), by = c("status", "material"))
 }
 \arguments{
 \item{data_sample}{A data.frame object generated from the function \code{read.gp()}}
