@@ -82,12 +82,11 @@ kvarka_map <- spTransform(kvarka_map, CRS("+proj=longlat +datum=WGS84 +no_defs")
 # Create a string with the popup text to use in the map
 kvarka_map$popup_text <- ifelse(kvarka_map@data$period == 1,
  
-   paste("Påvisade kvarkabakterier senaste 60 dagarna",
-                                  "<b>Kommun</b>", kvarka_map@data$KnNamn,
-                                  "<b>Antal provtagningstillfällen:</b>", kvarka_map@data$resultat,
+   paste("<u>Påvisade kvarkabakterier senaste 60 dagarna</u>", " ",
+                                  "<b>Kommun:</b>", kvarka_map@data$KnNamn, " ",
+                                  "<b>Antal provtagningstillfällen:</b>", kvarka_map@data$count,
                                   sep = "<br/>"),
   
-   paste("Kvarkabakterier påvisade under senaste 24 månaderna",
+   paste("<u>Påvisade kvarkabakterier senaste 24 månaderna</u>", " ",
                                   "<b>Kommun</b>", kvarka_map@data$KnNamn,
-                                  sep = "<br/>")
-)
+                                  sep = "<br/>"))
