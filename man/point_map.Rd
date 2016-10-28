@@ -24,7 +24,7 @@ point_map(pts, by = NULL,
   height = 7, width = 5, pch = 20, col = c("#67841E"), cex = 1,
   border_col = "grey30", border_lwd = 0.5, legend = FALSE,
   legend_labs = levels(pts@data[, by]), legend_position = c(1150405,
-  7532675))
+  7532675), legcex = 1)
 }
 \arguments{
 \item{pts}{a spatialopointsdataframe}
@@ -62,6 +62,8 @@ a legend}
 
 \item{legend_position}{The x y position of the legend in the same
 coordinate system as the map}
+
+\item{legcex}{The size of the legend text}
 }
 \value{
 A path to the pdf file of the map
