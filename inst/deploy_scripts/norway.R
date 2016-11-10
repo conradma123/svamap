@@ -3,7 +3,12 @@ df <- readHTMLTable("http://www.hjorteviltregisteret.no/HelseInnsyn/StatistikkCW
 kommune <- df[trimws(df$Fylke) == "",]
 library(rgdal)
 colours <- c('#f7f7f7','#d9d9d9','#bdbdbd','#969696','#636363','#252525')
-kommune_map <- readOGR("abas/kommuner.geojson", "OGRGeoJSON", stringsAsFactors = FALSE)
+kommune_map <- readOGR("/media/trosendal/OS/projects/small_projects/CWD_norge/abas/kommuner.geojson",
+                       "OGRGeoJSON", stringsAsFactors = FALSE)
+data <- data.frame(kommune_map)
+library(rmapshaper)
+kommune_map <- ms_simplify(kommune_map, keep_shapes = TRUE, keep = 0.01)
+kommune_map <- SpatialPolygonsDataFrame(kommune_map, data)
 kommune_map@data$result <- kommune$Totalt[match(kommune_map@data$navn, kommune$Kommune)]
 kommune_map@data$positive <- kommune$Positive[match(kommune_map@data$navn, kommune$Kommune)]
 q <- quantile(as.numeric(kommune_map@data$result), na.rm = TRUE, probs = c(0, 0.5, 0.6, 0.7, 0.8, 0.9,1))
