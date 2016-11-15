@@ -1,6 +1,6 @@
 ##' Generate a time series (xts) object
 ##' 
-##' @title write_time_series
+##' @title time_series_write
 ##'
 ##' This function reads in data from SVA's database and produce 
 ##' an xts object 
@@ -14,7 +14,7 @@
 ##' @param encoding Ecoding of the text file
 ##' @param date_in dataset field with dates
 ##' @param target numeric value to be plotted 
-write_time_series <- function(path = system.file("sample_data_cwd.csv", package = "svamap"),
+time_series_write <- function(path = system.file("sample_data_cwd.csv", package = "svamap"),
                              encoding = "UTF-8",
                              date_in = "Ankomstdatum",
                              target = "Djurslagskod") {
