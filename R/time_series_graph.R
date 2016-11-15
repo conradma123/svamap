@@ -14,8 +14,8 @@
 ##' @export
 ##' @param xts_object foo 
 ##' @param target numeric value to be plotted 
-time_series_graph <- function(xts_object = write_time_series()[[2]],
-                              target = colnames(write_time_series()[[2]][,1])){
+time_series_graph <- function(xts_object = time_series_write()[[2]],
+                              target = colnames(time_series_write()[[2]][,1])){
 
 x <- dygraph(xts_object) 
   dySeries(x, target, label = target, strokePattern = "dashed", color="red") %>% 
