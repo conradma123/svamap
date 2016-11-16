@@ -11,6 +11,12 @@ r_packages:
   - sp
   - dygraphs
   - xts
+  - RCurl
+  - xts,
+  - leaflet,
+  - mapview,
+  - htmlwidgets,
+  - DT
   
 after_success:
   - Rscript -e "library(covr); coveralls()"
