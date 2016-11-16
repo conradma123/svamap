@@ -19,4 +19,8 @@ Imports:
     rgeos,
     RCurl,
     dygraphs,
-    xts
+    xts,
+    leaflet,
+    mapview,
+    htmlwidgets,
+    DT
