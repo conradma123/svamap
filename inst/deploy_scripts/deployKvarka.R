@@ -167,23 +167,23 @@ table_kvarka <- data.frame(mylabel = mylabel, kommuner = as.factor(table_kvarka)
 
 # Kvarka map
 choropleaf_map(mapdata = kvarka_map,
-               dir = tempdir(),
+               dir = "/media/ESS_webpages/kvarka",
                disease = "kvarka",
                values = kvarka_map@data$resultat,
                palette = colorPal,
                labels = mylabel,
                popup = kvarka_map@data$popup_text,
-               logo = "//webutv/ESS/graphs/SVA_logo.png",
+               logo = "/media/ESS_webpages/graphs/SVA_logo.png",
                src = "local",
                url = "http://www.sva.se/djurhalsa/hast/infektionssjukdomar-hast/kvarka-hast",
                browse = FALSE)
 
-# Kvarka table
-do_Table(x = table_kvarka,
-         disease = "kvarka",
-         dir = tempdir(),
-         tocolor = 'mylabel',
-         header = c("Påvisad klass", "Kommuner (antal)"),
-         colorPal = colorPal,
-         target = table_kvarka$mylabel,
-         browse = FALSE)
+# # Kvarka table
+# do_Table(x = table_kvarka,
+#          disease = "kvarka",
+#          dir = tempdir(),
+#          tocolor = 'mylabel',
+#          header = c("Påvisad klass", "Kommuner (antal)"),
+#          colorPal = colorPal,
+#          target = table_kvarka$mylabel,
+#          browse = FALSE)
