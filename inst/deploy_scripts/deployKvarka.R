@@ -165,10 +165,10 @@ colorPal <- colorPal[as.integer(rownames(table_kvarka))]
 
 table_kvarka <- data.frame(mylabel = mylabel, kommuner = as.factor(table_kvarka))
 
-# Kvarka map
+# Kvarka map. Change path from "/media/ESS_webpages/" to "//webutv/ESS/" to work locally
 choropleaf_map(mapdata = kvarka_map,
                dir = "/media/ESS_webpages/kvarka",
-               disease = "kvarka",
+               title = "kvarka påvisad vid",
                values = kvarka_map@data$resultat,
                palette = colorPal,
                labels = mylabel,
@@ -176,7 +176,8 @@ choropleaf_map(mapdata = kvarka_map,
                logo = "/media/ESS_webpages/graphs/SVA_logo.png",
                src = "local",
                url = "http://www.sva.se/djurhalsa/hast/infektionssjukdomar-hast/kvarka-hast",
-               browse = FALSE)
+               disease = "kvarka",
+               browse = TRUE)
 
 # # Kvarka table
 # do_Table(x = table_kvarka,
