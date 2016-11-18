@@ -1,3 +1,4 @@
+library(svamap)
 library(sp)
 library(rgdal)
 
@@ -179,6 +180,7 @@ choropleaf_map(mapdata = kvarka_map,
                disease = "kvarka",
                browse = TRUE)
 
+<<<<<<< Updated upstream
 # # Kvarka table
 # do_Table(x = table_kvarka,
 #          disease = "kvarka",
@@ -188,3 +190,14 @@ choropleaf_map(mapdata = kvarka_map,
 #          colorPal = colorPal,
 #          target = table_kvarka$mylabel,
 #          browse = FALSE)
+=======
+# Kvarka table
+do_Table(x = table_kvarka,
+         disease = "kvarka",
+         dir = tempdir(),
+         tocolor = 'mylabel',
+         header = c("Påvisad klass", "Kommuner (antal)"),
+         colorPal = colorPal,
+         target = table_kvarka$mylabel,
+         browse = FALSE)
+>>>>>>> Stashed changes
