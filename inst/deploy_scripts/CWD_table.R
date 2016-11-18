@@ -45,5 +45,5 @@ polys <- polys$polygons
 table <- DT::datatable(polys@data[,c("name", "count")], rownames = FALSE, options = list(
                                                                               pageLength = 21)
                        )
-saveWidget(table, file = "~/Desktop/table.html", )
+saveWidget(table, file = "/media/ESS_webpages/CWD_table/table.html", )
 ##
