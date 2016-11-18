@@ -7,8 +7,8 @@
 This function creates a time series graph using dygraphs.js
 available in R through \code{library(dygraphs)}}
 \usage{
-time_series_graph(xts_object = write_time_series()[[2]],
-  target = colnames(write_time_series()[[2]][, 1]))
+time_series_graph(xts_object = time_series_write(),
+  target = colnames(time_series_write()))
 }
 \arguments{
 \item{xts_object}{foo}
