@@ -14,15 +14,15 @@
 ##' @export
 ##' @param xts_object foo 
 ##' @param target numeric value to be plotted 
-time_series_graph <- function(xts_object = time_series_write()[[2]],
-                              target = colnames(time_series_write()[[2]][,1])){
+time_series_graph <- function(xts_object = time_series_write(),
+                              target = colnames(time_series_write())) {
 
-x <- dygraph(xts_object) 
-  dySeries(x, target, label = target, strokePattern = "dashed", color="red") %>% 
-  dyRangeSelector(height = 50) %>% 
-  dyAxis("y", label = paste(target, " (n.)")) %>% 
-  dyAxis("x", drawGrid = FALSE) %>%
-  dyOptions(axisLineWidth = 2.5, fillGraph = TRUE, fillAlpha = 0.5)
+  x <- dygraph(xts_object) 
+    dySeries(x, target, label = target, strokePattern = "dashed", color = "red") %>% 
+    dyRangeSelector(height = 50) %>% 
+    dyAxis("y", label = paste(target, " (n.)")) %>% 
+    dyAxis("x", drawGrid = FALSE) %>%
+    dyOptions(axisLineWidth = 2.5, fillGraph = TRUE, fillAlpha = 0.5)
 
-  }
+}
 

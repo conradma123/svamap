@@ -4,22 +4,21 @@
 \alias{choropleaf_map}
 \title{choropleaf_map}
 \usage{
-choropleaf_map(mapdata, dir = tempdir(), disease = "myDisease",
-  values = mapdata@data$resultat, palette = c("#FED98E", "#FE9929",
-  "#CC4C02", "#FFFFD4"), labels = c("1", "2", "3", "4"),
-  popup = c("my_text"), logo = "https://www.r-project.org/logo/Rlogo.png",
-  src = "remote", url = "http://www.sva.se", browse = TRUE)
+choropleaf_map(mapdata, values = mapdata@data$resultat,
+  palette = c("#FED98E", "#FE9929", "#CC4C02", "#FFFFD4"), title = NULL,
+  labels = c("1", "2", "3", "4"), popup = c("my_text"),
+  logo = "https://www.r-project.org/logo/Rlogo.png", src = "remote",
+  url = "http://www.sva.se", dir = tempdir(), disease = "myDisease",
+  browse = TRUE)
 }
 \arguments{
 \item{mapdata}{an object of class SpatialPolygonsdataFrame}
 
-\item{dir}{path where the map will be saved}
-
-\item{disease}{name string of the disease investigated}
-
 \item{values}{vector of values of class "numeric"}
 
 \item{palette}{colors to be assigned to each of the values}
+
+\item{title}{the title of the legend}
 
 \item{labels}{labels assigned to the values. They will display in the legend}
 
@@ -30,6 +29,10 @@ choropleaf_map(mapdata, dir = tempdir(), disease = "myDisease",
 \item{src}{character specifying the source location of the logo ("local" for images from the disk, "remote" for web image sources)}
 
 \item{url}{the url to show when clicking the logo}
+
+\item{dir}{path where the map will be saved}
+
+\item{disease}{name of the html file. The suffix "_map.html" will be added to the provided name}
 
 \item{browse}{if TRUE it opens the map in a new page of the default browser}
 }

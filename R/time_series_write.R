@@ -3,7 +3,7 @@
 ##' @title time_series_write
 ##'
 ##' This function reads in data from SVA's database and produce 
-##' an xts object 
+##' an xts object with the cumsum of the confirmed cases
 ##' 
 ##' @return A data.frame object
 ##' @author Giampaolo Cocca
@@ -17,12 +17,15 @@
 time_series_write <- function(path = system.file("sample_data_cwd.csv", package = "svamap"),
                              encoding = "UTF-8",
                              date_in = "Ankomstdatum",
-                             target = "Djurslagskod") {
+                             target = "Status..numerisk.") {
   
   df <- read.csv2(path,
                   header = TRUE,
                   stringsAsFactors = FALSE,
-                  encoding = encoding)
+                  encoding = encoding,
+                  na.strings = c("NA", " ", ""))
+
+  df <- df[!duplicated(df$Uppdragid), ]
   
   # test missing date
   missing_date <- length(which(!complete.cases(df[, date_in])))
@@ -31,18 +34,16 @@ time_series_write <- function(path = system.file("sample_data_cwd.csv", package 
   }
   
   # test date in wrong format
-  date_format <- as.Date(df[, date_in], format= "%Y/%m/%d %H:%M:%S")
+  df <- df[order(df[, date_in]),]
+  date_format <- as.Date(df[, date_in])
   date_wrong <- length(which(!complete.cases(date_format)))
   if(date_wrong > 0){
     warning(paste(date_wrong, "of the submitted records has/have a date in the wrong format"))
   }
-  
-  value <- df[, target]
+
+  value <- cumsum(df[, target])
   
   time_serie <- xts(value, date_format)
   
-  colnames(time_serie) <- target
-  
-  return(list(date_format, time_serie))
-  
+  return(time_serie)
 }

@@ -8,7 +8,7 @@ data(NUTS_20M)
 ##
 ##Read in the point data
 ########################
-pts <- read_point_data("/media/t/Falkenrapporter/E16-036 Grundrapport.csv")
+pts <- read_point_data("T:/Falkenrapporter/E16-036 Grundrapport.csv")
 ##
 pts@data$Publicera <- factor(pts@data$Publicera, levels = c("Ja", "Nej"))
 ##
@@ -43,7 +43,12 @@ polys$polygons@data$count <- polys$polygons@data$count + polys2$polygons@data$co
 polys <- polys$polygons
 ## Generate a table
 table <- DT::datatable(polys@data[,c("name", "count")], rownames = FALSE, options = list(
-                                                                              pageLength = 21)
+                                                                              pageLength = 21,
+                                                                              dom = 't', 
+                                                                              columnDefs = list(list(
+                                                                                className = 'dt-center', targets = 1))
+                                                                              )
+                       
                        )
-saveWidget(table, file = "/media/ESS_webpages/CWD_table/table.html", )
+saveWidget(table, file = "/media/ESS_webpages/CWD_table/table.html")
 ##
