@@ -174,13 +174,12 @@ choropleaf_map(mapdata = kvarka_map,
                palette = colorPal,
                labels = mylabel,
                popup = kvarka_map@data$popup_text,
-               logo = "/media/ESS_webpages/graphs/SVA_logo.png",
-               src = "local",
+               logo = "http://www.sva.se/globalassets/redesign2011/bilder/ovrigt/headbilder/swedish-national-veterinary-institute.png",
+               src = "remote",
                url = "http://www.sva.se/djurhalsa/hast/infektionssjukdomar-hast/kvarka-hast",
                disease = "kvarka",
                browse = TRUE)
 
-<<<<<<< Updated upstream
 # # Kvarka table
 # do_Table(x = table_kvarka,
 #          disease = "kvarka",
@@ -189,15 +188,4 @@ choropleaf_map(mapdata = kvarka_map,
 #          header = c("Påvisad klass", "Kommuner (antal)"),
 #          colorPal = colorPal,
 #          target = table_kvarka$mylabel,
-#          browse = FALSE)
-=======
-# Kvarka table
-do_Table(x = table_kvarka,
-         disease = "kvarka",
-         dir = tempdir(),
-         tocolor = 'mylabel',
-         header = c("Påvisad klass", "Kommuner (antal)"),
-         colorPal = colorPal,
-         target = table_kvarka$mylabel,
-         browse = FALSE)
->>>>>>> Stashed changes
+#          browse = TRUE)

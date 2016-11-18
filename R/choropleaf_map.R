@@ -85,7 +85,7 @@ choropleaf_map <- function(mapdata,
                 fillColor = ~pal(values),
                 fillOpacity = 0.7,
                 popup = popup,
-                group = "disease") %>%
+                group = disease) %>%
     
     # "&nbsp" is used to escape whitespaces in html. Did that to move the legend title.
     addLegend("bottomright", 

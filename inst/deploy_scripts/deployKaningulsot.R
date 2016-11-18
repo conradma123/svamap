@@ -10,7 +10,7 @@ load(file = system.file("data/postnummer2015.rda", package = "svar"))
 postnummer2015$POSTALCODE <- as.character(postnummer2015$POSTALCODE) 
 
 # Load kanin data. Change path from /media/t/ to T:/ to work locally
-kanin <- read.csv2(file = "T:/Falkenrapporter/E16-045 Grundrapport.csv",
+kanin <- read.csv2(file = "/media/t/Falkenrapporter/E16-045 Grundrapport.csv",
                     header = TRUE, stringsAsFactors = FALSE, encoding = "UTF-8",
                     na.strings = c("NA", " ", ""))
 
@@ -75,8 +75,8 @@ choropleaf_map (kanin_final,
                 palette = "red",
                 labels = "minst 1 tilfälle under de senaste 12 månader",
                 popup = kanin_final@data$KnNamn,
-                logo = "/media/ESS_webpages/graphs/SVA_logo.png",
-                src = "local",
+                logo = "http://www.sva.se/globalassets/redesign2011/bilder/ovrigt/headbilder/swedish-national-veterinary-institute.png",
+                src = "remote",
                 url = "http://www.sva.se/djurhalsa/andra-djurslag/kanin-sjukdomar/kaningulsot",
                 disease = "kaningulsot",
                 dir = "/media/ESS_webpages/kaningulsot",
