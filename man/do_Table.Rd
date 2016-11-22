@@ -4,20 +4,32 @@
 \alias{do_Table}
 \title{do_Table}
 \usage{
-do_Table(x, disease, header, tocolor, colorPal, target, browse, dir)
+do_Table(x, disease = "myDisease", header, targets = NULL,
+  lengthpage = NULL, tocolor = NULL, colorPal = NULL, targetcol = NULL,
+  initComplete = NULL, height = NULL, width = NULL, browse = FALSE, dir)
 }
 \arguments{
 \item{x}{an object of class data.frame}
 
 \item{disease}{name string of the disease investigated}
 
-\item{header}{character vector with the header of the table}
+\item{header}{a character vector with the header of the table}
 
-\item{tocolor}{character vector with the name of the field(s) to format}
+\item{targets}{integer number defining position of the column to center. First column is 0}
 
-\item{colorPal}{color to use as cells background}
+\item{lengthpage}{number of records to display per page}
 
-\item{target}{vector on which apply the style}
+\item{tocolor}{the indices of the columns to be formatted (can be character, numeric, logical, or a formula of the form ~ V1 + V2, which is equivalent to c('V1', 'V2'))}
+
+\item{colorPal}{a vector of color to use as cells' background}
+
+\item{targetcol}{a character vector of data values to be assigned (one-to-one) to 'colorPal'}
+
+\item{initComplete}{JS snippet that modify background color and text color of the header}
+
+\item{height}{the height of the table in pixel}
+
+\item{width}{the width of the table in pixel}
 
 \item{browse}{if TRUE it opens the map in a new page of the default browser}
 
@@ -27,7 +39,7 @@ do_Table(x, disease, header, tocolor, colorPal, target, browse, dir)
 path to the table
 }
 \description{
-Create a an .html table with backgroundcolors
+Create a an .html table with custom style
 }
 \details{
 The function is built on the top of R "DT" package.

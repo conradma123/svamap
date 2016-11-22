@@ -42,13 +42,21 @@ polys2$polygons@data$count[is.na(polys2$polygons@data$count)] <- 0
 polys$polygons@data$count <- polys$polygons@data$count + polys2$polygons@data$count
 polys <- polys$polygons
 ## Generate a table
-table <- DT::datatable(polys@data[,c("name", "count")], rownames = FALSE, options = list(
-                                                                              pageLength = 21,
-                                                                              dom = 't', 
-                                                                              columnDefs = list(list(
-                                                                                className = 'dt-center', targets = 1))
-                                                                              )
-                       
-                       )
-saveWidget(table, file = "/media/ESS_webpages/CWD_table/table.html")
+initComplete =    "function(settings, json) {
+                  $(this.api().table().header()).css({
+                  'background-color': '#525252',
+                  'color': '#fff'
+                  });
+                  }"
+
+do_Table(x = polys@data[,c("name", "count")],
+         disease = "CWD",
+         dir = tempdir(),
+         targets = 1,
+         lengthpage = 21,
+         tocolor = c("name", "count"),
+         colorPal = '#ffffff',
+         width = 400,
+         initComplete = initComplete,
+         browse = TRUE)
 ##
