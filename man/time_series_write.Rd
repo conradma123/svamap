@@ -5,11 +5,11 @@
 \title{time_series_write
 
 This function reads in data from SVA's database and produce 
-an xts object}
+an xts object with the cumsum of the confirmed cases}
 \usage{
 time_series_write(path = system.file("sample_data_cwd.csv", package =
   "svamap"), encoding = "UTF-8", date_in = "Ankomstdatum",
-  target = "Djurslagskod")
+  target = "Status..numerisk.")
 }
 \arguments{
 \item{path}{Path to file}

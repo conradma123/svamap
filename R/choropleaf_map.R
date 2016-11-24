@@ -9,28 +9,30 @@
 ##' @import mapview
 ##' @export
 ##' @param mapdata an object of class SpatialPolygonsdataFrame
-##' @param dir path where the map will be saved
-##' @param disease name string of the disease investigated
 ##' @param values vector of values of class "numeric"
 ##' @param palette colors to be assigned to each of the values
+##' @param title the title of the legend
 ##' @param labels labels assigned to the values. They will display in the legend
 ##' @param popup text to be showed in the popup when clicking a polygon
 ##' @param logo logo to put in the topleft corner of the map
 ##' @param src character specifying the source location of the logo ("local" for images from the disk, "remote" for web image sources)
 ##' @param url the url to show when clicking the logo
+##' @param dir path where the map will be saved
+##' @param disease name of the html file. The suffix "_map.html" will be added to the provided name
 ##' @param browse if TRUE it opens the map in a new page of the default browser
 ##' @return path to the map
 ##' @author Giampaolo Cocca
 choropleaf_map <- function(mapdata,
-                           dir = tempdir(),
-                           disease = "myDisease",
                            values = mapdata@data$resultat, # Up to 4 classes from 1 to 4
                            palette = c("#FED98E", "#FE9929", "#CC4C02", "#FFFFD4"),
+                           title = NULL,
                            labels = c("1", "2", "3", "4"),
                            popup = c("my_text"),
                            logo = "https://www.r-project.org/logo/Rlogo.png",
                            src = "remote",
                            url = "http://www.sva.se",
+                           dir = tempdir(),
+                           disease = "myDisease",
                            browse = TRUE) {
   
   # Exceptions
@@ -83,7 +85,7 @@ choropleaf_map <- function(mapdata,
                 fillColor = ~pal(values),
                 fillOpacity = 0.7,
                 popup = popup,
-                group = "disease") %>%
+                group = disease) %>%
     
     # "&nbsp" is used to escape whitespaces in html. Did that to move the legend title.
     addLegend("bottomright", 
@@ -91,7 +93,7 @@ choropleaf_map <- function(mapdata,
               colors = palette,
               title = paste0(paste0(rep("&nbsp", 7), collapse = ""), 
                              "<sup>", "Last update ", as.character(Sys.time()), "</sup>","<br>",
-                             paste0(rep("&nbsp", 7), collapse = ""), disease, " påvisad vid:"),
+                             paste0(rep("&nbsp", 7), collapse = ""), title),
               labels = labels,
               opacity = 0.7) %>%
     
