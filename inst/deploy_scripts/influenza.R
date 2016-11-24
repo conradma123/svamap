@@ -13,7 +13,6 @@ pts@data$Aiv313[pts@data$Aiv313 == "ej påvisad, ej påvisad"] <- "ej påvisad"
 stopifnot(identical(unique(pts@data$Aiv313), c("ej påvisad", "PÅVISAD", "")))
 stopifnot(identical(unique(pts@data$Aivh5313), c("", "PÅVISAD", "ej påvisad")))
 stopifnot(identical(unique(pts@data$Aivh7313), c("", "ej påvisad")))
-stopifnot(FALSE)
 pts@data$result <- ifelse(pts@data$Aiv313 == "PÅVISAD", 1,
                    ifelse(pts@data$Aiv313 == "ej påvisad", 0, 2))
 pts@data$result <- as.integer(pts@data$result)
