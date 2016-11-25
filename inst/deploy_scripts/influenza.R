@@ -10,9 +10,9 @@ pts@data$Ankomstdatum <- as.Date(pts@data$Ankomstdatum)
 pts <- pts[!is.na(pts@data$Aiv313),]
 pts@data$Aiv313[pts@data$Aiv313 == "ej påvisad, ej påvisad"] <- "ej påvisad"
 ## Make sure the unique values in the Aiv313 vector are what we expect
-stopifnot(identical(unique(pts@data$Aiv313), c("ej påvisad", "PÅVISAD", "")))
-stopifnot(identical(unique(pts@data$Aivh5313), c("", "PÅVISAD", "ej påvisad")))
-stopifnot(identical(unique(pts@data$Aivh7313), c("", "ej påvisad")))
+stopifnot(identical(sort(unique(pts@data$Aiv313)), sort(c("ej påvisad", "PÅVISAD", ""))))
+stopifnot(identical(sort(unique(pts@data$Aivh5313)), sort(c("", "PÅVISAD", "ej påvisad"))))
+stopifnot(identical(sort(unique(pts@data$Aivh7313)), sort(c("", "ej påvisad"))))
 pts@data$result <- ifelse(pts@data$Aiv313 == "PÅVISAD", 1,
                    ifelse(pts@data$Aiv313 == "ej påvisad", 0, 2))
 pts@data$result <- as.integer(pts@data$result)
@@ -26,11 +26,16 @@ pts <- pts[!(pts@data$result == 1 & !(pts@data$Aivh5313 == "PÅVISAD" | pts@data
 pts@data <- data.frame(species = pts@data$Djurslag,
                        result = pts@data$result,
                        popup_text = pts@data$popup_text,
+                       ViltID = pts@data$Namn,
                        stringsAsFactors = FALSE)
 ## Drop if the sample is not yet complete:
 pts <- pts[pts$result != 2,]
 ## sort by påvisade to get the positives plotted last
 pts <- pts[order(pts@data$result),]
+## Only keep those positives that have been approved to be published:
+approved <- c("VLT 2163/16")
+pts <- pts[pts@data$result == 0 | pts@data$ViltID %in% approved, ]
+pts@data <- subset(pts@data, select = -c(ViltID))
 ##Write data to geojson
 ########################
 path_to_data <- svamap::write_data(pts)
@@ -53,10 +58,3 @@ svamap::write_page(data = path_to_data,
                    overwrite = TRUE,
                    browse = FALSE,
                    ftp = cred)
-##test Deploy map
-########################
-## svamap::write_page(data = path_to_data,
-##                    path = "/tmp/",
-##                    template = "map3",
-##                    overwrite = TRUE,
-##                    browse = TRUE)
