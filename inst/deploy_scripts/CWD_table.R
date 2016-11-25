@@ -1,14 +1,15 @@
 library(svamap)
 library(rgeos)
 library(sp)
-library(DT)
-library(htmlwidgets)
+library(xtable)
+## library(DT)
+## library(htmlwidgets)
 ##
 data(NUTS_20M)
 ##
 ##Read in the point data
 ########################
-pts <- read_point_data("T:/Falkenrapporter/E16-036 Grundrapport.csv")
+pts <- read_point_data("/media/t/Falkenrapporter/E16-036 Grundrapport.csv")
 ##
 pts@data$Publicera <- factor(pts@data$Publicera, levels = c("Ja", "Nej"))
 ##
@@ -41,14 +42,16 @@ polys2$polygons@data$count[is.na(polys2$polygons@data$count)] <- 0
 ## Add the perimeter points to the county count
 polys$polygons@data$count <- polys$polygons@data$count + polys2$polygons@data$count
 polys <- polys$polygons
-## Generate a table
-table <- DT::datatable(polys@data[,c("name", "count")], rownames = FALSE, options = list(
-                                                                              pageLength = 21,
-                                                                              dom = 't', 
-                                                                              columnDefs = list(list(
-                                                                                className = 'dt-center', targets = 1))
-                                                                              )
-                       
-                       )
-saveWidget(table, file = "/media/ESS_webpages/CWD_table/table.html")
-##
+## Just keep the basic info for the table
+df <- polys@data[,c("name", "count")]
+df$count <- as.integer(df$count)
+
+## Write the table
+tab <- xtable(df, align = rep("left", 3))
+names(tab) <- c("Län", "Provtagna djur")
+## Add the class from 
+temp <- print(tab, type = "html", include.rownames = FALSE,
+      html.table.attributes = 'class="svatablegrayheader" style="width: 100%;" border="0"')
+prefix <- c('<!DOCTYPE html>', '<html>', '<head>', '<link rel="stylesheet" href="../../assets/css/main.css" />', '</head>', '<body>')
+suffix <- c('</body>', '</html>')
+writeLines(c(prefix, temp, suffix), "~/temp.html")
