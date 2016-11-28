@@ -18,9 +18,3 @@ Imports:
     rgdal,
     rgeos,
     RCurl,
-    dygraphs,
-    xts,
-    leaflet,
-    mapview,
-    htmlwidgets,
-    DT
