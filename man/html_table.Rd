@@ -6,10 +6,8 @@
 \usage{
 html_table(df,
   html.table.attributes = "id = \\"table1\\" class=\\"svatablegrayheader\\" style=\\"width: 100\%;\\" border=\\"0\\"",
-  html_head = c("<meta charset=\\"utf-8\\" />",
-  "<meta http-equiv=\\"x-ua-compatible\\" content=\\"IE=edge\\" >",
-  "<link rel=\\"stylesheet\\" href=\\"http://www.sva.se/assets/css/main.css\\" />"),
-  align = rep("left", ncol(df)), col.names = names(df), file = tempfile())
+  html_head = generate_header(), align = rep("left", ncol(df)),
+  col.names = names(df), file = tempfile())
 }
 \arguments{
 \item{df}{The dataframe to be written to html table form}
@@ -20,9 +18,7 @@ include the class(es) of the table. The default is an html
 table with class 'svatablegrayheader' which is one of the
 table classes defined in sva's main.css}
 
-\item{html_head}{The head of the html. This is a character vector
-that contains the text to be put in the html <head> section of
-the page. The default calls the sva main.css}
+\item{html_head}{An object of class svamap.htmlheader. See generate_header() function}
 
 \item{align}{The alignement of each column. This is a character
 vector that indicates the alignment of each column in the
