@@ -31,5 +31,17 @@ pts <- pts[(pts@data$Status..numerisk. == 0 &
            ) |
            (pts@data$Publicera == "Ja" & !is.na(pts@data$Publicera)),]
 stopifnot(identical(pts@data$Status..numerisk., c(0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 1L, 0L, 0L, 0L, 0L)))
+rm(list = ls())
 ##
-## Test 5
+## Test 5 -  A table by län
+##
+pts <- read_point_data()
+data(NUTS_20M)
+polys <- svamap::match_to_county(pts, NUTS_20M, "NUTS_ID")
+polys$polygons@data$count[is.na(polys$polygons@data$count)] <- 0
+polys <- polys$polygons
+df <- polys@data[,c("name", "count")]
+df$count <- as.integer(df$count)
+## write the table
+tab <- html_table(df, col.names = c("Län", "Provtagna djur"))
+
