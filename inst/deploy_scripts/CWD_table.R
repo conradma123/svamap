@@ -1,9 +1,6 @@
 library(svamap)
 library(rgeos)
 library(sp)
-library(xtable)
-## library(DT)
-## library(htmlwidgets)
 ##
 data(NUTS_20M)
 ##
@@ -45,13 +42,5 @@ polys <- polys$polygons
 ## Just keep the basic info for the table
 df <- polys@data[,c("name", "count")]
 df$count <- as.integer(df$count)
-
-## Write the table
-tab <- xtable(df, align = rep("left", 3))
-names(tab) <- c("Län", "Provtagna djur")
-## Add the class from 
-temp <- print(tab, type = "html", include.rownames = FALSE,
-      html.table.attributes = 'class="svatablegrayheader" style="width: 100%;" border="0"')
-prefix <- c('<!DOCTYPE html>', '<html>', '<head>', '<link rel="stylesheet" href="../../assets/css/main.css" />', '</head>', '<body>')
-suffix <- c('</body>', '</html>')
-writeLines(c(prefix, temp, suffix), "~/temp.html")
+## write the table
+tab <- html_table(df, col.names = c("Län", "Provtagna djur"))

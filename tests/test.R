@@ -24,10 +24,12 @@ rm(list = ls())
 pts <- svamap::read_point_data(output_proj = "+init=epsg:3021 +proj=tmerc +lat_0=0 +lon_0=15.80827777777778 +k=1 +x_0=1500000 +y_0=0 +ellps=bessel +towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +units=m +no_defs")
 point_map(pts = pts, basemap = "lan", cex = 0.7)
 ##
-##Test4
+##Test4 
 pts <- read_point_data()
 pts <- pts[(pts@data$Status..numerisk. == 0 &
             (pts@data$Publicera != "Nej" | is.na(pts@data$Publicera))
            ) |
            (pts@data$Publicera == "Ja" & !is.na(pts@data$Publicera)),]
 stopifnot(identical(pts@data$Status..numerisk., c(0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 1L, 0L, 0L, 0L, 0L)))
+##
+## Test 5
