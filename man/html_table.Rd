@@ -5,7 +5,7 @@
 \title{html_table}
 \usage{
 html_table(df,
-  html.table.attributes = "class=\\"svatablegrayheader\\" style=\\"width: 100\%;\\" border=\\"0\\"",
+  html.table.attributes = "id = \\"table1\\" class=\\"svatablegrayheader\\" style=\\"width: 100\%;\\" border=\\"0\\"",
   html_head = c("<meta charset=\\"utf-8\\" />",
   "<meta http-equiv=\\"x-ua-compatible\\" content=\\"IE=edge\\" >",
   "<link rel=\\"stylesheet\\" href=\\"http://www.sva.se/assets/css/main.css\\" />"),

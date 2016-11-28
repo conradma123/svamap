@@ -25,7 +25,7 @@
 ##' @import xtable
 ##' @export
 html_table <- function(df,
-                       html.table.attributes = 'class="svatablegrayheader" style="width: 100%;" border="0"',
+                       html.table.attributes = 'id = "table1" class="svatablegrayheader" style="width: 100%;" border="0"',
                        html_head = c('<meta charset="utf-8" />',
                                      '<meta http-equiv="x-ua-compatible" content="IE=edge" >',
                                      '<link rel="stylesheet" href="http://www.sva.se/assets/css/main.css" />'),
@@ -48,6 +48,15 @@ html_table <- function(df,
                   include.rownames = FALSE,
                   html.table.attributes = html.table.attributes,
                   print.results = FALSE)
+    body <- unlist(strsplit(body, "\n"))
+    thead <- c(body[1:grep("<table", body)[1]],
+               "<thead>",
+               body[grep("<table", body)+1],
+               "</thead>")
+    tbody <- c("<tbody>",
+               body[(grep("<table", body) + 2) : (grep("</table", body) -1)],
+               "</tbody>")
+    body <- c(thead, tbody, "</table>")
     prefix <- c('<!DOCTYPE html>', '<html>')
     suffix <- c('</html>')
     writeLines(c(prefix,
@@ -61,3 +70,4 @@ html_table <- function(df,
                file)
     return(file)
 }
+
