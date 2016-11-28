@@ -8,7 +8,7 @@ Description: The package will read data from a csv file and convert it
     appropriately to json and then stick that beside a leaflet map
     that will load the data. We are now adding other functionality to
     the package such as static maps and html tables.
-License: GPL-2
+License:  GPL-3 + file LICENSE
 Type: Package
 LazyLoad: yes
 Depends:
