@@ -44,5 +44,15 @@ df <- polys@data[,c("name", "count")]
 df$count <- as.integer(df$count)
 ## write the table
 tab <- html_table(df, col.names = c("Län", "Provtagna djur"))
+tab <- html_table(df, html_head = generate_header(paging = TRUE), col.names = c("Län", "Provtagna djur"))
 tab <- html_table(df, html_head = generate_header(ordering = TRUE), col.names = c("Län", "Provtagna djur"))
+tab <- html_table(df, html_head = generate_header(info = TRUE), col.names = c("Län", "Provtagna djur"))
+tab <- html_table(df, html_head = generate_header(searching = TRUE), col.names = c("Län", "Provtagna djur"))
+tab <- html_table(df,
+                  html_head = generate_header(paging = TRUE,
+                                              ordering = TRUE,
+                                              info = TRUE,
+                                              searching = TRUE),
+                  col.names = c("Län", "Provtagna djur")
+                  )
 

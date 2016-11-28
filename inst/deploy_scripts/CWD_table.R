@@ -1,6 +1,7 @@
 library(svamap)
 library(rgeos)
 library(sp)
+library(RCurl)
 ##
 data(NUTS_20M)
 ##
@@ -43,4 +44,13 @@ polys <- polys$polygons
 df <- polys@data[,c("name", "count")]
 df$count <- as.integer(df$count)
 ## write the table
-tab <- html_table(df, col.names = c("Län", "Provtagna djur"))
+tab <- html_table(df,
+                  col.names = c("Län", "Provtagna djur"),
+                  html_head = generate_header(ordering =TRUE)
+                  )
+## Deploy map to Azure server. This is SVA's external website and is
+## administered by a company "Episerver hosting" the contact for this
+## company at SVA is the communications department.
+temp <- readLines("~/.svaftp_credentials")
+cred <- paste0("ftp://", temp[2], ":", temp[3], "@", temp[1], "/MAPS/CWD/")
+ftpUpload(tab, paste0(cred, "table.html"))
