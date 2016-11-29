@@ -1,12 +1,13 @@
 Package: svamap
-Title: Package to produce a javascript map
-Version: 0.2
-Date: 2016-09-12
-Author: Thomas Rosendal
+Title: Package to produce data summaries for the web
+Version: 0.3
+Date: 2016-11-28
+Author: Thomas Rosendal, Giampaolo Cocca
 Maintainer: Thomas Rosendal <thomas.rosendal@sva.se>
 Description: The package will read data from a csv file and convert it
-    appropriately to json and then stick that beside a leaflet map that
-    will load the data.
+    appropriately to json and then stick that beside a leaflet map
+    that will load the data. We are now adding other functionality to
+    the package such as static maps and html tables.
 License: GPL-2
 Type: Package
 LazyLoad: yes
@@ -18,9 +19,4 @@ Imports:
     rgdal,
     rgeos,
     RCurl,
-    dygraphs,
-    xts,
-    leaflet,
-    mapview,
-    htmlwidgets,
-    DT
+    xtable

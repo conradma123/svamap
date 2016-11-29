@@ -9,14 +9,8 @@ r_binary_packages:
 r_packages:
   - covr
   - sp
-  - dygraphs
-  - xts
   - RCurl
-  - xts,
-  - leaflet,
-  - mapview,
-  - htmlwidgets,
-  - DT
+  - xtable
   
 after_success:
   - Rscript -e "library(covr); coveralls()"

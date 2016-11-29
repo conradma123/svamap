@@ -1,15 +1,19 @@
 ##' Count and cumsum of data grouped by a specified time period
 ##' 
-##' Reshape samples data extracted from Falken (Gröna Pucken) and cleaned through \code{read.gp()}
-##' and gives back a data.frame object with count and cumsum of data grouped by a specified time period
+##' Reshape samples data extracted from Falken and cleaned through
+##' \code{read.gp()} and gives back a data.frame object with count and
+##' cumsum of data grouped by a specified time period
 ##' 
 ##' @title samples_group
 ##' @author SVA
 ##' @return A data.frame object
 ##' @export
-##' @param data_sample A data.frame object generated from the function \code{read.gp()}
-##' @param breaks Method used to group the date field (week, month, day). Default to "week"
-##' @param by Dataframe's field used to compute count and cumulative sum. Default to "status"
+##' @param data_sample A data.frame object generated from the function
+##'     \code{read.gp()}
+##' @param breaks Method used to group the date field (week, month,
+##'     day). Default to "week"
+##' @param by Dataframe's field used to compute count and cumulative
+##'     sum. Default to "status"
 samples_group <- function (data_sample = read_falken(),
                      breaks = c("week", "month", "day"),
                      by = c("status", "material"))

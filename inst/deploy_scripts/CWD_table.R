@@ -1,14 +1,13 @@
 library(svamap)
 library(rgeos)
 library(sp)
-library(DT)
-library(htmlwidgets)
+library(RCurl)
 ##
 data(NUTS_20M)
 ##
 ##Read in the point data
 ########################
-pts <- read_point_data("T:/Falkenrapporter/E16-036 Grundrapport.csv")
+pts <- read_point_data("/media/t/Falkenrapporter/E16-036 Grundrapport.csv")
 ##
 pts@data$Publicera <- factor(pts@data$Publicera, levels = c("Ja", "Nej"))
 ##
@@ -41,22 +40,17 @@ polys2$polygons@data$count[is.na(polys2$polygons@data$count)] <- 0
 ## Add the perimeter points to the county count
 polys$polygons@data$count <- polys$polygons@data$count + polys2$polygons@data$count
 polys <- polys$polygons
-## Generate a table
-initComplete =    "function(settings, json) {
-                  $(this.api().table().header()).css({
-                  'background-color': '#525252',
-                  'color': '#fff'
-                  });
-                  }"
-
-do_Table(x = polys@data[,c("name", "count")],
-         disease = "CWD",
-         dir = tempdir(),
-         targets = 1,
-         lengthpage = 21,
-         tocolor = c("name", "count"),
-         colorPal = '#ffffff',
-         width = 400,
-         initComplete = initComplete,
-         browse = TRUE)
-##
+## Just keep the basic info for the table
+df <- polys@data[,c("name", "count")]
+df$count <- as.integer(df$count)
+## write the table
+tab <- html_table(df,
+                  col.names = c("Län", "Provtagna djur"),
+                  html_head = generate_header(ordering =TRUE)
+                  )
+## Deploy map to Azure server. This is SVA's external website and is
+## administered by a company "Episerver hosting" the contact for this
+## company at SVA is the communications department.
+temp <- readLines("~/.svaftp_credentials")
+cred <- paste0("ftp://", temp[2], ":", temp[3], "@", temp[1], "/MAPS/CWD/")
+ftpUpload(tab, paste0(cred, "table.html"))
