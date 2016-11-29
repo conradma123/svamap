@@ -5,11 +5,12 @@
 ##' 
 ##' @title do_Table
 ##' @import DT
+##' @import htmlwidgets
 ##' @export
 ##' @param x an object of class data.frame
 ##' @param disease name string of the disease investigated
-##' @param header a character vector with the header of the table
-##' @param targets integer number defining position of the column to center. First column is 0
+##' @param tabhead a character vector with the header of the table
+##' @param targets vector of numbers defining position of the column to center. First column is 0
 ##' @param lengthpage number of records to display per page
 ##' @param tocolor the indices of the columns to be formatted (can be character, numeric, logical, or a formula of the form ~ V1 + V2, which is equivalent to c('V1', 'V2'))
 ##' @param colorPal a vector of color to use as cells' background
@@ -23,7 +24,7 @@
 ##' @author Giampaolo Cocca
 do_Table <- function(x,
                      disease = "myDisease",
-                     header,
+                     tabhead,
                      targets = NULL,
                      lengthpage = NULL,
                      tocolor = NULL,
@@ -33,7 +34,7 @@ do_Table <- function(x,
                      height = NULL,
                      width = NULL,
                      browse = FALSE,
-                     dir) {
+                     dir = tempdir()) {
 
   # Exceptions
   stopifnot(class(x) %in% c("data.frame"))
@@ -43,7 +44,7 @@ do_Table <- function(x,
   }
   
   DTable <- datatable(x,
-            colnames = header,
+            colnames = tabhead,
             width = width,
             height = height,
             rownames = FALSE,

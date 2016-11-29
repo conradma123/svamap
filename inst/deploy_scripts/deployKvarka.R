@@ -11,7 +11,7 @@ load(file = system.file("data/postnummer2015.rda", package = "svar"))
 postnummer2015$POSTALCODE <- as.character(postnummer2015$POSTALCODE) 
 
 # Load kvarka data. Change path from /media/t/ to T:/ to work locally
-kvarka <- read.csv2(file = "/media/t/Falkenrapporter/E13-008 Grundrapport.csv",
+kvarka <- read.csv2(file = "T:/Falkenrapporter/E13-008 Grundrapport.csv",
                     header = TRUE, stringsAsFactors = FALSE, encoding = "UTF-8",
                     na.strings = c("NA", " ", ""))
 
@@ -189,7 +189,7 @@ do_Table(x = table_kvarka,
          lengthpage = 4,
          tocolor = 'mylabel',
          width = 550,
-         header = c("Påvisad klass", "Kommuner (antal)"),
+         tabhead = c("Påvisad klass", "Kommuner (antal)"),
          colorPal = colorPal,
          targetcol = table_kvarka$mylabel,
          browse = TRUE)

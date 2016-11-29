@@ -11,6 +11,8 @@ r_packages:
   - sp
   - RCurl
   - xtable
+  - DT
+  - htmlwidgets
   
 after_success:
   - Rscript -e "library(covr); coveralls()"

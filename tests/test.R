@@ -55,4 +55,14 @@ tab <- html_table(df,
                                               searching = TRUE),
                   col.names = c("Län", "Provtagna djur")
                   )
-
+rm(list = ls())
+## write the table with do_Table
+pts <- read_point_data()
+data(NUTS_20M)
+polys <- svamap::match_to_county(pts, NUTS_20M, "NUTS_ID")
+polys$polygons@data$count[is.na(polys$polygons@data$count)] <- 0
+polys <- polys$polygons
+df <- polys@data[,c("name", "count")]
+df$count <- as.integer(df$count)
+table_do <- do_Table(df, lengthpage = 21)
+rm(list = ls())
