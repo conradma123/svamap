@@ -5,9 +5,9 @@
 \title{choropleaf_map}
 \usage{
 choropleaf_map(mapdata, values, palette, title = NULL, labels, popup = NULL,
-  logo = "https://www.r-project.org/logo/Rlogo.png", src = "remote",
-  url = "http://www.sva.se", dir = tempdir(), disease = "myDisease",
-  browse = FALSE)
+  logo = "https://assets-cdn.github.com/images/modules/logos_page/GitHub-Logo.png",
+  src = "remote", url = "https://github.com/", dir = tempdir(),
+  disease = "myDisease", browse = FALSE)
 }
 \arguments{
 \item{mapdata}{an object of class SpatialPolygonsdataFrame}

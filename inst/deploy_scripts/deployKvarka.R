@@ -11,7 +11,7 @@ load(file = system.file("data/postnummer2015.rda", package = "svar"))
 postnummer2015$POSTALCODE <- as.character(postnummer2015$POSTALCODE) 
 
 # Load kvarka data. Change path from /media/t/ to T:/ to work locally
-kvarka <- read.csv2(file = "T:/Falkenrapporter/E13-008 Grundrapport.csv",
+kvarka <- read.csv2(file = "/media/ESS_webpages/Falkenrapporter/E13-008 Grundrapport.csv",
                     header = TRUE, stringsAsFactors = FALSE, encoding = "UTF-8",
                     na.strings = c("NA", " ", ""))
 
@@ -169,17 +169,17 @@ table_kvarka <- data.frame(mylabel = mylabel, kommuner = as.factor(table_kvarka)
 
 # Kvarka map. Change path from "/media/ESS_webpages/" to "//webutv/ESS/" to work locally
 choropleaf_map(mapdata = kvarka_map,
-               dir = "//webutv/ESS/kvarka",
+               dir = "/media/ESS_webpages/kvarka",
                title = "Kvarka påvisad vid",
                values = kvarka_map@data$resultat,
                palette = colorPal,
                labels = mylabel,
                popup = kvarka_map@data$popup_text,
-               logo = "http://www.sva.se/globalassets/redesign2011/bilder/ovrigt/headbilder/swedish-national-veterinary-institute.png",
+               logo = "http://www.sva.se/globalassets/redesign2011/bilder/sva_270px.png",
                src = "remote",
                url = "http://www.sva.se/djurhalsa/hast/infektionssjukdomar-hast/kvarka-hast",
                disease = "kvarka",
-               browse = TRUE)
+               browse = FALSE)
 
 # Kvarka table 
 do_Table(x = table_kvarka,

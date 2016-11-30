@@ -28,9 +28,9 @@ choropleaf_map <- function(mapdata,
                            title = NULL,
                            labels,
                            popup = NULL,
-                           logo = "https://www.r-project.org/logo/Rlogo.png",
+                           logo = "https://assets-cdn.github.com/images/modules/logos_page/GitHub-Logo.png",
                            src = "remote",
-                           url = "http://www.sva.se",
+                           url = "https://github.com/",
                            dir = tempdir(),
                            disease = "myDisease",
                            browse = FALSE) {
@@ -74,7 +74,7 @@ choropleaf_map <- function(mapdata,
   
   leaf <- leaflet() %>%  addTiles() %>%
     # Add logo SVA  
-    addLogo(img = logo, src="remote", position = "topleft", height= 60, width = 250, url = url) %>%   
+    addLogo(img = logo, src="remote", position = "topleft", height= 43, width = 270, url = url) %>%   
     addProviderTiles("OpenStreetMap.BlackAndWhite", group = "Vägkarta") %>%
     addProviderTiles("Esri.WorldTopoMap", group = "Terräng") %>%
     addProviderTiles("Esri.WorldImagery", group = "Flygfoto") %>%
