@@ -13,6 +13,8 @@ r_packages:
   - xtable
   - DT
   - htmlwidgets
+  - leaflet
+  - mapview
   
 after_success:
   - Rscript -e "library(covr); coveralls()"
