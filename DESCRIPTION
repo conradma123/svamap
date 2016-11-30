@@ -23,5 +23,5 @@ Imports:
     DT,
     htmlwidgets,
     leaflet,
-    mapview,
-    scales
+    mapview
+    

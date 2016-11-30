@@ -7,7 +7,6 @@
 ##' @import leaflet
 ##' @import htmlwidgets
 ##' @import mapview
-##' @import scales
 ##' @export
 ##' @param mapdata an object of class SpatialPolygonsdataFrame
 ##' @param values vector of values of class "numeric" used to fill the polygon
@@ -67,13 +66,9 @@ choropleaf_map <- function(mapdata,
     stop("colors' and 'palette' must be of the same length!")
   }
   
-  if(length(unique(sort(values))) > 4) {
-    stop("The maximum number of classes is 4")
-  }
-  
  
   # Build the leaflet map
-    pal <- colorNumeric(palette = palette,
+  pal <- colorNumeric(palette = palette,
                       domain = values, na.color = NA) 
   
   
