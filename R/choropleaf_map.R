@@ -67,42 +67,46 @@ choropleaf_map <- function(mapdata,
   }
   
  
-  # Build the leaflet map
-  pal <- colorNumeric(palette = palette,
-                      domain = values, na.color = NA) 
+    # Build the leaflet map
+    pal <- colorNumeric(palette = palette,
+                        domain = values, na.color = NA) 
   
   
-  leaf <- leaflet() %>%  addTiles() %>%
+    leaf <- leaflet(mapdata)
+    leaf <- addTiles(leaf)
     # Add logo SVA  
-    addLogo(img = logo, src="remote", position = "topleft", height= 43, width = 270, url = url) %>%   
-    addProviderTiles("OpenStreetMap.BlackAndWhite", group = "Vägkarta") %>%
-    addProviderTiles("Esri.WorldTopoMap", group = "Terräng") %>%
-    addProviderTiles("Esri.WorldImagery", group = "Flygfoto") %>%
-    setMaxBounds(10.96139, 54.33625, 24.17240, 69.05904) %>%
+    leaf <- addLogo(map = leaf, img = logo, src="remote", position = "topleft", height= 43, width = 270, url = url)   
+    leaf <- addProviderTiles(leaf,"OpenStreetMap.BlackAndWhite", group = "Vägkarta")
+    leaf <- addProviderTiles(leaf,"Esri.WorldTopoMap", group = "Terräng")
+    leaf <- addProviderTiles(leaf,"Esri.WorldImagery", group = "Flygfoto")
+    leaf <- setMaxBounds(leaf, 4, 54, 31, 70)
     
-    addPolygons(data = mapdata, 
-                stroke = TRUE,
-                color = "grey",
-                weight = 0.5,
-                opacity = 0.5,
-                fillColor = ~pal(values),
-                fillOpacity = 0.7,
-                popup = popup,
-                group = disease) %>%
+    leaf <- addPolygons(leaf,
+                        data = mapdata,
+                        stroke = TRUE,
+                        color = "grey",
+                        weight = 0.5,
+                        opacity = 0.5,
+                        fillColor = ~pal(values),
+                        fillOpacity = 0.7,
+                        popup = popup,
+                        group = disease)
     
     # "&nbsp" is used to escape whitespaces in html. Did that to move the legend title.
-    addLegend("bottomright", 
-              values = values,
-              colors = palette,
-              title = paste0(paste0(rep("&nbsp", 7), collapse = ""), 
-                             "<sup>", "Last update ", as.character(Sys.time()), "</sup>","<br>",
-                             paste0(rep("&nbsp", 7), collapse = ""), title),
-              labels = labels,
-              opacity = 0.7) %>%
+    leaf <- addLegend(leaf,
+                      "bottomright",
+                      values = values,
+                      colors = palette,
+                      title = paste0(paste0(rep("&nbsp", 7), collapse = ""),
+                                     "<sup>", "Last update ", as.character(Sys.time()), "</sup>","<br>",
+                                     paste0(rep("&nbsp", 7), collapse = ""), title),
+                      labels = labels,
+                      opacity = 0.7)
     
-    addLayersControl(baseGroups = c("Vägkarta", "Terräng", "Flygfoto"),
-                     overlayGroups = disease,
-                     options = layersControlOptions(collapsed = TRUE))
+    leaf <- addLayersControl(leaf, 
+                             baseGroups = c("Vägkarta", "Terräng", "Flygfoto"),
+                             overlayGroups = disease,
+                             options = layersControlOptions(collapsed = TRUE))
   
   # Path where to save the map
   myfile <- file.path(dir, paste0(disease, "_map.html"))
