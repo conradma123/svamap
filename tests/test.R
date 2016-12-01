@@ -66,7 +66,7 @@ df <- polys@data[,c("name", "count")]
 df$count <- as.integer(df$count)
 table_do <- do_Table(df, lengthpage = 21)
 rm(list = ls())
-## make the map with choropleaf_hmap
+## make the map with choropleaf_map
 pts <- read_point_data()
 data(NUTS_20M)
 polys <- svamap::match_to_county(pts, NUTS_20M, "NUTS_ID")
@@ -76,4 +76,14 @@ choropleaf_map(mapdata = polys,
                values = polys@data$count,
                palette = c("#FED98E", "#FE9929", "#CC4C02", "#FFFFD4"),
                labels = as.character(polys@data$count))
+rm(list = ls())
+## make the map with pointleaf_map
+pts <- read_point_data()
+labels <- unique(as.character(pts@data$Status..numerisk.))
+values <- as.numeric(pts@data$Status..numerisk.)
+pointleaf_map(mapdata = pts,
+              values = values,
+              palette = c("#FED98E", "darkblue"),
+              labels = labels,
+              browse = TRUE)
 rm(list = ls())
