@@ -77,7 +77,7 @@ pointleaf_map <-  function(mapdata,
   leaf <- addProviderTiles(leaf, "OpenStreetMap.BlackAndWhite", group = "Vägkarta")
   leaf <- addProviderTiles(leaf, "Esri.WorldTopoMap", group = "Terräng")
   leaf <- addProviderTiles(leaf, "Esri.WorldImagery", group = "Flygfoto")
-  leaf <- setMaxBounds(leaf, 10.96139, 54.33625, 24.17240, 69.05904)
+  leaf <- setMaxBounds(leaf, 4, 54, 31, 70)
   
   leaf <- addCircleMarkers(leaf, 
                            data = mapdata,
@@ -86,23 +86,25 @@ pointleaf_map <-  function(mapdata,
                            weight = 1.5,
                            radius = 5,
                            fillColor = ~pal(values),
-                           fillOpacity = 1,
+                           fillOpacity = 0.7,
                            popup = popup,
                            group = disease)
 
     # "&nbsp" is used to escape whitespaces in html. Did that to move the legend title.
-   leaf <- addLegend(leaf, "bottomright", 
-              values = values,
-              colors = palette,
-              title = paste0(paste0(rep("&nbsp", 7), collapse = ""), 
-                             "<sup>", "Last update ", as.character(Sys.time()), "</sup>","<br>",
-                             paste0(rep("&nbsp", 7), collapse = ""), title),
-              labels = labels,
-              opacity = 0.7)
+   leaf <- addLegend(leaf,
+                     "bottomright",
+                     values = values,
+                     colors = palette,
+                     title = paste0(paste0(rep("&nbsp", 7), collapse = ""),
+                                    "<sup>", "Last update ", as.character(Sys.time()), "</sup>","<br>",
+                                    paste0(rep("&nbsp", 7), collapse = ""), title),
+                     labels = labels,
+                     opacity = 0.7)
     
-   leaf <- addLayersControl(leaf, baseGroups = c("Vägkarta", "Terräng", "Flygfoto"),
-                     overlayGroups = disease,
-                     options = layersControlOptions(collapsed = TRUE))
+   leaf <- addLayersControl(leaf, 
+                            baseGroups = c("Vägkarta", "Terräng", "Flygfoto"),
+                            overlayGroups = disease,
+                            options = layersControlOptions(collapsed = TRUE))
   
   # Path where to save the map
   myfile <- file.path(dir, paste0(disease, "_map.html"))
