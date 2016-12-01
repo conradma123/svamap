@@ -9,8 +9,8 @@
 ##' @import mapview
 ##' @export
 ##' @param mapdata an object of class SpatialPolygonsdataFrame
-##' @param values vector of values of class "numeric" used to fill the polygon
-##' @param palette colors to be assigned to each of the values
+##' @param values vector of values of class "numeric" used to color the polygon
+##' @param palette colors to be assigned to each of the corresponding unique values in 'values'
 ##' @param title the title of the legend
 ##' @param labels a vector of text labels to be displayed in the legend corresponding to palette
 ##' @param popup text to be showed in the popup when clicking a polygon
@@ -63,7 +63,7 @@ choropleaf_map <- function(mapdata,
   }
   
   if(length(palette) != length(labels)){
-    stop("colors' and 'palette' must be of the same length!")
+    stop("labels' and 'palette' must be of the same length!")
   }
   
  

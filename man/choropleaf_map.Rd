@@ -12,9 +12,9 @@ choropleaf_map(mapdata, values, palette, title = NULL, labels, popup = NULL,
 \arguments{
 \item{mapdata}{an object of class SpatialPolygonsdataFrame}
 
-\item{values}{vector of values of class "numeric" used to fill the polygon}
+\item{values}{vector of values of class "numeric" used to color the polygon}
 
-\item{palette}{colors to be assigned to each of the values}
+\item{palette}{colors to be assigned to each of the corresponding unique values in 'values'}
 
 \item{title}{the title of the legend}
 
