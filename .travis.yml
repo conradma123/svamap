@@ -11,18 +11,7 @@ r_binary_packages:
 
 r_packages:
   - covr
-<<<<<<< HEAD
-  - sp
-  - RCurl
-  - xtable
-  - DT
-  - htmlwidgets
-  - leaflet
-  - mapview
 
-=======
-  
->>>>>>> 38a6db11a31be504d442785a681579ce451d848d
 after_success:
   - Rscript -e "library(covr); coveralls()"
 
