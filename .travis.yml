@@ -1,4 +1,7 @@
 language: r
+r:
+  - 3.3.1
+
 warnings_are_errors: false
 sudo: required
 
@@ -8,10 +11,7 @@ r_binary_packages:
 
 r_packages:
   - covr
-  - sp
-  - RCurl
-  - xtable
-  
+
 after_success:
   - Rscript -e "library(covr); coveralls()"
 
