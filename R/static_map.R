@@ -42,7 +42,7 @@
 ##' @import utils
 ##' @import sp
 ##' @import rgdal
-##' @import stats
+##' @importFrom stats complete.cases
 ##' @import grDevices
 ##' @export
 point_map <- function(pts,

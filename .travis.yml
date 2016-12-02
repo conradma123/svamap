@@ -1,6 +1,6 @@
 language: r
 r:
-  - release
+  - 3.3.1
 
 warnings_are_errors: false
 sudo: required
@@ -11,6 +11,7 @@ r_binary_packages:
 
 r_packages:
   - covr
+<<<<<<< HEAD
   - sp
   - RCurl
   - xtable
@@ -19,6 +20,9 @@ r_packages:
   - leaflet
   - mapview
 
+=======
+  
+>>>>>>> 38a6db11a31be504d442785a681579ce451d848d
 after_success:
   - Rscript -e "library(covr); coveralls()"
 
