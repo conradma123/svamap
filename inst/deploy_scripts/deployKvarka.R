@@ -11,7 +11,7 @@ load(file = system.file("data/postnummer2015.rda", package = "svar"))
 postnummer2015$POSTALCODE <- as.character(postnummer2015$POSTALCODE) 
 
 # Load kvarka data. Change path from /media/t/ to T:/ to work locally
-kvarka <- read.csv2(file = "/media/t/Falkenrapporter/E13-008 Grundrapport.csv",
+kvarka <- read.csv2(file = "/media/ESS_webpages/Falkenrapporter/E13-008 Grundrapport.csv",
                     header = TRUE, stringsAsFactors = FALSE, encoding = "UTF-8",
                     na.strings = c("NA", " ", ""))
 
@@ -44,7 +44,7 @@ kvarka_data_map$postnum <- sub(" ", "", kvarka_data_map$postnum)
 if(!all(kvarka_data_map$postnum %in% postnummer2015@data$POSTALCODE)) {
   warning("The following postnummer is/are not in our postnummer database: ", paste0(
                  unique(kvarka_data_map$postnum[!kvarka_data_map$postnum %in% postnummer2015@data$POSTALCODE]),
-                 collapse = ", "), ".\n They will not be displayed in the final map" )
+                 collapse = ", "), ".\n If not manually assigned to a kommun, they will not be displayed in the final map" )
 }
 
 # Assign each postnummer to a kommun
@@ -54,6 +54,7 @@ kvarka_data_map$kommun <- postnummer2015$MUNICIPALI[match(kvarka_data_map$postnu
 kvarka_data_map$kommun[kvarka_data_map$postnum == 75007 | kvarka_data_map$postnum == 75189] <- "0380" # UPPSALA (SVA,SLU)
 kvarka_data_map$kommun[kvarka_data_map$postnum == 12922] <- "0180" # STOCKHOLM
 kvarka_data_map$kommun[kvarka_data_map$postnum == 25023] <- "1283" # HELSNINGBORG
+kvarka_data_map$kommun[kvarka_data_map$postnum == 20120] <- "1280" # MALMÖ
 
 # Drop records not present in the postnummer database and not yet fixed manually
 kvarka_data_map <- kvarka_data_map[!is.na(kvarka_data_map$kommun),]
@@ -130,7 +131,7 @@ pavisad_final$resultat <- ifelse(pavisad_final$period == 1 & pavisad_final$count
                           ifelse(pavisad_final$period == 2 & pavisad_final$count >= 1, 4, 0))))
 
 # Delete duplicates. Note that the function drops always the second duplicated record.
-pavisad_final <- pavisad_final[order(pavisad_final$period),]
+pavisad_final <- pavisad_final[order(pavisad_final$period), ]
 pavisad_final <- pavisad_final[!duplicated(pavisad_final$kommun), ]
 
 # Create a spdf with just those kommuner with påvisad samples
@@ -146,8 +147,8 @@ popup_24m <- popup2$count[match(kvarka_map@data$KnKod, popup2$kommun)]
 
 kvarka_map@data$popup_text <-    paste("<b>Kommun:</b>", kvarka_map@data$KnNamn, "<br/>",
                                        "<b>Antal provtagningstillfällen</b>", "<br/>",
-                                       " - senaste 60 dagarna: ", popup_60d,"<br/>",
-                                       " - senaste 24 månaderna: ", popup_24m)
+                                       " - senaste 2 månaderna: ", popup_60d,"<br/>",
+                                       " - senaste 3-24 månaderna: ", popup_24m)
 
 # Table of number of kommun per resultat
 table_kvarka <- tapply(pavisad_final$kommun, pavisad_final$resultat, length)
@@ -169,23 +170,26 @@ table_kvarka <- data.frame(mylabel = mylabel, kommuner = as.factor(table_kvarka)
 # Kvarka map. Change path from "/media/ESS_webpages/" to "//webutv/ESS/" to work locally
 choropleaf_map(mapdata = kvarka_map,
                dir = "/media/ESS_webpages/kvarka",
-               title = "kvarka påvisad vid",
+               title = "Kvarka påvisad vid",
                values = kvarka_map@data$resultat,
                palette = colorPal,
                labels = mylabel,
                popup = kvarka_map@data$popup_text,
-               logo = "http://www.sva.se/globalassets/redesign2011/bilder/ovrigt/headbilder/swedish-national-veterinary-institute.png",
+               logo = "http://www.sva.se/globalassets/redesign2011/bilder/sva_270px.png",
                src = "remote",
                url = "http://www.sva.se/djurhalsa/hast/infektionssjukdomar-hast/kvarka-hast",
                disease = "kvarka",
-               browse = TRUE)
+               browse = FALSE)
 
-# # Kvarka table
-# do_Table(x = table_kvarka,
-#          disease = "kvarka",
-#          dir = tempdir(),
-#          tocolor = 'mylabel',
-#          header = c("Påvisad klass", "Kommuner (antal)"),
-#          colorPal = colorPal,
-#          target = table_kvarka$mylabel,
-#          browse = TRUE)
+# Kvarka table 
+do_Table(x = table_kvarka,
+         disease = "kvarka",
+         dir = tempdir(),
+         targets = 1,
+         lengthpage = 4,
+         tocolor = 'mylabel',
+         width = 550,
+         tabhead = c("Påvisad klass", "Kommuner (antal)"),
+         colorPal = colorPal,
+         targetcol = table_kvarka$mylabel,
+         browse = TRUE)

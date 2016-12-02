@@ -19,4 +19,9 @@ Imports:
     rgdal,
     rgeos,
     RCurl,
-    xtable
+    xtable,
+    DT,
+    htmlwidgets,
+    leaflet,
+    mapview
+    
