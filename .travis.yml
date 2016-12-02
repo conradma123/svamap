@@ -1,4 +1,7 @@
 language: r
+r:
+  - release
+
 warnings_are_errors: false
 sudo: required
 
@@ -11,7 +14,11 @@ r_packages:
   - sp
   - RCurl
   - xtable
-  
+  - DT
+  - htmlwidgets
+  - leaflet
+  - mapview
+
 after_success:
   - Rscript -e "library(covr); coveralls()"
 
