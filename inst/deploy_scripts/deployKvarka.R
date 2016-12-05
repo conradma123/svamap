@@ -11,7 +11,7 @@ load(file = system.file("data/postnummer2015.rda", package = "svar"))
 postnummer2015$POSTALCODE <- as.character(postnummer2015$POSTALCODE) 
 
 # Load kvarka data. Change path from /media/t/ to T:/ to work locally
-kvarka <- read.csv2(file = "/media/ESS_webpages/Falkenrapporter/E13-008 Grundrapport.csv",
+kvarka <- read.csv2(file = "/media/t/Falkenrapporter/E13-008 Grundrapport.csv",
                     header = TRUE, stringsAsFactors = FALSE, encoding = "UTF-8",
                     na.strings = c("NA", " ", ""))
 
