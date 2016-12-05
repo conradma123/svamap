@@ -1,6 +1,7 @@
 library(svamap)
 library(sp)
 library(rgdal)
+library(RCurl)
 
 # Load kommuner from svamap package and change encoding --> peraphs to fix
 load(file = system.file("data/kommuner.rda", package = "svamap"))
@@ -168,8 +169,8 @@ colorPal <- colorPal[as.integer(rownames(table_kvarka))]
 table_kvarka <- data.frame(mylabel = mylabel, kommuner = as.factor(table_kvarka))
 
 # Kvarka map. Change path from "/media/ESS_webpages/" to "//webutv/ESS/" to work locally
-choropleaf_map(mapdata = kvarka_map,
-               dir = "/media/ESS_webpages/kvarka",
+map_path <- choropleaf_map(mapdata = kvarka_map,
+               dir = tempdir(),
                title = "Kvarka påvisad vid",
                values = kvarka_map@data$resultat,
                palette = colorPal,
@@ -180,6 +181,15 @@ choropleaf_map(mapdata = kvarka_map,
                url = "http://www.sva.se/djurhalsa/hast/infektionssjukdomar-hast/kvarka-hast",
                disease = "kvarka",
                browse = FALSE)
+map_files <- list.files(dirname(map_path), recursive = TRUE, full.names = TRUE)
+temp <- readLines("~/.svaftp_credentials")
+cred <- paste0("ftp://", temp[2], ":", temp[3], "@", temp[1], "/MAPS/Kvarka/")
+
+for(i in map_files){
+    ftpUpload(i,
+              paste0(cred, sub(paste0(dirname(map_path), "/"), "", i)),
+              .opts = list(ftp.create.missing.dirs=TRUE))
+}
 
 # Kvarka table 
 ## do_Table(x = table_kvarka,
