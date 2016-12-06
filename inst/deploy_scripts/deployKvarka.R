@@ -182,14 +182,14 @@ choropleaf_map(mapdata = kvarka_map,
                browse = FALSE)
 
 # Kvarka table 
-do_Table(x = table_kvarka,
-         disease = "kvarka",
-         dir = tempdir(),
-         targets = 1,
-         lengthpage = 4,
-         tocolor = 'mylabel',
-         width = 550,
-         tabhead = c("Påvisad klass", "Kommuner (antal)"),
-         colorPal = colorPal,
-         targetcol = table_kvarka$mylabel,
-         browse = TRUE)
+## do_Table(x = table_kvarka,
+##          disease = "kvarka",
+##          dir = tempdir(),
+##          targets = 1,
+##          lengthpage = 4,
+##          tocolor = 'mylabel',
+##          width = 550,
+##          tabhead = c("Påvisad klass", "Kommuner (antal)"),
+##          colorPal = colorPal,
+##          targetcol = table_kvarka$mylabel,
+##          browse = TRUE)
