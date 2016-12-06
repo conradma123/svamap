@@ -18,6 +18,7 @@
 ##'     the resulting table. The default are the column names from df
 ##' @param file A path to a file. A valid path to write the html. The
 ##'     default is a tempfile().
+##' @param fragment Do you want just a fragment or a full html?
 ##' @return A path to an html file
 ##' @author Thomas Rosendal
 ##' @import xtable
@@ -27,7 +28,8 @@ html_table <- function(df,
                        html_head = generate_header(),
                        align = rep('left', ncol(df)),
                        col.names = names(df),
-                       file = tempfile()){
+                       file = tempfile(),
+                       fragment = FALSE){
     if(!("data.frame" %in% class(df))){
         stop("Argument df must be a data.frame")
     }
@@ -65,16 +67,24 @@ html_table <- function(df,
     prefix <- c('<!DOCTYPE html>', '<html>')
     suffix <- c('</html>')
     ## Stick the entire page together and write it to a text file
-    writeLines(c(prefix,
-                 "<head>",
-                 html_head,
-                 "</head>",
-                 "<body>",
-                 body,
-                 "</body>",
-                 suffix),
-               file)
-    return(file)
+    if(fragment){
+        final <- body
+    } else {
+    final <- c(prefix,
+               "<head>",
+               html_head,
+               "</head>",
+               "<body>",
+               body,
+               "</body>",
+               suffix)
+    }
+    if(is.null(file)){
+        return(final)
+    }else {
+        writeLines(final, file)
+        return(file)
+    }
 }
 
 ##' A function that generates the header for the html table
