@@ -5,8 +5,7 @@ data(NUTS_20M)
 ##
 ##Read in the point data
 ########################
-test <- read.csv2("/media/t/Falkenrapporter/AI2.csv")
-pts <- read_point_data("/media/t/Falkenrapporter/AI2.csv")
+pts <- read_point_data("/media/t/Falkenrapporter/AI vilda fåglar.csv")
 pts@data$Ankomstdatum <- as.Date(pts@data$Ankomstdatum)
 pts <- pts[!is.na(pts@data$Aiv313),]
 pts@data$Aiv313[pts@data$Aiv313 == "ej påvisad, ej påvisad"] <- "ej påvisad"
