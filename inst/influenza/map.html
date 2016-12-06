@@ -9,6 +9,7 @@
     <meta http-Equiv="Pragma" Content="no-cache" />
     <meta http-Equiv="Expires" Content="0" />
     <link rel="stylesheet" href="leaflet.css" />
+    <link rel="stylesheet" href="http://www.sva.se/assets/css/main.css" />
     
     <style>
       #map {
@@ -93,7 +94,7 @@
 	    onEachFeature: onEachPolygon,
 	    pointToLayer: function (feature, latlng) {
 		return L.circleMarker(latlng, {
-		    radius: 4,
+		    radius: feature.properties.radius,
 		    fillColor: getColor(feature.properties.result),
 		    color: getColor(feature.properties.result),
 		    weight: 1,
