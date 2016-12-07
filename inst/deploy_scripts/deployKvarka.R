@@ -191,15 +191,23 @@ for(i in map_files){
               .opts = list(ftp.create.missing.dirs=TRUE))
 }
 
-# Kvarka table 
-## do_Table(x = table_kvarka,
-##          disease = "kvarka",
-##          dir = tempdir(),
-##          targets = 1,
-##          lengthpage = 4,
-##          tocolor = 'mylabel',
-##          width = 550,
-##          tabhead = c("Påvisad klass", "Kommuner (antal)"),
-##          colorPal = colorPal,
-##          targetcol = table_kvarka$mylabel,
-##          browse = TRUE)
+## Kvarka table 
+table_path <- do_Table(x = table_kvarka,
+                        disease = "kvarka",
+                        dir = tempdir(),
+                        targets = 1,
+                        lengthpage = 4,
+                        tocolor = 'mylabel',
+                        width = 550,
+                        tabhead = c("Påvisad klass", "Kommuner (antal)"),
+                        colorPal = colorPal,
+                        targetcol = table_kvarka$mylabel,
+                        browse = FALSE)
+table_files <- list.files(dirname(table_path), recursive = TRUE, full.names = TRUE)
+temp <- readLines("~/.svaftp_credentials")
+cred <- paste0("ftp://", temp[2], ":", temp[3], "@", temp[1], "/MAPS/Kvarka_table/")
+for(i in table_files){
+    ftpUpload(i,
+              paste0(cred, sub(paste0(dirname(table_path), "/"), "", i)),
+              .opts = list(ftp.create.missing.dirs=TRUE))
+}
