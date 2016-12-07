@@ -7,7 +7,7 @@
 html_table(df,
   html.table.attributes = "id = \\"table1\\" class=\\"svatablegrayheader\\" style=\\"width: 100\%;\\" border=\\"0\\"",
   html_head = generate_header(), align = rep("left", ncol(df)),
-  col.names = names(df), file = tempfile())
+  col.names = names(df), file = tempfile(), fragment = FALSE)
 }
 \arguments{
 \item{df}{The dataframe to be written to html table form}
@@ -30,6 +30,8 @@ the resulting table. The default are the column names from df}
 
 \item{file}{A path to a file. A valid path to write the html. The
 default is a tempfile().}
+
+\item{fragment}{Do you want just a fragment or a full html?}
 }
 \value{
 A path to an html file
