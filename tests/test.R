@@ -63,8 +63,11 @@ polys <- svamap::match_to_county(pts, NUTS_20M, "NUTS_ID")
 polys$polygons@data$count[is.na(polys$polygons@data$count)] <- 0
 polys <- polys$polygons
 df <- polys@data[,c("name", "count")]
-df$count <- as.integer(df$count)
-table_do <- do_Table(df, lengthpage = 21)
+table_do <- do_Table(df, lengthpage = 21, browse = T, width = "100%",
+                     targets = 0, colorPal = c(rep("#FED98E",10), rep("#FE9929", 11)),
+                     tocolor = "name", targetcol = df$name)
+table_do2 <- do_Table(df, lengthpage = 21, browse = T, width = "100%",
+                      tocolor = "count", colorPal = "red", targets = 0)
 rm(list = ls())
 ## make the map with choropleaf_map
 pts <- read_point_data()
