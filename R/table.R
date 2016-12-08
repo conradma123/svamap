@@ -19,6 +19,7 @@
 ##' @param file A path to a file. A valid path to write the html. The
 ##'     default is a tempfile().
 ##' @param fragment Do you want just a fragment or a full html?
+##' @param footer Do you want the last row of the table to be in a '<tfoot>' tag?
 ##' @return A path to an html file
 ##' @author Thomas Rosendal
 ##' @import xtable
@@ -29,7 +30,8 @@ html_table <- function(df,
                        align = rep('left', ncol(df)),
                        col.names = names(df),
                        file = tempfile(),
-                       fragment = FALSE){
+                       fragment = FALSE,
+                       footer = FALSE){
     if(!("data.frame" %in% class(df))){
         stop("Argument df must be a data.frame")
     }
@@ -60,10 +62,22 @@ html_table <- function(df,
                "<thead>",
                body[grep("<table", body)+1],
                "</thead>")
+    if(footer){
+    tbody <- c("<tbody>",
+               body[(grep("<table", body) + 2) : (grep("</table", body) -2)],
+               "</tbody>")
+    tfoot <- c("<tfoot>",
+               body[(grep("</table", body) - 1) : (grep("</table", body) -1)],
+               "</tfoot>")
+    } else {
     tbody <- c("<tbody>",
                body[(grep("<table", body) + 2) : (grep("</table", body) -1)],
                "</tbody>")
-    body <- c(thead, tbody, "</table>")
+    tfoot <- c("<tfoot>",
+               "",
+               "</tfoot>")
+    }
+    body <- c(thead, tbody, tfoot, "</table>")
     prefix <- c('<!DOCTYPE html>', '<html>')
     suffix <- c('</html>')
     ## Stick the entire page together and write it to a text file

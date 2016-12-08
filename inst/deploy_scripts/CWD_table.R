@@ -43,11 +43,14 @@ polys <- polys$polygons
 ## Just keep the basic info for the table
 df <- polys@data[,c("name", "count")]
 df$count <- as.integer(df$count)
+total <- sum(df$count)
+df <- rbind(df, c("Total", total))
 ## write the table
 tab <- html_table(df,
                   align = c("l", "r"),
                   col.names = c("Län", "Provtagna djur"),
-                  html_head = generate_header(ordering =TRUE)
+                  html_head = generate_header(ordering =TRUE),
+                  footer = TRUE
                   )
 ## Deploy map to Azure server. This is SVA's external website and is
 ## administered by a company "Episerver hosting" the contact for this
