@@ -10,9 +10,9 @@ pts@data$Ankomstdatum <- as.Date(pts@data$Ankomstdatum)
 pts <- pts[!is.na(pts@data$Aiv313),]
 pts@data$Aiv313[pts@data$Aiv313 == "ej påvisad, ej påvisad"] <- "ej påvisad"
 ## Make sure the unique values in the Aiv313 vector are what we expect
-stopifnot(identical(sort(unique(pts@data$Aiv313)), sort(c("ej påvisad", "PÅVISAD"))))
-stopifnot(identical(sort(unique(pts@data$Aivh5313)), sort(c("", "PÅVISAD", "ej påvisad"))))
-stopifnot(identical(sort(unique(pts@data$Aivh7313)), sort(c("", "ej påvisad"))))
+stopifnot(all(pts@data$Aiv313 %in% c("ej påvisad", "PÅVISAD", "")))
+stopifnot(all(pts@data$Aivh5313 %in% c("", "PÅVISAD", "ej påvisad")))
+stopifnot(all(pts@data$Aivh7313 %in% c("", "ej påvisad")))
 pts@data$result <- ifelse(pts@data$Aiv313 == "PÅVISAD", 1,
                    ifelse(pts@data$Aiv313 == "ej påvisad", 0, 2))
 pts@data$result <- as.integer(pts@data$result)
