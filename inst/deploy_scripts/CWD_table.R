@@ -45,6 +45,7 @@ df <- polys@data[,c("name", "count")]
 df$count <- as.integer(df$count)
 ## write the table
 tab <- html_table(df,
+                  align = c("l", "r"),
                   col.names = c("Län", "Provtagna djur"),
                   html_head = generate_header(ordering =TRUE)
                   )
