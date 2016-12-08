@@ -81,9 +81,11 @@ rm(list = ls())
 pts <- read_point_data()
 labels <- unique(as.character(pts@data$Status..numerisk.))
 values <- as.numeric(pts@data$Status..numerisk.)
+popup = as.character(pts@data$Djurslag)
 pointleaf_map(mapdata = pts,
-              values = values,
-              palette = c("#FED98E", "darkblue"),
-              labels = labels,
-              browse = TRUE)
+                values = values,
+                palette = c("#FED98E", "darkblue"),
+                labels = labels,
+                popup = popup,
+                browse = TRUE)
 rm(list = ls())

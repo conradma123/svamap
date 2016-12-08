@@ -9,16 +9,17 @@
 ##' @import mapview
 ##' @export
 ##' @param mapdata an object of class SpatialPointsDataFrame
-##' @param values a vector of values of class "numeric" used to color the points
-##' @param palette colors to be assigned to each of the corresponding unique values in 'values'
+##' @param values a vector of values of class "numeric" classifying the points
+##' @param palette colors (HEX allowed) assigned to each of the corresponding classes (unique values of the argument 'values')
 ##' @param title the title of the legend
 ##' @param labels a vector of class "character" with labels to display in the legend
-##' @param popup text (HEX allowed) to be showed in the popup when clicking a point
+##' @param popup text to be showed in the popup when clicking a point
 ##' @param logo logo to put in the topleft corner of the map
 ##' @param src character specifying the source location of the logo ("local" for images from the disk, "remote" for web image sources)
 ##' @param url the url to show when clicking the logo
 ##' @param dir path where the map will be saved
 ##' @param disease name of the html file. The suffix "_map.html" will be added to the provided name
+##' @param group split the mapdata in different groups (default to unique values of the argument 'values')
 ##' @param browse if TRUE it opens the map in a new page of the default browser
 ##' @return path to the map
 ##' @author Giampaolo Cocca
@@ -33,6 +34,7 @@ pointleaf_map <-  function(mapdata,
                            url = "https://github.com/",
                            dir = tempdir(),
                            disease = "myDisease",
+                           group = values,
                            browse = FALSE) {
   
   # Exceptions
@@ -68,7 +70,9 @@ pointleaf_map <-  function(mapdata,
   
   # Build the leaflet map
   pal <- colorNumeric(palette = palette,
-                      domain = values, na.color = NA) 
+                      domain = values, na.color = NA)
+  
+  
   
   leaf <- leaflet(mapdata) 
   leaf <- addTiles(leaf)
@@ -79,32 +83,41 @@ pointleaf_map <-  function(mapdata,
   leaf <- addProviderTiles(leaf, "Esri.WorldImagery", group = "Flygfoto")
   leaf <- setMaxBounds(leaf, 4, 54, 31, 70)
   
-  leaf <- addCircleMarkers(leaf, 
-                           data = mapdata,
+  # Loop over the field and split the data. This is to create different layers to flag and unflag
+  groups = unique(as.character(group))
+  
+  for(i in groups){
+    
+    group_data <- mapdata[group == i,]
+
+    leaf <- addCircleMarkers(leaf, 
+                           data = group_data,
                            stroke = TRUE,
                            color = "black",
                            weight = 1.5,
                            radius = 5,
-                           fillColor = ~pal(values),
-                           fillOpacity = 0.7,
-                           popup = popup,
-                           group = disease)
-
-    # "&nbsp" is used to escape whitespaces in html. Did that to move the legend title.
-   leaf <- addLegend(leaf,
-                     "bottomright",
-                     values = values,
-                     colors = palette,
-                     title = paste0(paste0(rep("&nbsp", 7), collapse = ""),
-                                    "<sup>", "Last update ", as.character(Sys.time()), "</sup>","<br>",
-                                    paste0(rep("&nbsp", 7), collapse = ""), title),
-                     labels = labels,
-                     opacity = 0.7)
-    
-   leaf <- addLayersControl(leaf, 
-                            baseGroups = c("Vägkarta", "Terräng", "Flygfoto"),
-                            overlayGroups = disease,
-                            options = layersControlOptions(collapsed = TRUE))
+                           fillColor = ~pal(values[group == i]),
+                           fillOpacity = 1,
+                           popup = popup[group == i],
+                           group = i)
+  
+  }
+  
+  # "&nbsp" is used to escape whitespaces in html. Did that to move the legend title.
+  leaf <- addLegend(leaf,
+                    "bottomright",
+                    values = values,
+                    colors = palette,
+                    title = paste0(paste0(rep("&nbsp", 7), collapse = ""),
+                                   "<sup>", "Last update ", as.character(Sys.time()), "</sup>","<br>",
+                                   paste0(rep("&nbsp", 7), collapse = ""), title),
+                    labels = labels,
+                    opacity = 0.7)
+  
+  leaf <- addLayersControl(leaf, 
+                           baseGroups = c("Vägkarta", "Terräng", "Flygfoto"),
+                           overlayGroups = group,
+                           options = layersControlOptions(collapsed = FALSE))
   
   # Path where to save the map
   myfile <- file.path(dir, paste0(disease, "_map.html"))

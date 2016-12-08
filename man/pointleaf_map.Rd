@@ -7,20 +7,20 @@
 pointleaf_map(mapdata, values, palette, title = NULL, labels, popup = NULL,
   logo = "https://assets-cdn.github.com/images/modules/logos_page/GitHub-Logo.png",
   src = "remote", url = "https://github.com/", dir = tempdir(),
-  disease = "myDisease", browse = FALSE)
+  disease = "myDisease", group = values, browse = FALSE)
 }
 \arguments{
 \item{mapdata}{an object of class SpatialPointsDataFrame}
 
-\item{values}{a vector of values of class "numeric" used to color the points}
+\item{values}{a vector of values of class "numeric" classifying the points}
 
-\item{palette}{colors to be assigned to each of the corresponding unique values in 'values'}
+\item{palette}{colors (HEX allowed) assigned to each of the corresponding classes (unique values of the argument 'values')}
 
 \item{title}{the title of the legend}
 
 \item{labels}{a vector of class "character" with labels to display in the legend}
 
-\item{popup}{text (HEX allowed) to be showed in the popup when clicking a point}
+\item{popup}{text to be showed in the popup when clicking a point}
 
 \item{logo}{logo to put in the topleft corner of the map}
 
@@ -31,6 +31,8 @@ pointleaf_map(mapdata, values, palette, title = NULL, labels, popup = NULL,
 \item{dir}{path where the map will be saved}
 
 \item{disease}{name of the html file. The suffix "_map.html" will be added to the provided name}
+
+\item{group}{split the mapdata in different groups (default to unique values of the argument 'values')}
 
 \item{browse}{if TRUE it opens the map in a new page of the default browser}
 }
