@@ -40,7 +40,7 @@ do_Table(x, disease = "myDisease", tabhead, targets = NULL,
 path to the table
 }
 \description{
-Create a an .html table with custom style
+Creates an .html table with custom style
 }
 \details{
 The function is built on the top of R "DT" package.

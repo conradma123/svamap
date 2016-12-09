@@ -1,4 +1,4 @@
-##' Create a an .html table with custom style
+##' Creates an .html table with custom style
 ##' 
 ##' The function is built on the top of R "DT" package.
 ##' Package bind "DataTables" a plug-in for the jQuery Javascript library.

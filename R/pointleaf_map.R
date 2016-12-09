@@ -13,6 +13,8 @@
 ##' @param palette colors (HEX allowed) assigned to each of the corresponding classes (unique values of the argument 'values')
 ##' @param title the title of the legend
 ##' @param labels a vector of class "character" with labels to display in the legend
+##' @param radius a numeric vector of radii for the circles (default to 5 pixels)
+##' @param stroke whether to draw stroke along the borders of circles
 ##' @param popup text to be showed in the popup when clicking a point
 ##' @param logo logo to put in the topleft corner of the map
 ##' @param src character specifying the source location of the logo ("local" for images from the disk, "remote" for web image sources)
@@ -28,6 +30,8 @@ pointleaf_map <-  function(mapdata,
                            palette,
                            title = NULL,
                            labels,
+                           radius = 5,
+                           stroke = FALSE,
                            popup = NULL,
                            logo = "https://assets-cdn.github.com/images/modules/logos_page/GitHub-Logo.png",
                            src = "remote",
@@ -68,6 +72,10 @@ pointleaf_map <-  function(mapdata,
     stop("'labels' and 'palette' must be of the same length!")
   }
   
+  if(length(radius) != length(values) & length(radius) != 1){
+    stop("'radius' must have length == 1 or same length of 'values'!")
+  }
+  
   # Build the leaflet map
   pal <- colorNumeric(palette = palette,
                       domain = values, na.color = NA)
@@ -89,13 +97,19 @@ pointleaf_map <-  function(mapdata,
   for(i in groups){
     
     group_data <- mapdata[group == i,]
-
+    
+    myradius <- if(length(radius) == 1) {
+                  radius
+                    }else{
+                      radius[group == i]
+                }
+    
     leaf <- addCircleMarkers(leaf, 
                            data = group_data,
-                           stroke = TRUE,
+                           stroke = stroke,
                            color = "black",
                            weight = 1.5,
-                           radius = 5,
+                           radius = myradius,
                            fillColor = ~pal(values[group == i]),
                            fillOpacity = 1,
                            popup = popup[group == i],
