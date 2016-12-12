@@ -24,7 +24,7 @@ do_Table(x, disease = "myDisease", tabhead, targets = NULL,
 
 \item{colorPal}{a vector of color to use as cells' background}
 
-\item{targetcol}{a character vector of data values to be assigned (one-to-one) to 'colorPal'}
+\item{targetcol}{a character vector in the first column to be assigned (one-to-one) to 'colorPal'. The style will be applied to the entire row}
 
 \item{initComplete}{JS snippet that modify background color and text color of the header}
 
@@ -40,7 +40,7 @@ do_Table(x, disease = "myDisease", tabhead, targets = NULL,
 path to the table
 }
 \description{
-Create a an .html table with custom style
+Creates an .html table with custom style
 }
 \details{
 The function is built on the top of R "DT" package.

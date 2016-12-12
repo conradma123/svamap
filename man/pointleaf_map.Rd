@@ -4,7 +4,8 @@
 \alias{pointleaf_map}
 \title{pointleaf_map}
 \usage{
-pointleaf_map(mapdata, values, palette, title = NULL, labels, popup = NULL,
+pointleaf_map(mapdata, values, palette, title = NULL, labels, radius = 5,
+  stroke = FALSE, popup = NULL,
   logo = "https://assets-cdn.github.com/images/modules/logos_page/GitHub-Logo.png",
   src = "remote", url = "https://github.com/", dir = tempdir(),
   disease = "myDisease", group = values, browse = FALSE)
@@ -19,6 +20,10 @@ pointleaf_map(mapdata, values, palette, title = NULL, labels, popup = NULL,
 \item{title}{the title of the legend}
 
 \item{labels}{a vector of class "character" with labels to display in the legend}
+
+\item{radius}{a numeric vector of radii for the circles (default to 5 pixels)}
+
+\item{stroke}{whether to draw stroke along the borders of circles}
 
 \item{popup}{text to be showed in the popup when clicking a point}
 
