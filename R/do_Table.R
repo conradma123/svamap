@@ -1,4 +1,4 @@
-##' Create a an .html table with custom style
+##' Creates an .html table with custom style
 ##' 
 ##' The function is built on the top of R "DT" package.
 ##' Package bind "DataTables" a plug-in for the jQuery Javascript library.
@@ -14,7 +14,7 @@
 ##' @param lengthpage number of records to display per page
 ##' @param tocolor the indices of the columns to be formatted (can be character, numeric, logical, or a formula of the form ~ V1 + V2, which is equivalent to c('V1', 'V2'))
 ##' @param colorPal a vector of color to use as cells' background
-##' @param targetcol a character vector of data values to be assigned (one-to-one) to 'colorPal'
+##' @param targetcol a character vector in the first column to be assigned (one-to-one) to 'colorPal'. The style will be applied to the entire row
 ##' @param initComplete JS snippet that modify background color and text color of the header 
 ##' @param width the width of the table in pixel
 ##' @param height the height of the table in pixel
