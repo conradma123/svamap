@@ -66,11 +66,11 @@ polys$polygons@data$count[is.na(polys$polygons@data$count)] <- 0
 polys <- polys$polygons
 df <- polys@data[,c("name", "count")]
 # Example 1
-table_do <- do_Table(df, lengthpage = 21, browse = TRUE, width = "100%",
+table_do <- do_Table(df, lengthpage = 21, browse = FALSE, width = "100%",
                      targets = 0, colorPal = c(rep("#FED98E",10), rep("#FE9929", 11)),
                      tocolor = "name", targetcol = df$name)
 # Example 2
-table_do2 <- do_Table(df, lengthpage = 21, browse = TRUE, width = "100%",
+table_do2 <- do_Table(df, lengthpage = 21, browse = FALSE, width = "100%",
                       tocolor = "count", colorPal = "red", targets = 0)
 rm(list = ls())
 ##
@@ -103,7 +103,7 @@ pointleaf_map(mapdata = pts,
                 radius = 5,
                 labels = labels,
                 popup = popup,
-                browse = TRUE)
+                browse = FALSE)
 # Example 2
 pointleaf_map(mapdata = pts,
               values = values,
@@ -112,5 +112,5 @@ pointleaf_map(mapdata = pts,
               popup = popup2,
               stroke = FALSE,
               radius = pts@data$radius,
-              browse = TRUE)
+              browse = FALSE)
 rm(list = ls())
