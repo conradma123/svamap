@@ -98,7 +98,7 @@ choropleaf_map <- function(mapdata,
                       values = values,
                       colors = palette,
                       title = paste0(paste0(rep("&nbsp", 7), collapse = ""),
-                                     "<sup>", "Last update ", as.character(Sys.time()), "</sup>","<br>",
+                                     "<font color=\"red\"><sup>", "Last update ", as.character(Sys.time()), "</sup></font>","<br>",
                                      paste0(rep("&nbsp", 7), collapse = ""), title),
                       labels = labels,
                       opacity = 0.7)
