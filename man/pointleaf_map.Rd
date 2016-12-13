@@ -5,7 +5,7 @@
 \title{pointleaf_map}
 \usage{
 pointleaf_map(mapdata, values, palette, title = NULL, labels, radius = 5,
-  stroke = FALSE, popup = NULL,
+  stroke = FALSE, opacity = 1, popup = NULL,
   logo = "https://assets-cdn.github.com/images/modules/logos_page/GitHub-Logo.png",
   src = "remote", url = "https://github.com/", dir = tempdir(),
   disease = "myDisease", group = values, browse = FALSE)
@@ -24,6 +24,8 @@ pointleaf_map(mapdata, values, palette, title = NULL, labels, radius = 5,
 \item{radius}{a numeric vector of radii for the circles (default to 5 pixels)}
 
 \item{stroke}{whether to draw stroke along the borders of circles}
+
+\item{opacity}{a numeric vector of opacity for the circles (default to 1, no opacity)}
 
 \item{popup}{text to be showed in the popup when clicking a point}
 

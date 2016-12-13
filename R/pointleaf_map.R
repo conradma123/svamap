@@ -15,6 +15,7 @@
 ##' @param labels a vector of class "character" with labels to display in the legend
 ##' @param radius a numeric vector of radii for the circles (default to 5 pixels)
 ##' @param stroke whether to draw stroke along the borders of circles
+##' @param opacity a numeric vector of opacity for the circles (default to 1, no opacity)
 ##' @param popup text to be showed in the popup when clicking a point
 ##' @param logo logo to put in the topleft corner of the map
 ##' @param src character specifying the source location of the logo ("local" for images from the disk, "remote" for web image sources)
@@ -32,6 +33,7 @@ pointleaf_map <-  function(mapdata,
                            labels,
                            radius = 5,
                            stroke = FALSE,
+                           opacity = 1,
                            popup = NULL,
                            logo = "https://assets-cdn.github.com/images/modules/logos_page/GitHub-Logo.png",
                            src = "remote",
@@ -76,9 +78,13 @@ pointleaf_map <-  function(mapdata,
     stop("'radius' must have length == 1 or same length of 'values'!")
   }
   
+  if(length(opacity) != length(values) & length(opacity) != 1){
+    stop("'opacity' must have length == 1 or same length of 'values'!")
+  }
+  
   # Build the leaflet map
-  pal <- colorNumeric(palette = palette,
-                      domain = values, na.color = NA)
+  pal <- colorFactor(palette = palette,
+                      domain = factor(values), na.color = NA)
   
   
   
@@ -93,28 +99,41 @@ pointleaf_map <-  function(mapdata,
   
   # Loop over the field and split the data. This is to create different layers to flag and unflag
   groups = unique(as.character(group))
-  
+
   for(i in groups){
     
     group_data <- mapdata[group == i,]
     
-    myradius <- if(length(radius) == 1) {
-                  radius
-                    }else{
-                      radius[group == i]
-                }
+    if(length(radius) == 1) {
+      myradius <- radius
+      
+      }else{
+        
+        myradius <- radius[group == i]
+      }
     
+    for(j in groups) {
+
+      if(length(labels) == 1) {
+        myopacity <- opacity
+      
+       }else{
+       
+           myopacity <- opacity[group == i]
+       }
+      
     leaf <- addCircleMarkers(leaf, 
                            data = group_data,
                            stroke = stroke,
                            color = "black",
-                           weight = 1.5,
+                           weight = 1,
                            radius = myradius,
                            fillColor = ~pal(values[group == i]),
-                           fillOpacity = 1,
+                           fillOpacity =  myopacity,
                            popup = popup[group == i],
                            group = i)
   
+    }
   }
   
   # "&nbsp" is used to escape whitespaces in html. Did that to move the legend title.
@@ -123,7 +142,7 @@ pointleaf_map <-  function(mapdata,
                     values = values,
                     colors = palette,
                     title = paste0(paste0(rep("&nbsp", 7), collapse = ""),
-                                   "<sup>", "Last update ", as.character(Sys.time()), "</sup>","<br>",
+                                   "<font color=\"red\"><sup>", "Last update ", as.character(Sys.time()), "</sup></font>","<br>",
                                    paste0(rep("&nbsp", 7), collapse = ""), title),
                     labels = labels,
                     opacity = 0.7)

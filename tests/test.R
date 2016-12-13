@@ -93,24 +93,26 @@ pts <- read_point_data()
 labels <- unique(as.character(pts@data$Status..numerisk.))
 values <- as.numeric(pts@data$Status..numerisk.)
 popup <- as.character(pts@data$Djurslag)
-pts@data$radius <- as.numeric(sample(4.5:12.5, 14, replace = TRUE))
-popup2 <- as.character(pts@data$radius)
+pts@data$radius <- as.numeric(sample(4.5:32.5, 14, replace = TRUE))
+pts@data$opacity <- ifelse(values == 0, 0.3, 1)
+popup2 <- paste(as.character(pts@data$radius), as.character(pts@data$opacity))
 # Example 1
 pointleaf_map(mapdata = pts,
                 values = values,
-                palette = c("#FED98E", "darkblue"),
+                palette = c("lightblue", "red"),
                 stroke = TRUE,
-                radius = 5,
+                radius = 10,
                 labels = labels,
                 popup = popup,
                 browse = FALSE)
 # Example 2
 pointleaf_map(mapdata = pts,
               values = values,
-              palette = c("#FED98E", "darkblue"),
+              palette = c("blue", "red"),
               labels = labels,
               popup = popup2,
               stroke = FALSE,
               radius = pts@data$radius,
+              opacity = pts@data$opacity,
               browse = FALSE)
 rm(list = ls())
