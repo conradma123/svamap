@@ -84,7 +84,9 @@ polys@data$count <- c(1,2,3,4)
 choropleaf_map(mapdata = polys,
                values = polys@data$count,
                palette = c("#FED98E", "#FE9929", "#CC4C02", "#FFFFD4"),
-               labels = as.character(polys@data$count))
+               labels = as.character(unique(polys@data$count)),
+               group = polys@data$name,
+               browse = TRUE)
 rm(list = ls())
 ##
 ## Test 8 - make a point map with 'pointleaf_map'
@@ -104,7 +106,7 @@ pointleaf_map(mapdata = pts,
                 radius = 10,
                 labels = labels,
                 popup = popup,
-                browse = FALSE)
+                browse = TRUE)
 # Example 2
 pointleaf_map(mapdata = pts,
               values = values,
