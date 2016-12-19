@@ -33,6 +33,7 @@ choropleaf_map <- function(mapdata,
                            url = "https://github.com/",
                            dir = tempdir(),
                            disease = "myDisease",
+                           group = values,
                            browse = FALSE) {
   
   # Exceptions
@@ -81,17 +82,25 @@ choropleaf_map <- function(mapdata,
     leaf <- addProviderTiles(leaf,"Esri.WorldImagery", group = "Flygfoto")
     leaf <- setMaxBounds(leaf, 4, 54, 31, 70)
     
-    leaf <- addPolygons(leaf,
-                        data = mapdata,
-                        stroke = TRUE,
-                        color = "grey",
-                        weight = 0.5,
-                        opacity = 0.5,
-                        fillColor = ~pal(values),
-                        fillOpacity = 0.7,
-                        popup = popup,
-                        group = disease)
+    # Loop over the field and split the data. This is to create different layers to flag and unflag
+    groups = unique(as.character(group))
     
+    for(i in groups){
+      
+      group_data <- mapdata[group == i,]
+    
+      leaf <- addPolygons(leaf,
+                          data = group_data,
+                          stroke = TRUE,
+                          color = "grey",
+                          weight = 0.5,
+                          opacity = 0.5,
+                          fillColor = ~pal(values[group == i]),
+                          fillOpacity = 0.7,
+                          popup = popup[group == i],
+                          group = i)
+    
+    }
     # "&nbsp" is used to escape whitespaces in html. Did that to move the legend title.
     leaf <- addLegend(leaf,
                       "bottomright",
@@ -105,8 +114,9 @@ choropleaf_map <- function(mapdata,
     
     leaf <- addLayersControl(leaf, 
                              baseGroups = c("Vägkarta", "Terräng", "Flygfoto"),
-                             overlayGroups = disease,
+                             overlayGroups = group,
                              options = layersControlOptions(collapsed = TRUE))
+    
   
   # Path where to save the map
   myfile <- file.path(dir, paste0(disease, "_map.html"))

@@ -211,3 +211,16 @@ for(i in table_files){
               paste0(cred, sub(paste0(dirname(table_path), "/"), "", i)),
               .opts = list(ftp.create.missing.dirs=TRUE))
 }
+
+# Deplot text
+table_kvarka$kommuner <- as.integer(as.character(table_kvarka$kommuner))
+mytext <- paste0("Kvarka har påvisat i ", "<b>", sum(table_kvarka$kommuner), "</b>", " kommuner med minst ett positiva provningstillfälle under de senaste 2 år. ", "</br>",
+                 "<br>","<b>", table_kvarka$kommuner[1], "</b>", " kommuner med ett tillfälle under de senaste 2 manaderna. ", "</br>",
+                 "<b>", table_kvarka$kommuner[2], "</b>", " kommuner med två tillfällen under de senaste 2 månaderna.", "</br>",
+                 "<b>", table_kvarka$kommuner[3], "</b>", " kommuner med tre eller fler tillfällen under de senaste 2 månaderna. ", "</br>",
+                 "<b>", table_kvarka$kommuner[4], "</b>", " kommuner med minst ett tillfälle under de under de senaste 3-24 manader")
+
+myfile <- file.path("//webutv/ESS/kvarka", "kvarka_text.html")
+f <- file(myfile, encoding = "latin1")
+writeLines(mytext, f)
+close(f)
