@@ -16,6 +16,7 @@
 ##' @param label character string to assign to y-axis and tooltip of the graph
 ##' @param dir path where the map will be saved
 ##' @param disease name of the html file. The suffix "_map.html" will be added to the provided name
+##' @param stepPlot logical if to plot series as step chart
 ##' @param browse if TRUE it opens the map in a new page of the default browser
 ##' @export
 time_series_graph <- function(xts_obj,
@@ -23,6 +24,7 @@ time_series_graph <- function(xts_obj,
                               label,
                               dir = tempdir(),
                               disease = "my_disease",
+                              stepPlot = FALSE,
                               browse = FALSE) {
   
   # Exceptions
@@ -41,8 +43,7 @@ time_series_graph <- function(xts_obj,
   x_ts <- dySeries(x, name = target, label = label, strokePattern = "dashed", color="red") %>% 
     dyRangeSelector(height = 50) %>% 
     dyAxis(name = "y", label = paste(label, " (n.)"), drawGrid = TRUE) %>%
-    dyOptions(axisLineWidth = 2.5, fillGraph = TRUE, fillAlpha = 0.5)
-  
+    dyOptions(axisLineWidth = 2.5, fillGraph = TRUE, fillAlpha = 0.5, stepPlot = stepPlot) 
   # Path where to save the map
   myfile <- file.path(dir, paste0(disease, "_ts.html"))
   

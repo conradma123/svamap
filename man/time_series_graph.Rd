@@ -8,7 +8,7 @@ This function creates a time series graph using dygraphs.js
 available in R through \code{library(dygraphs)}}
 \usage{
 time_series_graph(xts_obj, target, label, dir = tempdir(),
-  disease = "my_disease", browse = FALSE)
+  disease = "my_disease", stepPlot = FALSE, browse = FALSE)
 }
 \arguments{
 \item{xts_obj}{Object of type xts. Possibly result from \code{svamap::write_time_series}}
@@ -20,6 +20,8 @@ time_series_graph(xts_obj, target, label, dir = tempdir(),
 \item{dir}{path where the map will be saved}
 
 \item{disease}{name of the html file. The suffix "_map.html" will be added to the provided name}
+
+\item{stepPlot}{logical if to plot series as step chart}
 
 \item{browse}{if TRUE it opens the map in a new page of the default browser}
 }
