@@ -20,12 +20,12 @@ write_time_series <- function(df,
                               target,
                               name) {
   # Exceptions
-  stopifnot(class(df) %in% data.frame)
-  
+  stopifnot(class(df) %in% "data.frame")
+
   if(missing(date_in)) {
     stop("date_in' is missing with no default")
   }
-  
+
   if(missing(target)) {
     stop("target' is missing with no default")
   }
