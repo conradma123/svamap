@@ -96,7 +96,7 @@ labels <- unique(as.character(pts@data$Status..numerisk.))
 values <- as.numeric(pts@data$Status..numerisk.)
 popup <- as.character(pts@data$Djurslag)
 pts@data$radius <- as.numeric(sample(4.5:32.5, 14, replace = TRUE))
-pts@data$opacity <- ifelse(values == 0, 0.3, 1)
+pts@data$opacity <- ifelse(values == 0, 0.1, 1)
 popup2 <- paste(as.character(pts@data$radius), as.character(pts@data$opacity))
 # Example 1
 pointleaf_map(mapdata = pts,
@@ -117,5 +117,24 @@ pointleaf_map(mapdata = pts,
               radius = pts@data$radius,
               opacity = pts@data$opacity,
               group = pts@data$Djurslag,
-              browse = FALSE)
+              browse = TRUE)
+rm(list = ls())
+##
+## Test 6 - write_time_series and time_series_graph
+##
+pts <- read_point_data()
+myxts <- write_time_series(df = pts@data,
+                           date_in = "Ankomstdatum",
+                           target = c("Djurslagskod", "Status..numerisk."), 
+                           name = c("Djurslagskod", "status"))
+
+myxts$sumcum<-cumsum(myxts[, "status"])
+
+time_series_graph(xts_obj = myxts$sumcum,
+                  target = "sumcum",
+                  label = "Positive samples", 
+                  dir = tempdir(),
+                  disease = "mydisease2",
+                  stepPlot = TRUE,
+                  browse = T)
 rm(list = ls())

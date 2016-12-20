@@ -47,7 +47,7 @@ write_time_series <- function(df,
   
   time_serie <- xts(value, date_format)
   
-  colnames(time_serie) <- target
+  colnames(time_serie) <- name
   
   return(time_serie)
   
