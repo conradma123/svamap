@@ -58,6 +58,10 @@ pointleaf_map <-  function(mapdata,
     stop("Argument 'labels' is missing with no default")
   }
   
+  if(is.null(group)) {
+    stop("Argument 'group' must be set or left to the default (i.e. 'values')")
+  }
+  
   if(class(values) != "numeric") {
     stop("Argument 'values' must be of class numeric")
   }
@@ -111,17 +115,15 @@ pointleaf_map <-  function(mapdata,
         
         myradius <- radius[group == i]
       }
-    
-    for(j in groups) {
 
-      if(length(labels) == 1) {
+      if(length(opacity) == 1) {
         myopacity <- opacity
       
        }else{
        
            myopacity <- opacity[group == i]
        }
-      
+
     leaf <- addCircleMarkers(leaf, 
                            data = group_data,
                            stroke = stroke,
@@ -134,7 +136,6 @@ pointleaf_map <-  function(mapdata,
                            group = i)
   
     }
-  }
   
   # "&nbsp" is used to escape whitespaces in html. Did that to move the legend title.
   leaf <- addLegend(leaf,
@@ -167,7 +168,7 @@ pointleaf_map <-  function(mapdata,
               "<meta http-equiv=\"x-ua-compatible\" content=\"IE=edge\" >",
               "<meta charset=\"utf-8\"/>")
   
-  newLines <- c(header, lines[5:22])
+  newLines <- c(header, lines[length(header): max(length(lines))])
   
   writeLines(newLines, con = myfile)
   
