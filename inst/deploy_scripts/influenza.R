@@ -34,7 +34,13 @@ pts <- pts[order(pts@data$result),]
 ## Only keep those positives that have been approved to be published:
 approved <- c("VLT 2259/16", "VLT 2278/16", "VLT 2248/16",
               "VLT 2261/16", "VLT 2163/16", "VLT 2260/16",
-              "VLT 2277/16")
+              "VLT 2277/16",
+              "VLT 2347/16",
+              "VLT 2356/16",
+              "VLT 2363/16",
+              "VLT 2364/16",
+              "VLT 2365/16"
+              )
 ## pts <- pts[pts@data$result == 0 | pts@data$ViltID %in% approved, ]
 pts@data <- subset(pts@data, select = -c(ViltID))
 pts@data$location <- as.numeric(as.factor(paste0(coordinates(pts)[, 1], coordinates(pts)[, 2])))
