@@ -133,7 +133,7 @@ choropleaf_map <- function(mapdata,
               "<meta http-equiv=\"x-ua-compatible\" content=\"IE=edge\" >",
               "<meta charset=\"utf-8\"/>")
   
-  newLines <- c(header, lines[5:22])
+  newLines <- c(header, lines[length(header): max(length(lines))])
   
   writeLines(newLines, con = myfile)
   

@@ -7,7 +7,7 @@
 choropleaf_map(mapdata, values, palette, title = NULL, labels, popup = NULL,
   logo = "https://assets-cdn.github.com/images/modules/logos_page/GitHub-Logo.png",
   src = "remote", url = "https://github.com/", dir = tempdir(),
-  disease = "myDisease", browse = FALSE)
+  disease = "myDisease", group = values, browse = FALSE)
 }
 \arguments{
 \item{mapdata}{an object of class SpatialPolygonsdataFrame}
