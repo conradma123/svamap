@@ -1,5 +1,6 @@
 library(svamap)
 library(sp)
+library(git2r)
 ##
 data(NUTS_20M)
 ##
@@ -74,14 +75,6 @@ pts@data <- subset(pts@data, select = c(result, popup_text, radius))
 ##Write data to geojson
 ########################
 path_to_data <- svamap::write_data(pts)
-########################
-##Deploy map to internal server
-########################
-svamap::write_page(data = path_to_data,
-                   path = "/media/ESS_webpages/AI/",
-                   template = "influenza",
-                   overwrite = TRUE,
-                   browse = FALSE)
 ##
 ## Deploy map to Azure server. This is SVA's external website and is
 ## administered by a company "Episerver hosting" the contact for this
@@ -93,3 +86,18 @@ svamap::write_page(data = path_to_data,
                    overwrite = TRUE,
                    browse = FALSE,
                    ftp = cred)
+########################
+##Deploy map to internal server
+########################
+svamap::write_page(data = path_to_data,
+                   path = "/media/ESS_webpages/AI/",
+                   template = "influenza",
+                   overwrite = TRUE,
+                   browse = FALSE)
+file.copy("/media/t/Falkenrapporter/AI vilda fåglar.csv",
+          "/media/ESS_webpages/AI/",
+          overwrite = TRUE)
+## init("/media/ESS_webpages/AI/")
+repo <- repository("/media/ESS_webpages/AI/")
+add(repo, "*")
+commit(repo, "Automatic backup commit")
