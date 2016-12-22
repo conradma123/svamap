@@ -41,7 +41,7 @@ approved <- c("VLT 2259/16", "VLT 2278/16", "VLT 2248/16",
               "VLT 2364/16",
               "VLT 2365/16"
               )
-## pts <- pts[pts@data$result == 0 | pts@data$ViltID %in% approved, ]
+pts <- pts[pts@data$result == 0 | pts@data$ViltID %in% approved, ]
 pts@data <- subset(pts@data, select = -c(ViltID))
 pts@data$location <- as.numeric(as.factor(paste0(coordinates(pts)[, 1], coordinates(pts)[, 2])))
 ## Deal with points that land in exactly the same position, deal with
