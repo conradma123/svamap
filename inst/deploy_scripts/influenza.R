@@ -45,7 +45,8 @@ approved <- c("VLT 2259/16", "VLT 2278/16", "VLT 2248/16",
               "VLT 2421/16",
               "VLT 2423/16",
               "N3169/D095",
-              "VLT 2488/16"
+              "VLT 2488/16",
+              "VLT 2436/16"
               )
 pts <- pts[pts@data$result == 0 | pts@data$ViltID %in% approved, ]
 pts@data <- subset(pts@data, select = -c(ViltID))
