@@ -22,6 +22,7 @@ pts <- pts[pts@data$Ankomstdatum > "2016/09/01 00:00:00", ]
 pts <- pts[!duplicated(pts@data$Namn), ]
 ## drop those positive on 'Matrix' but are negative for H5 and H7
 pts <- pts[!(pts@data$result == 1 & !(pts@data$Aivh5313 == "PÅVISAD" | pts@data$Aivh7313 == "PÅVISAD")),]
+pts@data$Namn[pts@data$Namn == ""] <- pts@data$Ringmärkning[pts@data$Namn == ""]
 pts@data <- data.frame(species = pts@data$Djurslag,
                        result = pts@data$result,
                        ViltID = pts@data$Namn,
@@ -42,7 +43,9 @@ approved <- c("VLT 2259/16", "VLT 2278/16", "VLT 2248/16",
               "VLT 2365/16",
               "VLT 2430/16",
               "VLT 2421/16",
-              "VLT 2423/16"
+              "VLT 2423/16",
+              "N3169/D095",
+              "VLT 2488/16"
               )
 pts <- pts[pts@data$result == 0 | pts@data$ViltID %in% approved, ]
 pts@data <- subset(pts@data, select = -c(ViltID))
