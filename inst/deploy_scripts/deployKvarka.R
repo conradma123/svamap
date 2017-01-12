@@ -217,7 +217,7 @@ mytext <- paste0("Kvarka har påvisat i ", "<b>", sum(table_kvarka$kommuner), "<
                  "<b>", table_kvarka$kommuner[3], "</b>", " kommuner med tre eller fler tillfällen under de senaste 2 månaderna. ", "</br>",
                  "<b>", table_kvarka$kommuner[4], "</b>", " kommuner med minst ett tillfälle under de under de senaste 3-24 manader")
 
-myfile <- file.path("//webutv/ESS/kvarka", "kvarka_text.html")
-f <- file(myfile, encoding = "latin1")
+myfile <- file.path("/media/ESS_webpages/kvarka", "kvarka_text.html")
+f <- file(myfile)
 writeLines(mytext, f)
 close(f)
