@@ -1,5 +1,6 @@
 library(svamap)
 library(sp)
+library(git2r)
 ##
 data(NUTS_20M)
 ##
@@ -21,6 +22,7 @@ pts <- pts[pts@data$Ankomstdatum > "2016/09/01 00:00:00", ]
 pts <- pts[!duplicated(pts@data$Namn), ]
 ## drop those positive on 'Matrix' but are negative for H5 and H7
 pts <- pts[!(pts@data$result == 1 & !(pts@data$Aivh5313 == "PÅVISAD" | pts@data$Aivh7313 == "PÅVISAD")),]
+pts@data$Namn[pts@data$Namn == ""] <- pts@data$Ringmärkning[pts@data$Namn == ""]
 pts@data <- data.frame(species = pts@data$Djurslag,
                        result = pts@data$result,
                        ViltID = pts@data$Namn,
@@ -33,8 +35,20 @@ pts <- pts[order(pts@data$result),]
 ## Only keep those positives that have been approved to be published:
 approved <- c("VLT 2259/16", "VLT 2278/16", "VLT 2248/16",
               "VLT 2261/16", "VLT 2163/16", "VLT 2260/16",
-              "VLT 2277/16")
-## pts <- pts[pts@data$result == 0 | pts@data$ViltID %in% approved, ]
+              "VLT 2277/16",
+              "VLT 2347/16",
+              "VLT 2356/16",
+              "VLT 2363/16",
+              "VLT 2364/16",
+              "VLT 2365/16",
+              "VLT 2430/16",
+              "VLT 2421/16",
+              "VLT 2423/16",
+              "N3169/D095",
+              "VLT 2488/16",
+              "VLT 2436/16"
+              )
+pts <- pts[pts@data$result == 0 | pts@data$ViltID %in% approved, ]
 pts@data <- subset(pts@data, select = -c(ViltID))
 pts@data$location <- as.numeric(as.factor(paste0(coordinates(pts)[, 1], coordinates(pts)[, 2])))
 ## Deal with points that land in exactly the same position, deal with
@@ -74,14 +88,6 @@ pts@data <- subset(pts@data, select = c(result, popup_text, radius))
 ##Write data to geojson
 ########################
 path_to_data <- svamap::write_data(pts)
-########################
-##Deploy map to internal server
-########################
-svamap::write_page(data = path_to_data,
-                   path = "/media/ESS_webpages/AI/",
-                   template = "influenza",
-                   overwrite = TRUE,
-                   browse = FALSE)
 ##
 ## Deploy map to Azure server. This is SVA's external website and is
 ## administered by a company "Episerver hosting" the contact for this
@@ -93,3 +99,18 @@ svamap::write_page(data = path_to_data,
                    overwrite = TRUE,
                    browse = FALSE,
                    ftp = cred)
+########################
+##Deploy map to internal server
+########################
+svamap::write_page(data = path_to_data,
+                   path = "/media/ESS_webpages/AI/",
+                   template = "influenza",
+                   overwrite = TRUE,
+                   browse = FALSE)
+file.copy("/media/t/Falkenrapporter/AI vilda fåglar.csv",
+          "/media/ESS_webpages/AI/",
+          overwrite = TRUE)
+## init("/media/ESS_webpages/AI/")
+repo <- repository("/media/ESS_webpages/AI/")
+add(repo, "*")
+commit(repo, "Automatic backup commit")

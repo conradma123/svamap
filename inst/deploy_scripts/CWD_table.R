@@ -48,7 +48,7 @@ df <- rbind(df, c("Total", total))
 ## write the table
 tab <- html_table(df,
                   align = c("l", "r"),
-                  col.names = c("Län", "Provtagna djur"),
+                  col.names = c("Län", "Antal undersökta"),
                   html_head = generate_header(ordering =TRUE),
                   footer = TRUE
                   )
