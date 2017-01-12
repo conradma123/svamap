@@ -12,7 +12,7 @@ load(file = system.file("data/postnummer2015.rda", package = "svar"))
 postnummer2015$POSTALCODE <- as.character(postnummer2015$POSTALCODE) 
 
 # Load kvarka data. Change path from /media/t/ to T:/ to work locally
-kvarka <- read.csv2(file = "/media/t/Falkenrapporter/E13-008 Grundrapport.csv",
+kvarka <- read.csv2(file = "/media/t/Falkenrapporter/E15-026 Grundrapport.csv",
                     header = TRUE, stringsAsFactors = FALSE, encoding = "UTF-8",
                     na.strings = c("NA", " ", ""))
 
@@ -100,9 +100,6 @@ kvarka_more_kom$kommun <- kommun_min_dist
 
 # Drop records not reffering to a unique kommun
 kvarka_data_map$kommun[nchar(kvarka_data_map$kommun) != 4] <- kvarka_more_kom$kommun
-
-# Bind again the two dataset
-kvarka_data_map <- rbind(kvarka_data_map, kvarka_more_kom)
 
 ####### COMMENT ####################################################################
 ####### NEAREST NEIGHBOR DO NOT ALWAYS WORK. See postnummer 78173 & 79193. 
