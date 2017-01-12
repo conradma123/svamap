@@ -109,7 +109,11 @@ html_table <- function(df,
 ##'     section of the page. The default calls the sva main.css and
 ##'     makes the page compatible with IE and sets text encoding to
 ##'     UTF-8
-##' @param paging Either TRUE or FALSE. Do you want the table to have paging?
+##' @param otherstuff Whatever otherlines of header you want to
+##'     add. This will be placed after 'beginning' and before the
+##'     javascript table code.
+##' @param paging Either TRUE or FALSE. Do you want the table to have
+##'     paging?
 ##' @param ordering Either TRUE or FALSE Do you want sorting?
 ##' @param info Either TRUE or FALSE Do you want info?
 ##' @param searching Either TRUE or FALSE Do you want a search field?
@@ -119,6 +123,7 @@ html_table <- function(df,
 generate_header <- function(beginning = c('<meta charset="utf-8" />',
                                           '<meta http-equiv="x-ua-compatible" content="IE=edge" >',
                                           '<link rel="stylesheet" href="http://www.sva.se/assets/css/main.css" />'),
+                            otherstuff = NULL,
                             paging = FALSE,
                             ordering = FALSE,
                             info = FALSE,
@@ -164,6 +169,7 @@ generate_header <- function(beginning = c('<meta charset="utf-8" />',
             searching = '  "searching": false'
         }
         final <- c(beginning,
+                   otherstuff,
                    data_table_scripts,
                    '<script>',
                    '$(document).ready(function() {',
@@ -178,7 +184,7 @@ generate_header <- function(beginning = c('<meta charset="utf-8" />',
         class(final) <- "svamap.htmlheader"
         return(final)
     }
-    final <- beginning
+    final <- c(beginning, otherstuff)
     class(final) <- "svamap.htmlheader"
     return(final)
 }

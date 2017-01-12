@@ -187,28 +187,42 @@ for(i in map_files){
               paste0(cred, sub(paste0(dirname(map_path), "/"), "", i)),
               .opts = list(ftp.create.missing.dirs=TRUE))
 }
-
-## Kvarka table 
-table_path <- do_Table(x = table_kvarka,
-                        disease = "kvarka",
-                        dir = tempdir(),
-                        targets = 1,
-                        lengthpage = 4,
-                        tocolor = 'mylabel',
-                        width = "100%",
-                        tabhead = c("Påvisad klass", "Kommuner (antal)"),
-                        colorPal = colorPal,
-                        targetcol = table_kvarka$mylabel,
-                        browse = FALSE)
-table_files <- list.files(dirname(table_path), recursive = TRUE, full.names = TRUE)
+## Kvarka table
+## Add colours to the rows
+colours_css <- c("<style>",
+"  /**/",
+"  /*First reset the style of the td element and then color the rows*/",
+"  /**/",
+"  .svatablegrayheader td {",
+"  background-color: transparent;",
+"  }",
+"  .svatablegrayheader tbody tr:nth-child(1)",
+"  {",
+"  background-color: #FED98E;",
+"  }",
+"  .svatablegrayheader tbody tr:nth-child(2)",
+"  {",
+"    background-color: #FE9929;",
+"  }",
+"  .svatablegrayheader tbody tr:nth-child(3)",
+"  {",
+"  background-color: #CC4C02;",
+"  }",
+"  .svatablegrayheader tbody tr:nth-child(4)",
+"    {",
+"  background-color: #FFFFD4;",
+"  }",
+"</style>")
+tab <- html_table(table_kvarka,
+                  align = c("l", "r"),
+                  col.names = c("Påvisad klass", "Kommuner (antal)"),
+                  html_head = generate_header(otherstuff = colours_css,
+                                              ordering =FALSE),
+                  footer = FALSE
+                  )
 temp <- readLines("~/.svaftp_credentials")
 cred <- paste0("ftp://", temp[2], ":", temp[3], "@", temp[1], "/MAPS/Kvarka_table/")
-for(i in table_files){
-    ftpUpload(i,
-              paste0(cred, sub(paste0(dirname(table_path), "/"), "", i)),
-              .opts = list(ftp.create.missing.dirs=TRUE))
-}
-
+ftpUpload(tab, paste0(cred, "kvarka_table.html"))
 # Deplot text
 table_kvarka$kommuner <- as.integer(as.character(table_kvarka$kommuner))
 mytext <- paste0("Kvarka har påvisat i ", "<b>", sum(table_kvarka$kommuner), "</b>", " kommuner med minst ett positiva provningstillfälle under de senaste 2 år. ", "</br>",

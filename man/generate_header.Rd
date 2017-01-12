@@ -7,7 +7,8 @@
 generate_header(beginning = c("<meta charset=\\"utf-8\\" />",
   "<meta http-equiv=\\"x-ua-compatible\\" content=\\"IE=edge\\" >",
   "<link rel=\\"stylesheet\\" href=\\"http://www.sva.se/assets/css/main.css\\" />"),
-  paging = FALSE, ordering = FALSE, info = FALSE, searching = FALSE)
+  otherstuff = NULL, paging = FALSE, ordering = FALSE, info = FALSE,
+  searching = FALSE)
 }
 \arguments{
 \item{beginning}{A free set of text lines. This is a character
@@ -16,7 +17,12 @@ section of the page. The default calls the sva main.css and
 makes the page compatible with IE and sets text encoding to
 UTF-8}
 
-\item{paging}{Either TRUE or FALSE. Do you want the table to have paging?}
+\item{otherstuff}{Whatever otherlines of header you want to
+add. This will be placed after 'beginning' and before the
+javascript table code.}
+
+\item{paging}{Either TRUE or FALSE. Do you want the table to have
+paging?}
 
 \item{ordering}{Either TRUE or FALSE Do you want sorting?}
 
