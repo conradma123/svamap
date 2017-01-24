@@ -10,15 +10,31 @@
 ##'
 ##' RT90 is
 ##'
-##' "+init=epsg:3021 +proj=tmerc +lat_0=0 +lon_0=15.80827777777778 +k=1 +x_0=1500000 +y_0=0 +ellps=bessel +towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +units=m +no_defs"
+##' "+init=epsg:3021
+##' +proj=tmerc +lat_0=0
+##' +lon_0=15.80827777777778
+##' +k= ##' 1
+##' +x_0=1500000
+##' +y_0=0 +ellps=bessel
+##' +towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0
+##' +units=m
+##' +no_defs"
 ##'
 ##' SWEREF99 is
 ##'
-##' "+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
+##' "+proj=utm
+##' +zone=33
+##' +ellps=GRS80
+##' +towgs84=0,0,0,0,0,0,0
+##' +units=m
+##' +no_defs"
 ##'
 ##' WGS84 is
 ##'
-##' "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
+##' "+proj=longlat
+##' +ellps=WGS84
+##' +datum=WGS84
+##' +no_defs"
 ##' 
 ##' @return A SpatialPointsDataframe
 ##' @author Thomas Rosendal
@@ -33,10 +49,20 @@
 ##' @param output_proj the projection of the returned dataframe (default WGS84)
 ##' @param long text string of the variable name that is longitude
 ##' @param lat text string of the variable name that is latitude
-read_point_data <- function(path = system.file("sample_data_cwd.csv", package = "svamap"),
+read_point_data <- function(path = system.file("sample_data_cwd.csv",
+                                               package = "svamap"),
                             encoding = "UTF-8",
-                            proj4str = "+init=epsg:3021 +proj=tmerc +lat_0=0 +lon_0=15.80827777777778 +k=1 +x_0=1500000 +y_0=0 +ellps=bessel +towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +units=m +no_defs",
-                            output_proj =  "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
+                            proj4str = paste0(c("+init=epsg:3021",
+                                                "+proj=tmerc",
+                                                "+lat_0=0",
+                                                "+lon_0=15.80827777777778",
+                                                "+k=1",
+                                                "+x_0=1500000",
+                                                "+y_0=0 +ellps=bessel",
+                                                "+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0",
+                                                "+units=m",
+                                                "+no_defs"), collapse = " "),
+                            output_proj = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
                             long = "Gisy",
                             lat = "Gisx") {
     df <- read.csv2(path,
@@ -54,6 +80,7 @@ read_point_data <- function(path = system.file("sample_data_cwd.csv", package = 
     pts <- SpatialPointsDataFrame(pts, df)
     return(pts)
 }
+
 ##' Write a geojson file from a dataset
 ##' 
 ##' @title write_data

@@ -12,19 +12,37 @@ FYI the following are some proj4string specs. RT90 is the default
 
 RT90 is
 
-"+init=epsg:3021 +proj=tmerc +lat_0=0 +lon_0=15.80827777777778 +k=1 +x_0=1500000 +y_0=0 +ellps=bessel +towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +units=m +no_defs"
+"+init=epsg:3021
++proj=tmerc +lat_0=0
++lon_0=15.80827777777778
++k= ##' 1
++x_0=1500000
++y_0=0 +ellps=bessel
++towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0
++units=m
++no_defs"
 
 SWEREF99 is
 
-"+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
+"+proj=utm
++zone=33
++ellps=GRS80
++towgs84=0,0,0,0,0,0,0
++units=m
++no_defs"
 
 WGS84 is
 
-"+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"}
+"+proj=longlat
++ellps=WGS84
++datum=WGS84
++no_defs"}
 \usage{
 read_point_data(path = system.file("sample_data_cwd.csv", package = "svamap"),
-  encoding = "UTF-8",
-  proj4str = "+init=epsg:3021 +proj=tmerc +lat_0=0 +lon_0=15.80827777777778 +k=1 +x_0=1500000 +y_0=0 +ellps=bessel +towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +units=m +no_defs",
+  encoding = "UTF-8", proj4str = paste0(c("+init=epsg:3021", "+proj=tmerc",
+  "+lat_0=0", "+lon_0=15.80827777777778", "+k=1", "+x_0=1500000",
+  "+y_0=0 +ellps=bessel", "+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0",
+  "+units=m", "+no_defs"), collapse = " "),
   output_proj = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
   long = "Gisy", lat = "Gisx")
 }
