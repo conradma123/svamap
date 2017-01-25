@@ -41,13 +41,15 @@
 	  height: 18px;
 	  float: left;
 	  margin-right: 8px;
-	  opacity: 0.7;
+	  opacity: 0.9;
+
       }
       .legend .circle {
 	  border-radius: 50%;
 	  width: 10px;
 	  height: 10px;
 	  margin-top: 8px;
+	  border: 1px solid black;
       }
       .icon {
 	  border-radius: 0%;
@@ -87,17 +89,27 @@
 	}
 	
 	function getOpacity(d) {
-	    return d == 0  ? 0.7 :
+	    return d == 0  ? 0.9 :
 		d == 1  ? 1.0 :
 		0;
 	}
 
 	function getColor(d) {
-	    return d == 0  ? "#3182bd" :
-		d == 1  ? "#FF0000" :
+	    return d == 0  ? "#5e3c99" :
+		d == 1  ? "#e66101" :
 		"#939393";
 	}
-	
+	// Colours selected to be maximum contrast by this tool:
+	// http://colorbrewer2.org/#type=diverging&scheme=PuOr&n=3
+
+	function getOutline() {
+	    return "black"
+	}
+
+	function getRadius() {
+	    return 4.5
+	}
+
 	var moose_layer = new L.LayerGroup();
 	L.geoJson(data2, {
 	    style: function (feature) {
@@ -106,9 +118,9 @@
 	    onEachFeature: onEachPolygon,
 	    pointToLayer: function (feature, latlng) {
 		return L.circleMarker(latlng, {
-		    radius: 3.5,
+		    radius: getRadius(),
 		    fillColor: getColor(feature.properties.result),
-		    color: getColor(feature.properties.result),
+		    color: getOutline(),
 		    weight: 1,
 		    opacity: getOpacity(feature.properties.result),
 		    fillOpacity: getOpacity(feature.properties.result)
@@ -124,9 +136,9 @@
 	    onEachFeature: onEachPolygon,
 	    pointToLayer: function (feature, latlng) {
 		return L.circleMarker(latlng, {
-		    radius: 3,
+		    radius: getRadius(),
 		    fillColor: getColor(feature.properties.result),
-		    color: getColor(feature.properties.result),
+		    color: getOutline(),
 		    weight: 1,
 		    opacity: getOpacity(feature.properties.result),
 		    fillOpacity: getOpacity(feature.properties.result)
@@ -142,9 +154,9 @@
 	    onEachFeature: onEachPolygon,
 	    pointToLayer: function (feature, latlng) {
 		return L.circleMarker(latlng, {
-		    radius: 3,
+		    radius: getRadius(),
 		    fillColor: getColor(feature.properties.result),
-		    color: getColor(feature.properties.result),
+		    color: getOutline(),
 		    weight: 1,
 		    opacity: getOpacity(feature.properties.result),
 		    fillOpacity: getOpacity(feature.properties.result)
@@ -210,7 +222,7 @@
 	    for (var i = 0; i < grades.length; i++) {
 		value = grades[i];
 		labels.push(
-		    '<i class="circle" style="background:' + getColor(i) + '"></i> ' + labs[i]);
+		    '<i><div class="circle" style="background:' + getColor(i) + '"></div></i> ' + labs[i]);
 	    }
 	    labels.push("<br>Kartan uppdaterad:<br>" + timestamp)
 	    div.innerHTML = labels.join('<br>');
