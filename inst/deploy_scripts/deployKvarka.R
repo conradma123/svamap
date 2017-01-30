@@ -144,7 +144,7 @@ popup_60d <- popup1$count[match(kvarka_map@data$KnKod, popup1$kommun)]
 popup_24m <- popup2$count[match(kvarka_map@data$KnKod, popup2$kommun)]
 ##
 kvarka_map@data$popup_text <-    paste("<b>Kommun:</b>", kvarka_map@data$KnNamn, "<br/>",
-                                       "<b>Antal provtagningstillfällen</b>", "<br/>",
+                                       "<b>Antal påvisade kvarkaprover</b>", "<br/>",
                                        " - senaste 2 månaderna: ", popup_60d,"<br/>",
                                        " - senaste 3-24 månaderna: ", popup_24m)
 ##
@@ -187,6 +187,9 @@ colours_css <- c("<style>",
 "  /**/",
 "  /*First reset the style of the td element and then color the rows*/",
 "  /**/",
+"  .svatablegrayheader th {",
+"  font-weight: bold;",
+"  }",
 "  .svatablegrayheader td {",
 "  background-color: transparent;",
 "  }",
@@ -209,7 +212,7 @@ colours_css <- c("<style>",
 "</style>")
 tab <- html_table(table_kvarka,
                   align = c("l", "r"),
-                  col.names = c("Antal påvisad kvarkaprover", "Antal kommuner"),
+                  col.names = c("Antal påvisade kvarkaprover", "Antal kommuner"),
                   html_head = generate_header(otherstuff = colours_css,
                                               ordering =FALSE),
                   footer = FALSE

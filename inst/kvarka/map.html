@@ -44,7 +44,7 @@
       .legend .circle {
 	  width: 12px;
 	  height: 12px;
-	  margin-top: 3px;
+	  margin-top: 10px;
 	  border: 1px solid #939393;
       }
     </style>
@@ -139,10 +139,10 @@
 	    var div = L.DomUtil.create('div', 'info legend'),
 		grades = [1, 2, 3, 4],
 		labels = ["<b>Kvarka påvisad vid</b>"],
-		labs = ['Ett tillfälle under de senaste 2 månaderna',
-			'Två tillfällen under de senaste 2 månaderna',
-			'Tre eller fler tillfällen under de senaste 2 månaderna',
-			'Minst ett tillfälle under senaste 3-24 månaderna'];
+		labs = ['Ett tillfälle under<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspde senaste 2 månaderna',
+			'Två tillfällen under<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspde senaste 2 månaderna',
+			'Tre eller fler tillfällen<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspunder de senaste 2 månaderna',
+			'Minst ett tillfälle under<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspsenaste 3-24 månaderna'];
 	    for (var i = 0; i < grades.length; i++) {
 		value = grades[i];
 		labels.push(
