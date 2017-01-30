@@ -9,8 +9,8 @@
 ##' @author Giampaolo Cocca
 ##' @import utils
 ##' @import xts
-##' @param path Path to file
-##' @param encoding Ecoding of the text file
+##' @import htmlwidgets
+##' @param df The dataframe to plot 
 ##' @param date_in dataset field with dates
 ##' @param target numeric column(s) to be included in the xts object
 ##' @param name name to assign to the target column(s) in the xts object

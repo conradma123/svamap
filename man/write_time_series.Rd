@@ -10,15 +10,13 @@ an xts object}
 write_time_series(df, date_in, target, name)
 }
 \arguments{
+\item{df}{The dataframe to plot}
+
 \item{date_in}{dataset field with dates}
 
 \item{target}{numeric column(s) to be included in the xts object}
 
 \item{name}{name to assign to the target column(s) in the xts object}
-
-\item{path}{Path to file}
-
-\item{encoding}{Ecoding of the text file}
 }
 \value{
 A data.frame object

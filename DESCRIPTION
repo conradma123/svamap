@@ -1,3 +1,4 @@
+Encoding: UTF-8
 Package: svamap
 Title: Package to produce data summaries for the web
 Version: 0.3
@@ -20,10 +21,7 @@ Imports:
     rgeos,
     RCurl,
     xtable,
-    DT,
     htmlwidgets,
-    leaflet,
-    mapview,
     xts,
     dygraphs
 
