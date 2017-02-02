@@ -46,7 +46,17 @@
 	  width: 12px;
 	  height: 12px;
 	  margin-top: 10px;
-	  border: 1px solid #939393;
+          border: 1px solid #939393;
+      }
+      .icon {
+	  border-radius: 0%;
+	  margin-right: -10px;
+	  margin-left: -12px;
+	  margin-top: -1px;
+	  margin-bottom: 15px;
+	  width: 150%;
+	  height: 100%;
+	  text-align: center;
       }
     </style>
   </head>
@@ -155,25 +165,24 @@
 	    var stateChangingButton = L.easyButton({
 		position: 'bottomright',
 		states: [{
+			stateName: 'showlegend',
+			icon:      '<img class = icon src = "add.png"/>',
+			title:     'Show Legend',
+			onClick: function(btn) {
+				dotlegend.addTo(map);
+				btn.state('hidelegend');
+				}
+			}, {
 			stateName: 'hidelegend',
 			icon:      '<img class = icon src = "remove.png"/>',          
 			title:     'Hide Legend',
 			onClick: function(btn) {
 				map.removeControl(dotlegend);
 				btn.state('showlegend');
-			}
-		}, {
-		stateName: 'showlegend',
-		icon:      '<img class = icon src = "add.png"/>',
-		title:     'Show Legend',
-		onClick: function(btn) {
-		    dotlegend.addTo(map);
-		    btn.state('hidelegend');
-		}
+				}
 	    }]
 	});
 	stateChangingButton.addTo(map);
-	dotlegend.addTo(map);
       </script>
     </div>
   </body>
