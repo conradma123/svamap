@@ -63,6 +63,16 @@ approved <- c("VLT 2259/16", "VLT 2278/16", "VLT 2248/16",
               "VLT 289/17",
               "VLT 290/17"
               )
+## Temp fix for mislabeled birds in data
+pts2 <- read_point_data("/media/t/Falkenrapporter/birds.txt")
+pts2@data$Ankomstdatum <- as.Date(pts2@data$Ankomstdatum)
+pts2@data <- data.frame(species = pts2@data$Djurslag,
+                        result = 1,
+                        ViltID = pts2@data$Namn,
+                        Ankomstdatum = pts2@data$Ankomstdatum,
+                        stringsAsFactors = FALSE)
+pts <- rbind(pts, pts2)
+## End temp fix
 pts <- pts[pts@data$result == 0 | pts@data$ViltID %in% approved, ]
 pts@data <- subset(pts@data, select = -c(ViltID))
 pts@data$location <- as.numeric(as.factor(paste0(coordinates(pts)[, 1], coordinates(pts)[, 2])))
