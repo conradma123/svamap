@@ -71,7 +71,9 @@ pts2@data <- data.frame(species = pts2@data$Djurslag,
                         ViltID = pts2@data$Namn,
                         Ankomstdatum = pts2@data$Ankomstdatum,
                         stringsAsFactors = FALSE)
-pts <- rbind(pts, pts2)
+if(all(pts2@data$ViltID %in% pts@data$ViltID)) {
+    pts <- rbind(pts, pts2)
+}
 ## End temp fix
 pts <- pts[pts@data$result == 0 | pts@data$ViltID %in% approved, ]
 pts@data <- subset(pts@data, select = -c(ViltID))
