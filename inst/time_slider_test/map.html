@@ -66,8 +66,8 @@
   <body>
 
     <div id = "dateslider">
-      <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-      <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+      <script src="jquery-1.10.2.min.js"></script>
+      <script src="jquery-ui.min.js"></script>
       <script src="jQDateRangeSlider-min.js"></script>
       <script>
     	var smax = new Date();
@@ -221,29 +221,27 @@
 	    div.innerHTML = labels.join('<br>');
 	    return div;
 	};
-	var stateChangingButton = L.easyButton({
-	    position: 'bottomright',
-	    states: [{
-		stateName: 'hidelegend',
-		icon:      '<img class = icon src = "remove.png"/>',
-		title:     'Hide Legend',
-		onClick: function(btn) {
-		    map.removeControl(dotlegend);
-		    refreshLayer();
-		    btn.state('showlegend');
-		}
-	    }, {
-		stateName: 'showlegend',
-		icon:      '<img class = icon src = "add.png"/>',
-		title:     'Show Legend',
-		onClick: function(btn) {
-		    dotlegend.addTo(map);
-		    btn.state('hidelegend');
-		}
+	    var stateChangingButton = L.easyButton({
+		position: 'bottomright',
+		states: [{
+			stateName: 'showlegend',
+			icon:      '<img class = icon src = "add.png"/>',
+			title:     'Show Legend',
+			onClick: function(btn) {
+				dotlegend.addTo(map);
+				btn.state('hidelegend');
+				}
+			}, {
+			stateName: 'hidelegend',
+			icon:      '<img class = icon src = "remove.png"/>',
+			title:     'Hide Legend',
+			onClick: function(btn) {
+				map.removeControl(dotlegend);
+				btn.state('showlegend');
+				}
 	    }]
 	});
 	stateChangingButton.addTo(map);
-	dotlegend.addTo(map);
       </script>
     </div>
   </body>
