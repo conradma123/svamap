@@ -68,4 +68,3 @@ Read in point data and clean it
 \author{
 Thomas Rosendal
 }
-

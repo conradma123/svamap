@@ -39,4 +39,3 @@ A function that generates the header for the html table
 \author{
 Thomas Rosendal
 }
-

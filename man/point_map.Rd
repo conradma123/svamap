@@ -74,4 +74,3 @@ Create a static map
 \author{
 Thomas Rosendal
 }
-

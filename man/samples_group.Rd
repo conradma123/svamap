@@ -31,4 +31,3 @@ cumsum of data grouped by a specified time period
 \author{
 SVA
 }
-

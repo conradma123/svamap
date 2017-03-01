@@ -12,4 +12,3 @@ The dataset contains administrative units (NUTS) in Sweden in
 European terminology in scale 1 : 10 Million.
 }
 \keyword{datasets}
-

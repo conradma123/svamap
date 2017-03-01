@@ -9,12 +9,12 @@ Description: The package will read data from a csv file and convert it
     appropriately to json and then stick that beside a leaflet map
     that will load the data. We are now adding other functionality to
     the package such as static maps and html tables.
-License:  GPL-3 + file LICENSE
+License: GPL-3 + file LICENSE
 Type: Package
 LazyLoad: yes
 Depends:
     R (>= 3.1.0)
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 Imports:
     sp,
     rgdal,
@@ -24,5 +24,3 @@ Imports:
     htmlwidgets,
     xts,
     dygraphs
-
-    

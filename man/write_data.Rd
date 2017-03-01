@@ -22,4 +22,3 @@ Write a geojson file from a dataset
 \author{
 Thomas Rosendal
 }
-

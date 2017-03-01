@@ -34,4 +34,3 @@ Create a time series graph using dygraphs.js library
 \author{
 Giampaolo Cocca
 }
-

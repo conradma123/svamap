@@ -24,4 +24,3 @@ summarized data
 \author{
 Thomas Rosendal
 }
-

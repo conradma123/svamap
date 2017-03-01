@@ -15,4 +15,3 @@ European terminology in scale 1 : 20 Million.
 Reprojected to WGS84
 }
 \keyword{datasets}
-

@@ -42,4 +42,3 @@ Copy the files to a direcetory
 \author{
 Thomas Rosendal
 }
-

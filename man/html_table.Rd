@@ -48,4 +48,3 @@ A function that takes a data.frame and writes to an html table
 \author{
 Thomas Rosendal
 }
-

@@ -27,4 +27,3 @@ Generate a time series (xts) object
 \author{
 Giampaolo Cocca
 }
-

@@ -125,13 +125,11 @@ path_to_data <- svamap::write_data(pts)
 ########################
 ##Deploy map to internal server
 ########################
-
 svamap::write_page(data = path_to_data,
-                   path = "/media/ESS_webpages/time_slider_test/",
-                   owntemplate = "/media/trosendal/OS/projects/small_projects/svamap/svamap/inst/time_slider_test/",
+                   path = "/media/ESS_webpages/AI_timeslider/",
+                   template = "time_slider_test",
                    overwrite = TRUE,
                    browse = FALSE)
-
 ## file.copy("/media/t/Falkenrapporter/AI vilda fåglar.csv",
 ##           "/media/ESS_webpages/AI/",
 ##           overwrite = TRUE)
