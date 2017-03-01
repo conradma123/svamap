@@ -90,7 +90,7 @@
     	    }
     	});
     	var datevalues = $("#dateslider").dateRangeSlider("values");
-    	$("#dateslider").bind("valuesChanged", function(e, data){
+    	$("#dateslider").bind("valuesChanging", function(e, data){
 	    refreshLayer(data.values.min, data.values.max);
     	});
       </script>
