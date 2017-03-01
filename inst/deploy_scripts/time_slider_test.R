@@ -115,13 +115,13 @@ path_to_data <- svamap::write_data(pts)
 ## Deploy map to Azure server. This is SVA's external website and is
 ## administered by a company "Episerver hosting" the contact for this
 ## company at SVA is the communications department.
-## temp <- readLines("~/.svaftp_credentials")
-## cred <- paste0("ftp://", temp[2], ":", temp[3], "@", temp[1], "/MAPS/AI/")
-## svamap::write_page(data = path_to_data,
-##                    template = "influenza",
-##                    overwrite = TRUE,
-##                    browse = FALSE,
-##                    ftp = cred)
+temp <- readLines("~/.svaftp_credentials")
+cred <- paste0("ftp://", temp[2], ":", temp[3], "@", temp[1], "/MAPS/AI_timeslider/")
+svamap::write_page(data = path_to_data,
+                   template = "time_slider_test",
+                   overwrite = TRUE,
+                   browse = FALSE,
+                   ftp = cred)
 ########################
 ##Deploy map to internal server
 ########################
@@ -130,10 +130,10 @@ svamap::write_page(data = path_to_data,
                    template = "time_slider_test",
                    overwrite = TRUE,
                    browse = FALSE)
-## file.copy("/media/t/Falkenrapporter/AI vilda fåglar.csv",
-##           "/media/ESS_webpages/AI/",
-##           overwrite = TRUE)
-## ## init("/media/ESS_webpages/AI/")
-## repo <- repository("/media/ESS_webpages/AI/")
-## add(repo, "*")
-## commit(repo, "Automatic backup commit")
+file.copy("/media/t/Falkenrapporter/AI vilda fåglar.csv",
+          "/media/ESS_webpages/AI_timeslider/",
+          overwrite = TRUE)
+## init("/media/ESS_webpages/AI_timeslider/")
+repo <- repository("/media/ESS_webpages/AI_timeslider/")
+add(repo, "*")
+commit(repo, "Automatic backup commit")
