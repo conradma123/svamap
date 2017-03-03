@@ -47,7 +47,7 @@ path_to_data <- svamap::write_data(list(pts, moose, deer, kronhjort))
 ########################
 svamap::write_page(data = path_to_data,
                    path = "/media/ESS_webpages/CWD3/",
-                   template = "map3",
+                   template = "CWD/map.html",
                    overwrite = TRUE,
                    browse = FALSE)
 ##
@@ -57,7 +57,7 @@ svamap::write_page(data = path_to_data,
 temp <- readLines("~/.svaftp_credentials")
 cred <- paste0("ftp://", temp[2], ":", temp[3], "@", temp[1], "/MAPS/CWD/")
 svamap::write_page(data = path_to_data,
-                   template = "map3",
+                   template = "CWD/map.html",
                    overwrite = TRUE,
                    browse = FALSE,
                    ftp = cred)

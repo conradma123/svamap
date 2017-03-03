@@ -9,7 +9,7 @@ Encoding(kommuner@data$KnNamn) <- "UTF-8"
 ##
 ## Load postnummer data from svar package
 load(file = system.file("data/postnummer2015.rda", package = "svar"))
-postnummer2015$POSTALCODE <- as.character(postnummer2015$POSTALCODE) 
+postnummer2015$POSTALCODE <- as.character(postnummer2015$POSTALCODE)
 ##
 ## Load kvarka data. Change path from /media/t/ to T:/ to work locally
 kvarka <- read.csv2(file = "/media/t/Falkenrapporter/E15-026 Grundrapport.csv",
@@ -20,7 +20,7 @@ kvarka <- read.csv2(file = "/media/t/Falkenrapporter/E15-026 Grundrapport.csv",
 kvarka_data_map <- data.frame(uppdrag = kvarka$Uppdragid,
                               status = kvarka$Status..numerisk.,
                               postort = kvarka$Kundort,
-                              postnum = kvarka$Kundpostnr, 
+                              postnum = kvarka$Kundpostnr,
                               date = kvarka$Ankomstdatum,
                               stringsAsFactors = FALSE)
 ##
@@ -76,7 +76,7 @@ post_more_kom <- postnummer2015[match(kvarka_more_kom$postnum, postnummer2015@da
 ##
 ## Centroid of postnummer with more than one kommun
 centroids <- data.frame(ID = rownames(coordinates(post_more_kom)),
-                        x = coordinates(post_more_kom)[,1], 
+                        x = coordinates(post_more_kom)[,1],
                         y = coordinates(post_more_kom)[,2],
                         postnum = post_more_kom@data$POSTALCODE,
                         posort = post_more_kom@data$LOCALITY,
@@ -102,9 +102,9 @@ kvarka_more_kom$kommun <- kommun_min_dist
 kvarka_data_map$kommun[nchar(kvarka_data_map$kommun) != 4] <- kvarka_more_kom$kommun
 ##
 ####### COMMENT ####################################################################
-####### NEAREST NEIGHBOR DO NOT ALWAYS WORK. See postnummer 78173 & 79193. 
-####### Borlange period (1) cover Falun (period 2). The nearest neighboor assign 
-####### always to Borlange. Both are in kommun "2081" and so FALUN is not showed.  
+####### NEAREST NEIGHBOR DO NOT ALWAYS WORK. See postnummer 78173 & 79193.
+####### Borlange period (1) cover Falun (period 2). The nearest neighboor assign
+####### always to Borlange. Both are in kommun "2081" and so FALUN is not showed.
 ##      kvarka_data_map[order(kvarka_data_map$kommun),]
 ####### On the other hand it solves the bias of Hedemora (KnKod == "2083").
 ####### This kommun is not present in the dataset but displayed in ArcgisOnline map
@@ -125,7 +125,7 @@ pavisad_final <- pavisad_final[pavisad_final$count != 0, ]
 ## Create a kolumn with the expected values to display in the choropleth map
 pavisad_final$resultat <- ifelse(pavisad_final$period == 1 & pavisad_final$count == 1, 1,
                           ifelse(pavisad_final$period == 1 & pavisad_final$count == 2, 2,
-                          ifelse(pavisad_final$period == 1 & pavisad_final$count >= 3, 3, 
+                          ifelse(pavisad_final$period == 1 & pavisad_final$count >= 3, 3,
                           ifelse(pavisad_final$period == 2 & pavisad_final$count >= 1, 4, 0))))
 ##
 ## Delete duplicates. Note that the function drops always the second duplicated record.
@@ -167,7 +167,7 @@ path_to_data <- write_data(list(kvarka_map))
 ########################
 svamap::write_page(data = path_to_data,
                    path = "/media/ESS_webpages/kvarka/",
-                   template = "kvarka",
+                   template = "kvarka/map.html",
                    overwrite = TRUE,
                    browse = FALSE)
 ##
@@ -177,7 +177,7 @@ svamap::write_page(data = path_to_data,
 temp <- readLines("~/.svaftp_credentials")
 cred <- paste0("ftp://", temp[2], ":", temp[3], "@", temp[1], "/MAPS/kvarka/")
 svamap::write_page(data = path_to_data,
-                   template = "kvarka",
+                   template = "kvarka/map.html",
                    overwrite = TRUE,
                    browse = FALSE,
                    ftp = cred)
@@ -220,4 +220,3 @@ tab <- html_table(table_kvarka,
 temp <- readLines("~/.svaftp_credentials")
 cred <- paste0("ftp://", temp[2], ":", temp[3], "@", temp[1], "/MAPS/Kvarka_table/")
 ftpUpload(tab, paste0(cred, "kvarka_table.html"))
-

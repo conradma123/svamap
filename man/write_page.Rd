@@ -4,7 +4,7 @@
 \alias{write_page}
 \title{write_page}
 \usage{
-write_page(data, path = tempdir(), ftp = NULL, template = "map",
+write_page(data, path = tempdir(), ftp = NULL, template = "CWD/map.html",
   owntemplate = NULL, overwrite = FALSE, browse = TRUE)
 }
 \arguments{
@@ -19,11 +19,12 @@ directory on the ftp server that the files will be placed. It
 must end in a '/' and will be expanded when called by
 ftpUpload from the RCurl library.}
 
-\item{template}{the name of the map template. This is a directory
-in the inst folder of the map you want to use}
+\item{template}{the name of the map template. This is a .html file
+in the inst directory of svamap}
 
 \item{owntemplate}{path to you own template. This would include
-everything your map needs but the data}
+everything your map needs but the data including the assets,
+like .css, .js and .png files}
 
 \item{overwrite}{Do you want to overwrite files in the destination
 directory?}

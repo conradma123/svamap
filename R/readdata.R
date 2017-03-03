@@ -1,5 +1,5 @@
 ##' Read in point data and clean it
-##' 
+##'
 ##' @title read_point_data
 ##'
 ##' This function reads in data from SVA's database on CWD
@@ -35,7 +35,7 @@
 ##' +ellps=WGS84
 ##' +datum=WGS84
 ##' +no_defs"
-##' 
+##'
 ##' @return A SpatialPointsDataframe
 ##' @author Thomas Rosendal
 ##' @import utils
@@ -82,7 +82,7 @@ read_point_data <- function(path = system.file("sample_data_cwd.csv",
 }
 
 ##' Write a geojson file from a dataset
-##' 
+##'
 ##' @title write_data
 ##' @import rgeos
 ##' @export
@@ -130,10 +130,11 @@ write_data <- function(object,
 ##'     directory on the ftp server that the files will be placed. It
 ##'     must end in a '/' and will be expanded when called by
 ##'     ftpUpload from the RCurl library.
-##' @param template the name of the map template. This is a directory
-##'     in the inst folder of the map you want to use
+##' @param template the name of the map template. This is a .html file
+##'     in the inst directory of svamap
 ##' @param owntemplate path to you own template. This would include
-##'     everything your map needs but the data
+##'     everything your map needs but the data including the assets,
+##'     like .css, .js and .png files
 ##' @param overwrite Do you want to overwrite files in the destination
 ##'     directory?
 ##' @param browse Pop the brwoser and view the page?
@@ -143,12 +144,14 @@ write_data <- function(object,
 write_page <- function(data,
                        path = tempdir(),
                        ftp = NULL,
-                       template = "map",
+                       template = "CWD/map.html",
                        owntemplate = NULL,
                        overwrite = FALSE,
                        browse = TRUE) {
     if(is.null(owntemplate)) {
-        from <- list.files(system.file(template, package = "svamap"), full.names = TRUE)
+        mapfile <- system.file(template, package = "svamap")
+        assets <- system.file(file.path("assets", assets(readLines(mapfile))), package = "svamap")
+        from <- c(mapfile, assets)
     } else {
         from <- list.files(owntemplate, full.names = TRUE)
     }
@@ -173,4 +176,33 @@ write_page <- function(data,
         }
     }
     return(NULL)
+}
+
+##' Assets
+##'
+##' @title assets
+##' @param l the lines of an html file
+##' @return a vector of the css, js and png files called locally in the file
+##' @author Thomas Rosendal
+##' @export
+assets <- function(l) {
+
+    ## Get the js source files that are needed except those that are read remotely
+    ## And not the file named data.js because that is added separately
+    l1 <- l[grep("[[:space:]]*<script[[:space:]]src=", l)]
+    l1 <- gsub("[[:space:]]*<script[[:space:]]src=\"([^\"]*).*$", "\\1", l1)
+    l1 <- l1[!grepl("http://", l1)]
+    l1 <- l1[!grepl("data.js", l1)]
+
+    ## Get the css files that are needed except those that are read remotely
+    l2 <- l[grep("[[:space:]]*<link[[:space:]]rel=\"stylesheet\"[[:space:]]href=", l)]
+    l2 <- gsub("[[:space:]]*<link[[:space:]]rel=\"stylesheet\"[[:space:]]href=\"([^\"]*).*$", "\\1", l2)
+    l2 <- l2[!grepl("http://", l2)]
+
+    ## Check for any needed png file (icons)
+    l3 <- l[grep("src[[:space:]]?=[[:space:]]?.*[.]png", l)]
+    l3 <- gsub(".*src[[:space:]]?=[[:space:]]?\"(.*[.]png).*$", "\\1", l3)
+    l3 <- l3[!grepl("http://", l3)]
+
+    return(c(l1, l2, l3))
 }
