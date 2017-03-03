@@ -120,17 +120,21 @@
 	}
 
 	function getOpacity(d) {
-	    return d == 0  ? 0.7 :
-		d == 1  ? 0.9 :
+	    return d == 0  ? 0.90 :
+		d == 1  ? 1.0 :
 		0;
 	}
 
 	function getColor(d) {
-	    return d == 0  ? "#3182bd" :
-		d == 1  ? "#FF0000" :
+	    return d == 0  ? "#00A9CE" :
+		d == 1  ? "#D22630" :
 		"#939393";
 	}
-
+	// Colours selected to be maximum contrast by this tool:
+	// http://colorbrewer2.org/#type=diverging&scheme=PuOr&n=3
+	function getOutline() {
+	    return "black"
+	}
 
 	function refreshLayer(mindate, maxdate) {
 	    bird_layer.clearLayers();
@@ -148,7 +152,7 @@
 		    return L.circleMarker(latlng, {
 			radius: feature.properties.radius,
 			fillColor: getColor(feature.properties.result),
-			color: "#000000",
+			color: getOutline(),
 			weight: 1,
 			opacity: getOpacity(feature.properties.result),
 			fillOpacity: getOpacity(feature.properties.result)
