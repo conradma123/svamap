@@ -23,6 +23,7 @@ pts <- pts[!duplicated(pts@data$Namn), ]
 ## drop those positive on 'Matrix' but are negative for H5 and H7
 pts <- pts[!(pts@data$result == 1 & !(pts@data$Aivh5313 == "PÅVISAD" | pts@data$Aivh7313 == "PÅVISAD")),]
 pts@data$Namn[pts@data$Namn == ""] <- pts@data$Ringmärkning[pts@data$Namn == ""]
+##View(pts@data[order(pts@data$Ankomstdatum),])
 pts@data <- data.frame(species = pts@data$Djurslag,
                        result = pts@data$result,
                        ViltID = pts@data$Namn,
