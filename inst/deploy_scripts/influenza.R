@@ -70,8 +70,17 @@ approved <- c("VLT 2259/16", "VLT 2278/16", "VLT 2248/16",
               "VLT 901/17",
               "VLT 902/17",
               "VLT 889/17",
-              "VLT 887/17"
+              "VLT 887/17",
+              "VLT 970/17",
+              "VLT 973/17",
+              "VLT 975/17",
+              "VLT 974/17",
+              "VLT 976/17",
+              "VLT 64/17",
+              "VLT 924/17",
+              "VLT 923/17"
               )
+## dput(pts@data$ViltID[!(pts@data$ViltID %in% approved) & pts@data$result == 1])
 pts <- pts[pts@data$result == 0 | pts@data$ViltID %in% approved, ]
 pts@data <- subset(pts@data, select = -c(ViltID))
 pts@data$location <- as.numeric(as.factor(paste0(coordinates(pts)[, 1], coordinates(pts)[, 2])))

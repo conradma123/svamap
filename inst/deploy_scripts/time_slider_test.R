@@ -70,7 +70,15 @@ approved <- c("VLT 2259/16", "VLT 2278/16", "VLT 2248/16",
               "VLT 901/17",
               "VLT 902/17",
               "VLT 889/17",
-              "VLT 887/17"
+              "VLT 887/17",
+              "VLT 970/17",
+              "VLT 973/17",
+              "VLT 975/17",
+              "VLT 974/17",
+              "VLT 976/17",
+              "VLT 64/17",
+              "VLT 924/17",
+              "VLT 923/17"
               )
 pts <- pts[pts@data$result == 0 | pts@data$ViltID %in% approved, ]
 pts@data <- subset(pts@data, select = -c(ViltID))
@@ -119,7 +127,7 @@ path_to_data <- svamap::write_data(pts)
 temp <- readLines("~/.svaftp_credentials")
 cred <- paste0("ftp://", temp[2], ":", temp[3], "@", temp[1], "/MAPS/AI_timeslider/")
 svamap::write_page(data = path_to_data,
-                   template = "time_slider_test",
+                   template = "time_slider_test/map.html",
                    overwrite = TRUE,
                    browse = FALSE,
                    ftp = cred)
@@ -128,7 +136,7 @@ svamap::write_page(data = path_to_data,
 ########################
 svamap::write_page(data = path_to_data,
                    path = "/media/ESS_webpages/AI_timeslider/",
-                   template = "time_slider_test",
+                   template = "time_slider_test/map.html",
                    overwrite = TRUE,
                    browse = FALSE)
 file.copy("/media/t/Falkenrapporter/AI vilda fåglar.csv",
