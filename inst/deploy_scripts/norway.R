@@ -125,3 +125,11 @@ svamap::write_page(data = path_to_data,
                    template = "Norway/map.html",
                    overwrite = TRUE,
                    browse = TRUE)
+## Put is on an available place
+temp <- readLines("~/.svaftp_credentials")
+cred <- paste0("ftp://", temp[2], ":", temp[3], "@", temp[1], "/MAPS/CWD_with_norway/")
+svamap::write_page(data = path_to_data,
+                   template = "Norway/map.html",
+                   overwrite = TRUE,
+                   browse = FALSE,
+                   ftp = cred)
