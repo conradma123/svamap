@@ -117,7 +117,7 @@ for(i in pos_un@data$location){
 pts <- rbind(neg_un, pos_un)
 ##Calculate the radius of the point
 pts@data$radius <- round((pts@data$n*50/3.1415)^0.5, 1)
-pts@data <- subset(pts@data, select = c(result, popup_text, radius))
+pts@data <- subset(pts@data, select = c(result, popup_text, radius, Ankomstdatum))
 ##Write data to geojson
 ########################
 path_to_data <- svamap::write_data(pts)

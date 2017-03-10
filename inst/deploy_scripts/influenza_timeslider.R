@@ -127,7 +127,7 @@ path_to_data <- svamap::write_data(pts)
 temp <- readLines("~/.svaftp_credentials")
 cred <- paste0("ftp://", temp[2], ":", temp[3], "@", temp[1], "/MAPS/AI_timeslider/")
 svamap::write_page(data = path_to_data,
-                   template = "time_slider_test/map.html",
+                   template = "influenza_timeslider/map.html",
                    overwrite = TRUE,
                    browse = FALSE,
                    ftp = cred)
@@ -136,7 +136,7 @@ svamap::write_page(data = path_to_data,
 ########################
 svamap::write_page(data = path_to_data,
                    path = "/media/ESS_webpages/AI_timeslider/",
-                   template = "time_slider_test/map.html",
+                   template = "influenza_timeslider/map.html",
                    overwrite = TRUE,
                    browse = FALSE)
 file.copy("/media/t/Falkenrapporter/AI vilda fåglar.csv",
