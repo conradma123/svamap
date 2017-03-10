@@ -54,3 +54,25 @@ NULL
 ##' @import sp
 ##' @keywords datasets
 NULL
+##' Administrative divisions 'kommuner' of Norway
+##'
+##' The dataset contains administrative units 'kommuner' in Norway
+##'
+##' @name kommuner_norge
+##' @docType data
+##' @source
+##' \url{http://data.kartverket.no/download/content/administrative-enheter-norge-wgs-84-hele-landet-geojson}
+##' @import sp
+##' @keywords datasets
+NULL
+##' Divisions 'Villreinomrader' in Norway
+##'
+##' The dataset contains the boundaries of "Villreinomrader" in Norway
+##'
+##' @name villreinomrader_norge
+##' @docType data
+##' @source
+##' \url{http://trdfme01.miljodirektoratet.no/nedlasting/kartkatalog/Villreinomrader_norge.zip}
+##' @import sp
+##' @keywords datasets
+NULL
