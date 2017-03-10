@@ -153,7 +153,9 @@ write_page <- function(data,
         assets <- system.file(file.path("assets", assets(readLines(mapfile))), package = "svamap")
         from <- c(mapfile, assets)
     } else {
-        from <- list.files(owntemplate, full.names = TRUE)
+        mapfile <- owntemplate
+        assets <- system.file(file.path("assets", assets(readLines(mapfile))), package = "svamap")
+        from <- c(mapfile, assets)
     }
     if(is.null(ftp)) {
         pathmap <- file.path(path, "map")

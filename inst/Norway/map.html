@@ -9,7 +9,9 @@
     <meta http-Equiv="Pragma" Content="no-cache" />
     <meta http-Equiv="Expires" Content="0" />
     <link rel="stylesheet" href="leaflet.css" />
-    
+    <link rel="stylesheet" href="http://www.sva.se/assets/css/main.css" />
+    <link rel="stylesheet" href="easy-button.css">
+
     <style>
       #map {
       width: 100%;
@@ -28,7 +30,7 @@
 	  margin: 0 0 5px;
 	  color: #777;
       }
-      
+
       .legend {
 	  text-align: left;
 	  line-height: 18px;
@@ -39,13 +41,25 @@
 	  height: 18px;
 	  float: left;
 	  margin-right: 8px;
-	  opacity: 0.7;
+	  opacity: 0.9;
+
       }
       .legend .circle {
 	  border-radius: 50%;
 	  width: 10px;
 	  height: 10px;
 	  margin-top: 8px;
+	  border: 1px solid black;
+      }
+      .icon {
+	  border-radius: 0%;
+	  margin-right: -10px;
+	  margin-left: -12px;
+	  margin-top: -1px;
+	  margin-bottom: 15px;
+	  width: 150%;
+	  height: 100%;
+	  text-align: center;
       }
     </style>
   </head>
@@ -53,12 +67,12 @@
     <div id="map">
       <script src="leaflet.js"></script>
       <script src="data.js"></script>
+      <script src="easy-button.js"></script>
       <script>
-    	
-	var streets = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+
+	var streets = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
 	    maxZoom: 18,
-	    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-		'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+	    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}),
 	topo = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
 	    maxZoom: 18,
@@ -68,12 +82,52 @@
 	    maxZoom: 16,
 	    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
 	});
-	
+
 	function onEachPolygon(feature, layer) {
 	    var popupContent = feature.properties.popup_text;
 	    layer.bindPopup(popupContent);
 	}
-	
+
+	function getOpacity(d) {
+	    return d == 0  ? 0.9 :
+		d == 1  ? 1.0 :
+		0;
+	}
+
+	function getColor(d) {
+	    return d == 0  ? "#00A9CE" :
+		d == 1  ? "#D22630" :
+		"#939393";
+	}
+	// Colours selected to be maximum contrast by this tool:
+	// http://colorbrewer2.org/#type=diverging&scheme=PuOr&n=3
+
+	function getOutline() {
+	    return "black"
+	}
+
+	function getRadius() {
+	    return 4.5
+	}
+
+	var points_layer = new L.LayerGroup();
+	L.geoJson(data3, {
+	    style: function (feature) {
+		return feature.proporties && feature.properties.style;
+	    },
+	    onEachFeature: onEachPolygon,
+	    pointToLayer: function (feature, latlng) {
+		return L.circleMarker(latlng, {
+		    radius: getRadius(),
+		    fillColor: getColor(feature.properties.result),
+		    color: getOutline(),
+		    weight: 1,
+		    opacity: getOpacity(feature.properties.result),
+		    fillOpacity: getOpacity(feature.properties.result)
+		});
+	    }
+	}).addTo(points_layer);
+
 	var kommune_layer = new L.LayerGroup();
 	L.geoJson(data1, {
 	    style: function (feature) {
@@ -83,28 +137,101 @@
 	    onEachFeature: onEachPolygon,
 	}).addTo(kommune_layer);
 
+	var vilt_layer = new L.LayerGroup();
+	L.geoJson(data2, {
+	    style: function (feature) {
+		return {color: "#939393", fillColor: feature.properties.colour, opacity: 0.8, weight : 1,
+			fillOpacity: 0.8};
+	    },
+	    onEachFeature: onEachPolygon,
+	}).addTo(vilt_layer);
+
 	var baseLayers = {
 	    "Terräng": topo,
 	    "Vägkarta": streets,
 	    "Flygfoto": Esri_WorldImagery
 	};
-	
+
 	var overlays = {
-	    "kommune": kommune_layer
+	    "Kommuner (Norge)": kommune_layer,
+	    "Villreinområder (Norge)": vilt_layer,
+	    "Svensk provtagning": points_layer
 	};
-	
+
 	var map = L.map('map', {
 	    center: [63.0, 17.5],
 	    zoom: 5,
 	    maxBounds: [[54,4],[72,31]],
-	    layers: [topo, kommune_layer]
+	    layers: [streets, kommune_layer, vilt_layer, points_layer]
 	});
 
-	
+	// Show linkto github project
+	var info = L.control({position: 'topright'});
+
+	info.onAdd = function (map) {
+	    this._div = L.DomUtil.create('div', 'info');
+	    this.update();
+	    return this._div;
+	};
+
+	info.update = function () {
+	    this._div.innerHTML = '<a target="_blank" href="https://github.com/SVA-SE/svamap"><img style="vertical-align:middle" src="GitHub_Logo.png" height ="18"</a>';
+	};
+
+	info.addTo(map);
+
 	L.control.layers(baseLayers, overlays, {collapsed:false}).addTo(map);
+
+	var result = data3.features.map(function(i) {
+	    return i.properties.result;
+	});
+
+	var anypos = result.some(function(x) { return x == 1; });
+
+	function getGrades(d) {
+	    return d == false  ? [0] :
+		d == true  ? [0, 1] :
+		[0];
+	}
+
+	var dotlegend = L.control({position: 'bottomright'});
+	dotlegend.onAdd = function (map) {
+	    var div = L.DomUtil.create('div', 'info legend'),
+		grades = getGrades(anypos),
+		labels = ["<b>Djur undersökta för<br>CWD i Sverige</b>"],
+		labs = ['<b>Ej påvisad</b>','<b>Påvisad</b>'];
+	    for (var i = 0; i < grades.length; i++) {
+		value = grades[i];
+		labels.push(
+		    '<i><div class="circle" style="background:' + getColor(i) + '"></div></i> ' + labs[i]);
+	    }
+	    labels.push("<br>Kartan uppdaterad:<br>" + timestamp)
+	    div.innerHTML = labels.join('<br>');
+	    return div;
+	};
+	var stateChangingButton = L.easyButton({
+	    position: 'bottomright',
+	    states: [{
+		stateName: 'hidelegend',
+		icon:      '<img class = icon src = "remove.png"/>',
+		title:     'Hide Legend',
+		onClick: function(btn) {
+		    map.removeControl(dotlegend);
+		    btn.state('showlegend');
+		}
+	    }, {
+		stateName: 'showlegend',
+		icon:      '<img class = icon src = "add.png"/>',
+		title:     'Show Legend',
+		onClick: function(btn) {
+		    dotlegend.addTo(map);
+		    btn.state('hidelegend');
+		}
+	    }]
+	});
+	stateChangingButton.addTo(map);
+	dotlegend.addTo(map);
       </script>
     </div>
   </body>
 </html>
-
-
