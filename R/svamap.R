@@ -53,6 +53,8 @@ NULL
 ##' \url{http://epp.eurostat.ec.europa.eu/portal/page/portal/gisco_Geographical_information_maps/popups/references/administrative_units_statistical_units_1}
 ##' @import sp
 ##' @keywords datasets
+##'
+##'
 NULL
 ##' Administrative divisions 'kommuner' of Norway
 ##'
@@ -64,6 +66,8 @@ NULL
 ##' \url{http://data.kartverket.no/download/content/administrative-enheter-norge-wgs-84-hele-landet-geojson}
 ##' @import sp
 ##' @keywords datasets
+##'
+##'
 NULL
 ##' Divisions 'Villreinomrader' in Norway
 ##'
@@ -75,4 +79,6 @@ NULL
 ##' \url{http://trdfme01.miljodirektoratet.no/nedlasting/kartkatalog/Villreinomrader_norge.zip}
 ##' @import sp
 ##' @keywords datasets
+##'
+##'
 NULL
