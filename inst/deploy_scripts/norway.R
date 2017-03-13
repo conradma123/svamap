@@ -17,9 +17,10 @@ colours <- c('#f7f7f7','#d9d9d9','#bdbdbd','#969696','#636363','#252525')
 kommuner_norge@data$result <- kommune$Totalt[match(kommuner_norge@data$navn, kommune$Kommune)]
 kommuner_norge@data$positive <- kommune$Positive[match(kommuner_norge@data$navn, kommune$Kommune)]
 ## Assign colours by counts
-q <- quantile(as.numeric(kommuner_norge@data$result),
-              na.rm = TRUE,
-              probs = c(0, 0.5, 0.6, 0.7, 0.8, 0.9,1))
+## q <- quantile(as.numeric(kommuner_norge@data$result),
+##               na.rm = TRUE,
+##               probs = c(0, 0.5, 0.6, 0.7, 0.8, 0.9,1))
+q <- c(0, 3, 10, 20, 50, 100, max(as.numeric(kommuner_norge@data$result), na.rm = TRUE))
 kommuner_norge@data$colour <- colours[as.numeric(as.character(cut(as.numeric(kommuner_norge@data$result),
                                                                q,
                                                                include.lowest = TRUE, labels = c(1:6))
@@ -60,9 +61,10 @@ index <- do.call("c",lapply(Villreinomrader_norge@data$Omradenavn, function(x) {
 Villreinomrader_norge@data$result <- vro$Totalt[index]
 Villreinomrader_norge@data$positive <- vro$Positive[index]
 ## Assign colours by counts
-q <- quantile(as.numeric(Villreinomrader_norge@data$result),
-              na.rm = TRUE,
-              probs = c(0, 0.7, 0.75, 0.8, 0.85, 0.9,1))
+## q <- quantile(as.numeric(Villreinomrader_norge@data$result),
+##               na.rm = TRUE,
+##               probs = c(0, 0.7, 0.75, 0.8, 0.85, 0.9,1))
+q <- c(0, 3, 10, 20, 50, 100, max(as.numeric(Villreinomrader_norge@data$result), na.rm = TRUE))
 Villreinomrader_norge@data$colour <- colours[as.numeric(as.character(cut(as.numeric(Villreinomrader_norge@data$result),
                                                                q,
                                                                include.lowest = TRUE, labels = c(1:6))
