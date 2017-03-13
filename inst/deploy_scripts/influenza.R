@@ -78,7 +78,8 @@ approved <- c("VLT 2259/16", "VLT 2278/16", "VLT 2248/16",
               "VLT 976/17",
               "VLT 64/17",
               "VLT 924/17",
-              "VLT 923/17"
+              "VLT 923/17",
+              "VLT 1004/17"
               )
 ## dput(pts@data$ViltID[!(pts@data$ViltID %in% approved) & pts@data$result == 1])
 pts <- pts[pts@data$result == 0 | pts@data$ViltID %in% approved, ]
