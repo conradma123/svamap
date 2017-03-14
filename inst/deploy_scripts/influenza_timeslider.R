@@ -99,6 +99,7 @@ for(i in neg_un@data$location){
                                 neg[neg@data$location == i,]$species)
                           )
     names(temp) <- c("Datum", "Art", "Antal")
+    temp <- temp[temp$Antal != 0,]
     neg_un@data$popup_text[neg_un@data$location == i] <- paste0(html_table(temp, fragment = TRUE, file = NULL), collapse = "\n")
     neg_un@data$n[neg_un@data$location == i] <- sum(temp$Antal)
 }
@@ -110,6 +111,7 @@ for(i in pos_un@data$location){
                                 pos[pos@data$location == i,]$species)
                           )
     names(temp) <- c("Datum", "Art", "Antal")
+    temp <- temp[temp$Antal != 0,]
     pos_un@data$popup_text[pos_un@data$location == i] <- paste0(html_table(temp, fragment = TRUE, file = NULL), collapse = "\n")
     pos_un@data$n[pos_un@data$location == i] <- sum(temp$Antal)
 }
