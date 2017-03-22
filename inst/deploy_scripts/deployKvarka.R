@@ -183,6 +183,7 @@ svamap::write_page(data = path_to_data,
                    ftp = cred)
 ## Kvarka table
 ## Add colours to the rows
+nolink <- c("<META NAME='ROBOTS' CONTENT='NOINDEX, NOFOLLOW'>")
 colours_css <- c("<style>",
 "  /**/",
 "  /*First reset the style of the td element and then color the rows*/",
@@ -213,7 +214,7 @@ colours_css <- c("<style>",
 tab <- html_table(table_kvarka,
                   align = c("l", "r"),
                   col.names = c("Antal påvisade kvarkaprover", "Antal kommuner"),
-                  html_head = generate_header(otherstuff = colours_css,
+                  html_head = generate_header(otherstuff = c(nolink, colours_css),
                                               ordering =FALSE),
                   footer = FALSE
                   )
