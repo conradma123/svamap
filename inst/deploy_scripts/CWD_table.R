@@ -46,10 +46,11 @@ df$count <- as.integer(df$count)
 total <- sum(df$count)
 df <- rbind(df, c("Total", total))
 ## write the table
+nolink <- c("<META NAME='ROBOTS' CONTENT='NOINDEX, NOFOLLOW'>")
 tab <- html_table(df,
                   align = c("l", "r"),
                   col.names = c("Län", "Antal undersökta"),
-                  html_head = generate_header(ordering =TRUE),
+                  html_head = generate_header(ordering =TRUE, otherstuff = nolink),
                   footer = TRUE
                   )
 ## Deploy map to Azure server. This is SVA's external website and is
