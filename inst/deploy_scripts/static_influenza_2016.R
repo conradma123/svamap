@@ -132,8 +132,8 @@ pts@data <- subset(pts@data, select = c(result, popup_text, radius, Ankomstdatum
 pts@data$result[pts@data$result == 1 & !pts@data$highpath] <- 2
 ##
 library(sp)
-load("/home/trosendal/projects/small_projects/svamap/svamap/data/water.Rda")
-load("/home/trosendal/projects/small_projects/svamap/svamap/data/fancylan.Rda")
+data(water, package = "svamap")
+data(fancylan, package = "svamap")
 fancylan <- spTransform(fancylan, "+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs")
 water <- spTransform(water, "+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs")
 pts <- spTransform(pts, "+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs")

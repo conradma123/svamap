@@ -82,3 +82,36 @@ NULL
 ##'
 ##'
 NULL
+##' Counties that go into the water
+##'
+##' The dataset contains the boundaries of swedish counties extnding into the water
+##'
+##' @name rough_lan
+##' @docType data
+##' @import sp
+##' @keywords datasets
+##'
+##'
+NULL
+##' County boundaries in a fancy form with lakes
+##'
+##' The dataset contains the fancy boundaries of swedish counties
+##'
+##' @name fancylan
+##' @docType data
+##' @import sp
+##' @keywords datasets
+##'
+##'
+NULL
+##' Water in and around sweden
+##'
+##' The dataset contains the boundaries of swedish water bodies
+##'
+##' @name water
+##' @docType data
+##' @import sp
+##' @keywords datasets
+##'
+##'
+NULL
