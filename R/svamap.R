@@ -93,6 +93,17 @@ NULL
 ##'
 ##'
 NULL
+##' Townships (kommune) that go into the water
+##'
+##' The dataset contains the boundaries of swedish kommuner extnding into the water
+##'
+##' @name rough_kommune
+##' @docType data
+##' @import sp
+##' @keywords datasets
+##'
+##'
+NULL
 ##' County boundaries in a fancy form with lakes
 ##'
 ##' The dataset contains the fancy boundaries of swedish counties
