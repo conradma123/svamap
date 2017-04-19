@@ -85,7 +85,8 @@ approved <- c("VLT 2259/16", "VLT 2278/16", "VLT 2248/16",
               "VLT 1047/17",
               "VLT 1175/17",
               "VLT 1266/17",
-              "VLT 1278/17")
+              "VLT 1278/17",
+              "VLT 2356/16, Acc nr: 20167013.")
 pts <- pts[pts@data$result == 0 | pts@data$ViltID %in% approved, ]
 pts@data <- subset(pts@data, select = -c(ViltID))
 pts@data$location <- as.numeric(as.factor(paste0(coordinates(pts)[, 1], coordinates(pts)[, 2])))
