@@ -128,6 +128,9 @@ pos_uncertain@data$n <- 1
 pts <- rbind(neg_un, pos_uncertain, pos_un)
 ##Calculate the radius of the point
 pts@data$radius <- round((pts@data$n*50/3.1415)^0.5, 1)
+pts@data$radius[pts@data$n == 1] <- 1
+pts@data$radius[pts@data$n == 2] <- 2
+pts@data$radius[pts@data$n == 3] <- 3
 pts@data <- subset(pts@data, select = c(result, popup_text, radius, Ankomstdatum, n, highpath ))
 pts@data$result[pts@data$result == 1 & !pts@data$highpath] <- 2
 ##
@@ -142,8 +145,8 @@ pts@data$colour <-c("#D22630", "#F2A900")[pts@data$result]
 pdf("~/Desktop/influenza.pdf", height = 15, width = 7)
 plot(water, add = FALSE, col = "#a7cdf2", border = "#a7cdf2")
 plot(fancylan, add = TRUE, border = "grey40")
-plot(pts, add = TRUE, pch = 21, cex = pts@data$radius/3, bg=pts@data$colour, col = "grey20")
-legend(222235, 7258747, legend = c("HPAI", "Some text?"),
-       pch = 21, pt.cex = 2, pt.bg = c("#D22630", "#F2A900"), col = "grey20",
+plot(pts, add = TRUE, pch = 21, cex = pts@data$radius, bg="#D22630", col = "grey20")
+legend(title = "Antal fåglar", 222235, 7258747, legend = c("1", "2", "3"),
+       pch = 21, pt.cex = c(1, 2, 3), pt.bg = "#D22630", col = "grey20",
        cex = 1.5, bty = "n")
 dev.off()
