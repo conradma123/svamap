@@ -17,7 +17,7 @@ stopifnot(all(pts@data$Aivh7313 %in% c("", "ej påvisad")))
 pts@data$result <- ifelse(pts@data$Aiv313 == "PÅVISAD", 1,
                    ifelse(pts@data$Aiv313 == "ej påvisad", 0, 2))
 pts@data$result <- as.integer(pts@data$result)
-pts <- pts[pts@data$Ankomstdatum > "2016/09/01 00:00:00", ]
+pts <- pts[pts@data$Ankomstdatum > "2016/01/01 00:00:00", ]
 ##drop duplicates
 pts <- pts[!duplicated(pts@data$Namn), ]
 ## drop those positive on 'Matrix' but are negative for H5 and H7
@@ -155,3 +155,8 @@ file.copy("/media/t/Falkenrapporter/AI vilda fåglar.csv",
 repo <- repository("/media/ESS_webpages/AI_timeslider/")
 add(repo, "*")
 commit(repo, "Automatic backup commit")
+## TEST
+## svamap::write_page(data = path_to_data,
+##                    owntemplate =  "/home/trosendal/projects/small_projects/svamap/svamap/inst/influenza_timeslider/map.html",
+##                    overwrite = TRUE,
+##                    browse = TRUE)
