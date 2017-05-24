@@ -12,6 +12,16 @@ library(readxl)
 
 ## Read the data
 df <- read_xlsx("/media/i/ESS/EPIZ/test/Salmonella_foder_2017_tabell.xlsx")
+## Or we could store the data in URAX as an excel sheet:
+temp <- readLines("~/.smbcredentials")
+user <- paste0("--user=", strsplit(temp[1], "=")[[1]][2], "@sva.se")
+pass <- paste0("--password=\"", strsplit(temp[2], "=")[[1]][2], "\"")
+system2("wget", args = c(user,
+                         pass,
+                         "http://sharepointprod/sites/URAX/URAX%20storage/misstanke%20paraTB%2018%20maj%2098edb4bf-2b72-4733-af26-54f8cced1faf.docx"
+                         )
+        )
+##
 ## Tablulate the results
 df <- as.data.frame.matrix(table(df$Djurslag, df$Status))
 ## Create a variable
