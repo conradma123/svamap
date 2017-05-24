@@ -31,6 +31,7 @@ df$Provtagna <- df$Neg + df$Pos + df$Pågåande
 df$Djurslag <- rownames(df)
 ## Order the columns neatly
 df <- df[,c("Djurslag", "Provtagna", "Pågåande", "Neg", "Pos")]
+##df[,2:5] <- as.integer(0)
 ## write the table
 nolink <- c("<META NAME='ROBOTS' CONTENT='NOINDEX, NOFOLLOW'>")
 tab <- html_table(df,
@@ -40,12 +41,12 @@ tab <- html_table(df,
                   )
 ## Browse the table that we made
 browseURL(tab)
-
 ## The following lines will be used when we want to deploy the table to the web:
 ##
 ## Deploy map to Azure server. This is SVA's external website and is
 ## administered by a company "Episerver hosting" the contact for this
 ## company at SVA is the communications department.
-## temp <- readLines("~/.svaftp_credentials")
-## cred <- paste0("ftp://", temp[2], ":", temp[3], "@", temp[1], "/MAPS/CWD/")
-## ftpUpload(tab, paste0(cred, "table.html"))
+temp <- readLines("~/.svaftp_credentials")
+cred <- paste0("ftp://", temp[2], ":", temp[3], "@", temp[1], "/MAPS/Salmonella/")
+library(RCurl)
+ftpUpload(tab, paste0(cred, "table.html"))
