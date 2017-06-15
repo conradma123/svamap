@@ -10,10 +10,22 @@ in the inst folder that you can read in using `read_point_data()`.
 Next you export the data to geojson and write it to a .js file that is
 then submitted to a leaflet webpage.
 
+We have deployed a few pages using the package:
+
+* [A map of CWD testing in Sweden and Norway](www.sva.se/Maps/CWD_with_norway/map.html)
+
+* [A dynamic time-filtering map of AI testing in Sweden](www.sva.se/Maps/AI_timeslider/map.html)
+
+* [A species table of CWD testing in Sweden](www.sva.se/Maps/CWD_species_table/table.html)
+
+* [A weather forecast map with lines and points](www.epi-cloud.org/vattern/830/map.html)
+
+* [A map of strangles sampling at the county level in sweden](www.sva.se/smittlage/kvarkakarta)
+
 ## Two examples are given:
 
 First a map with just a polygon layer that summarises the count of the
-number of points in a polygon and binds it to a popup. 
+number of points in a polygon and binds it to a popup.
 
 ```{r eval = FALSE}
 library(svamap)
@@ -54,4 +66,4 @@ You might wonder why I am not using the Rleaflet library or similar
 for this. It is about flexibility of designing the map in only html
 and javascript and the only thing R does is format the data. The down
 side is the you need to understand R, javascript and html to produce a
-map. 
+map.
