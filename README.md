@@ -12,15 +12,15 @@ then submitted to a leaflet webpage.
 
 We have deployed a few pages using the package:
 
-* [A map of CWD testing in Sweden and Norway](http://www.sva.se/Maps/CWD_with_norway/map.html)
+* <a href="http://www.sva.se/Maps/CWD_with_norway/map.html" target = "_blank">A map of CWD testing in Sweden and Norway<\a>
 
-* [A dynamic time-filtering map of AI testing in Sweden](http://www.sva.se/Maps/AI_timeslider/map.html)
+* <a href="http://www.sva.se/Maps/AI_timeslider/map.html" target = "_blank">A dynamic time-filtering map of AI testing in Sweden<\a>
 
-* [A species table of CWD testing in Sweden](http://www.sva.se/Maps/CWD_species_table/table.html)
+* <a href="http://www.sva.se/Maps/CWD_species_table/table.html" target = "_blank">A species table of CWD testing in Sweden<\a>
 
-* [A weather forecast map with lines and points](http://www.epi-cloud.org/vattern/830/map.html)
+* <a href="http://www.epi-cloud.org/vattern/830/map.html" target = "_blank">A weather forecast map with lines and points<\a>
 
-* [A map of strangles sampling at the county level in sweden](http://www.sva.se/smittlage/kvarkakarta)
+* <a href="http://www.sva.se/smittlage/kvarkakarta" target = "_blank">A map of strangles sampling at the county level in Sweden with a summary table<\a>
 
 ## Two examples are given:
 
