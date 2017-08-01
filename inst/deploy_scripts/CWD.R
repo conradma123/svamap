@@ -61,6 +61,12 @@ svamap::write_page(data = path_to_data,
                    overwrite = TRUE,
                    browse = FALSE,
                    ftp = cred)
+##
+##
+library(git2r)
+repo <- repository("/media/ESS_webpages/CWD3/")
+add(repo, "*")
+commit(repo, "Automatic backup commit")
 ##test Deploy map
 ########################
 ## svamap::write_page(data = path_to_data,
