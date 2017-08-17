@@ -56,7 +56,8 @@ html_table <- function(df,
                   type = "html",
                   include.rownames = FALSE,
                   html.table.attributes = html.table.attributes,
-                  print.results = FALSE)
+                  print.results = FALSE,
+                  comment = FALSE)
     body <- unlist(strsplit(body, "\n"))
     thead <- c(body[1:grep("<table", body)[1]],
                "<thead>",
