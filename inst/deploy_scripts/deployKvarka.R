@@ -221,3 +221,16 @@ tab <- html_table(table_kvarka,
 temp <- readLines("~/.svaftp_credentials")
 cred <- paste0("ftp://", temp[2], ":", temp[3], "@", temp[1], "/MAPS/Kvarka_table/")
 ftpUpload(tab, paste0(cred, "kvarka_table.html"))
+##
+##
+library(git2r)
+repo <- repository("/media/ESS_webpages/kvarka/")
+add(repo, "*")
+commit(repo, "Automatic backup commit")
+##test Deploy map
+########################
+## svamap::write_page(data = path_to_data,
+##                    path = "/tmp/",
+##                    template = "map3",
+##                    overwrite = TRUE,
+##                    browse = TRUE)
