@@ -45,10 +45,17 @@ data(NUTS_20M)
 pts <- read_point_data()
 ## Match the location of the points to the polygons and add a count variable to the polygon dataset
 polys <- svamap::match_to_county(pts, NUTS_20M, "NUTS_ID")
-## Write out the data to a geojson
+## just keep the points that match a polygon:
+polys <- polys[[1]]
+## make some popup text:
+polys@data$popup_text <- as.character(polys@data$count)
+## Write out the data to a geojson (Must be a character)
 path_to_data <- write_data(polys)
-## Add the data to the leaflet webpage, in this case template "map"
-svamap::write_page(path_to_data, template = "map", overwrite = TRUE, browse = TRUE)
+## Add the data to the leaflet webpage, in this case template "choropleth_map"
+svamap::write_page(path_to_data,
+                   template = "choropleth_map/map.html",
+                   overwrite = TRUE,
+                   browse = TRUE)
 ```
 
 [A Second map](https://sva-se.github.io/svamap/map.html) with both a point and polygon layer. Notice the you
@@ -64,10 +71,21 @@ pts <- read_point_data()
 pts@data <- data.frame(pts@data$Djurslag, stringsAsFactors = FALSE)
 ## Match points to polygon
 polys <- svamap::match_to_county(pts, NUTS_20M, "NUTS_ID")
+## just keep the matching polygons
+polys <- polys[[1]]
+## Assign 0 counts to those that have NA counts
+polys@data$count[is.na(polys@data$count)] <- 0
+## Add popup text to the polygons
+polys@data$popup_text <- paste0(polys@data$name, "<br>Count = ", polys@data$count)
+## Add popup text to the points
+pts@data$popup_text <- pts@data$pts.data.Djurslag
 ## Write to geojson
 path_to_data <- write_data(list(polys, pts))
 ## add the data to "map2" template in the package
-svamap::write_page(path_to_data, path = "/tmp", template = "map2", overwrite = TRUE, browse = FALSE)
+svamap::write_page(path_to_data,
+                   template = "choropleth_and_points/map.html",
+                   overwrite = TRUE,
+                   browse = TRUE)
 ```
 
 ## Design
