@@ -1,5 +1,15 @@
 [![Build Status](https://travis-ci.org/SVA-SE/svamap.svg?branch=master)](https://travis-ci.org/SVA-SE/svamap)
+[![Build status](https://ci.appveyor.com/api/projects/status/t5tume57ympjqm3r?svg=true)](https://ci.appveyor.com/project/trosendal/svamap)
 
+
+The latest build for Windows is available here:
+[Windows build svamap\_0.3.zip](https://ci.appveyor.com/api/projects/trosendal/svamap/artifacts/svamap_0.3.zip)
+
+Then install it like this:
+
+```r
+install.packages("PATH_TO_YOUR_DOWNLOADS/svamap_0.3.zip", repos = NULL)
+```
 
 # svamap - leaflet maps from R datasets
 
