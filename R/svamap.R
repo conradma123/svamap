@@ -73,7 +73,7 @@ NULL
 ##'
 ##' The dataset contains the boundaries of "Villreinomrader" in Norway
 ##'
-##' @name villreinomrader_norge
+##' @name Villreinomrader_norge
 ##' @docType data
 ##' @source
 ##' \url{http://trdfme01.miljodirektoratet.no/nedlasting/kartkatalog/Villreinomrader_norge.zip}
