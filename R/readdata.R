@@ -44,7 +44,7 @@
 ##' @importFrom stats complete.cases
 ##' @export
 ##' @param path Path to file
-##' @param encoding Ecoding of the text file
+##' @param encoding Encoding of the text file
 ##' @param proj4str projection of points in file
 ##' @param output_proj the projection of the returned dataframe (default WGS84)
 ##' @param long text string of the variable name that is longitude

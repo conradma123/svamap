@@ -49,7 +49,7 @@ read_point_data(path = system.file("sample_data_cwd.csv", package = "svamap"),
 \arguments{
 \item{path}{Path to file}
 
-\item{encoding}{Ecoding of the text file}
+\item{encoding}{Encoding of the text file}
 
 \item{proj4str}{projection of points in file}
 
