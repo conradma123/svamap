@@ -2,13 +2,14 @@ Encoding: UTF-8
 Package: svamap
 Title: Package to produce data summaries for the web
 Version: 0.4
-Date: 2016-11-28
+Date: 2017-10-25
 Author: Thomas Rosendal, Giampaolo Cocca
 Maintainer: Thomas Rosendal <thomas.rosendal@sva.se>
 Description: The package will read data from a csv file and convert it
     appropriately to json and then stick that beside a leaflet map
-    that will load the data. We are now adding other functionality to
-    the package such as static maps and html tables.
+    that will load the data. Other functionality for html tables and
+    static maps as well as utility functions for cleaning the data SVA
+    uses for maps and figures are included here.
 License: GPL-3
 Type: Package
 LazyLoad: yes
