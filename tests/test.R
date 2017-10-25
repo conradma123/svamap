@@ -24,7 +24,7 @@ rm(list = ls())
 pts <- svamap::read_point_data(output_proj = "+init=epsg:3021 +proj=tmerc +lat_0=0 +lon_0=15.80827777777778 +k=1 +x_0=1500000 +y_0=0 +ellps=bessel +towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +units=m +no_defs")
 point_map(pts = pts, basemap = "lan", cex = 0.7)
 ##
-##Test4 
+##Test4
 pts <- read_point_data()
 pts <- pts[(pts@data$Status..numerisk. == 0 &
             (pts@data$Publicera != "Nej" | is.na(pts@data$Publicera))
@@ -55,23 +55,4 @@ tab <- html_table(df,
                                               searching = TRUE),
                   col.names = c("Län", "Provtagna djur")
                   )
-rm(list = ls())
-##
-## Test 6 - write_time_series and time_series_graph
-##
-pts <- read_point_data()
-myxts <- write_time_series(df = pts@data,
-                           date_in = "Ankomstdatum",
-                           target = c("Djurslagskod", "Status..numerisk."), 
-                           name = c("Djurslagskod", "status"))
-
-myxts$sumcum<-cumsum(myxts[, "status"])
-
-time_series_graph(xts_obj = myxts$sumcum,
-                  target = "sumcum",
-                  label = "Positive samples", 
-                  dir = tempdir(),
-                  disease = "mydisease2",
-                  stepPlot = TRUE,
-                  browse = T)
 rm(list = ls())

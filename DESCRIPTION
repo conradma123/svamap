@@ -1,7 +1,7 @@
 Encoding: UTF-8
 Package: svamap
 Title: Package to produce data summaries for the web
-Version: 0.3
+Version: 0.4
 Date: 2016-11-28
 Author: Thomas Rosendal, Giampaolo Cocca
 Maintainer: Thomas Rosendal <thomas.rosendal@sva.se>
@@ -21,8 +21,5 @@ Imports:
     rgeos,
     RCurl,
     xtable,
-    htmlwidgets,
-    xts,
-    dygraphs,
     Matrix,
     igraph
