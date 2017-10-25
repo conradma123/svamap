@@ -23,4 +23,6 @@ Imports:
     xtable,
     htmlwidgets,
     xts,
-    dygraphs
+    dygraphs,
+    Matrix,
+    igraph
