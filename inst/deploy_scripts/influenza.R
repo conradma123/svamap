@@ -17,7 +17,7 @@ stopifnot(all(pts@data$Aivh7313 %in% c("", "ej påvisad")))
 pts@data$result <- ifelse(pts@data$Aiv313 == "PÅVISAD", 1,
                    ifelse(pts@data$Aiv313 == "ej påvisad", 0, 2))
 pts@data$result <- as.integer(pts@data$result)
-pts <- pts[pts@data$Ankomstdatum > "2016/09/01 00:00:00", ]
+pts <- pts[pts@data$Ankomstdatum > Sys.Date()-180, ]
 ##drop duplicates
 pts <- pts[!duplicated(pts@data$Namn), ]
 ## drop those positive on 'Matrix' but are negative for H5 and H7
@@ -101,29 +101,41 @@ neg <- pts[pts$result == 0,]
 neg_un <- do.call("rbind", lapply(unique(neg@data$location), function(x){
     neg[neg@data$location == x,][1,]
 }))
-for(i in neg_un@data$location){
-    temp <- as.data.frame(table(neg[neg@data$location == i,]$Ankomstdatum,
-                                neg[neg@data$location == i,]$species)
-                          )
-    names(temp) <- c("Datum", "Art", "Antal")
-    temp <- temp[temp$Antal != 0,]
-    neg_un@data$popup_text[neg_un@data$location == i] <- paste0(html_table(temp, fragment = TRUE, file = NULL), collapse = "\n")
-    neg_un@data$n[neg_un@data$location == i] <- sum(temp$Antal)
+if(!is.null(neg_un)){
+    for(i in neg_un@data$location){
+        temp <- as.data.frame(table(neg[neg@data$location == i,]$Ankomstdatum,
+                                    neg[neg@data$location == i,]$species)
+                              )
+        names(temp) <- c("Datum", "Art", "Antal")
+        temp <- temp[temp$Antal != 0,]
+        neg_un@data$popup_text[neg_un@data$location == i] <- paste0(html_table(temp, fragment = TRUE, file = NULL), collapse = "\n")
+        neg_un@data$n[neg_un@data$location == i] <- sum(temp$Antal)
+    }
 }
 pos_un <- do.call("rbind", lapply(unique(pos@data$location), function(x){
     pos[pos@data$location == x,][1,]
 }))
-for(i in pos_un@data$location){
-    temp <- as.data.frame(table(pos[pos@data$location == i,]$Ankomstdatum,
-                                pos[pos@data$location == i,]$species)
-                          )
-    names(temp) <- c("Datum", "Art", "Antal")
-    temp <- temp[temp$Antal != 0,]
-    pos_un@data$popup_text[pos_un@data$location == i] <- paste0(html_table(temp, fragment = TRUE, file = NULL), collapse = "\n")
-    pos_un@data$n[pos_un@data$location == i] <- sum(temp$Antal)
+if(!is.null(pos_un)){
+    for(i in pos_un@data$location){
+        temp <- as.data.frame(table(pos[pos@data$location == i,]$Ankomstdatum,
+                                    pos[pos@data$location == i,]$species)
+                              )
+        names(temp) <- c("Datum", "Art", "Antal")
+        temp <- temp[temp$Antal != 0,]
+        pos_un@data$popup_text[pos_un@data$location == i] <- paste0(html_table(temp, fragment = TRUE, file = NULL), collapse = "\n")
+        pos_un@data$n[pos_un@data$location == i] <- sum(temp$Antal)
+    }
 }
 ##Order the positive second so they get plotted last
-pts <- rbind(neg_un, pos_un)
+if(!is.null(neg_un) & !is.null(pos_un)){
+    pts <- rbind(neg_un, pos_un)
+}
+if(!is.null(neg_un) & is.null(pos_un)){
+    pts <- neg_un
+}
+if(is.null(neg_un) & !is.null(pos_un)){
+    pts <- pos_un
+}
 ##Calculate the radius of the point
 pts@data$radius <- round((pts@data$n*50/3.1415)^0.5, 1)
 pts@data <- subset(pts@data, select = c(result, popup_text, radius, Ankomstdatum))
