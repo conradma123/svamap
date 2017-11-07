@@ -13,7 +13,10 @@ kommune <- df[trimws(df$Fylke) == "",]
 data(kommuner_norge, package = "svamap")
 ## Define a colour scale
 colours <- c('#f7f7f7','#d9d9d9','#bdbdbd','#969696','#636363','#252525')
-## match the data
+## match the data:
+## The Kommune "Ølen" and "Ramnes" are both represented
+## in the web table but are not in the spatial data because they are
+## no longer Kommuner in Norway.
 kommuner_norge@data$result <- kommune$Totalt[match(kommuner_norge@data$navn, kommune$Kommune)]
 kommuner_norge@data$positive <- kommune$Positive[match(kommuner_norge@data$navn, kommune$Kommune)]
 ## Assign colours by counts
@@ -48,9 +51,14 @@ names(df)[1] <- "name"
 vro <- df
 ## Get boundaries:
 data(villreinomrader, package = "svamap")
-## match the data (There are 4 areas in the web data not represented
-## in the map data) Also forced to use a fuzzy match because the names
-## are alittle different
+## Change some names to match the boundary data
+Villreinomrader_norge@data$Omradenavn[Villreinomrader_norge@data$Omradenavn == "Ottadalsområdet"] <- "Reinheimen-Breheimen"
+Villreinomrader_norge@data$Omradenavn[Villreinomrader_norge@data$Omradenavn == "Snøhettaområdet"] <- "Snøhetta"
+Villreinomrader_norge@data$Omradenavn[Villreinomrader_norge@data$Omradenavn == "Våmur/Roan"] <- "Våmur Roan"
+Villreinomrader_norge@data$Omradenavn[Villreinomrader_norge@data$Omradenavn == "Skaulen/Etnefjella"] <- "Skaulen Etnefjella"
+## match the data. There are 3 areas in the web data not represented
+## in the map data (Semmeldalen, Colesdalen, Reindalen) Also forced to
+## use a fuzzy match because the names are a little different
 index <- do.call("c",lapply(Villreinomrader_norge@data$Omradenavn, function(x) {
     if(length(agrep(x, vro$name, max.distance = 0.1))) {
         agrep(x, vro$name, max.distance = 0.1)
