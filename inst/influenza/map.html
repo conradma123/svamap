@@ -168,11 +168,18 @@
 		[0];
 	}
 
+	year = parseInt(timestamp.substr(0, 4));
+	month = parseInt(timestamp.substr(5, 2)) - 1; // month starts at 0
+	day = parseInt(timestamp.substr(8, 2));
+	var starttime = new Date(year, month, day);
+	starttime = new Date(starttime - (1000 * 60 * 60 * 24 *180)); // 180 days in milliseconds
+	starttime = starttime.toLocaleDateString('sv-SE');
+
 	var dotlegend = L.control({position: 'bottomright'});
 	dotlegend.onAdd = function (map) {
 	    var div = L.DomUtil.create('div', 'info legend'),
 		grades = getGrades(anypos),
-		labels = ["<b>Vilda fåglar undersökta<br>för fågelinfluensa senaste<br>180 dagarna</b><br>"],
+		labels = ["<b>Vilda fåglar undersökta<br>för fågelinfluensa sedan<br>" + starttime + "</b><br>"],
 		labs = ['<b>Ej påvisad</b>','<b>Påvisad</b>'];
 	    for (var i = 0; i < grades.length; i++) {
 		value = grades[i];
