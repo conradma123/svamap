@@ -74,6 +74,7 @@ timeseries_json <- function(df,
                             x,
                             dataname = "data",
                             col = c("#D22630", "#00A9CE", "#43B02A", "#F2A900"),
+                            hidden = FALSE,
                             series_label = NULL) {
     stopifnot(x %in% names(df))
     stopifnot(length(col) != 0)
@@ -88,15 +89,35 @@ timeseries_json <- function(df,
         series_label <- names(df)[names(df) != x]
         warning("length of series_label not equal to the number of series, reverting to column names of dataframe")
     }
+    if(length(hidden) == 1) {
+        hidden <- rep(hidden, length(names(df)[names(df) != x]))
+    }
+    if(length(hidden) != length(names(df)[names(df) != x])){
+        hidden <- rep(FALSE, length(names(df)[names(df) != x]))
+        warning("length of hidden not equal to the number of series, unhiding all series")
+    }
+    hiddennew <- hidden
+    hiddennew[hidden] <- "'true'"
+    hiddennew[!hidden] <- "'false'"
+    hidden <- hiddennew
     names(series_label) <- names(df)[names(df) != x]
     labels <- paste0("['", paste(as.character(df[,x]), collapse = "', '"), "']")
     datasets <- paste0("[", paste(lapply(names(df)[names(df) != x], function(y){
         label <- paste0("label: '", series_label[y], "',")
         data <- paste0("data: [", paste(df[,y], collapse = ", "), "],")
-        backgroundColor <- paste0("backgroundColor:",  " '", col[y], "'")
-        paste("{",label, data, backgroundColor, "}", sep = "\n")
+        backgroundColor <- paste0("backgroundColor:",  " '", col[y], "',")
+        hidden <- paste0("hidden: '", hidden[y], "'")
+        paste("{",label, data, backgroundColor, hidden, "}", sep = "\n")
     }), collapse = ",\n"), "]")
     paste0(dataname, " = {labels: ", labels, ",\ndatasets: ", datasets, "\n}")
 }
 
-writeLines(timeseries_json(weekly, "weeks", series_label = c("Cumulative number of Samples", "Number of samples per week", "Number of new PPN per week", "Cummulative number of PPN")), "data1.js")
+writeLines(timeseries_json(df = weekly,
+                           x = "weeks",
+                           series_label = c("Cumulative number of Samples",
+                                            "Number of samples per week",
+                                            "Number of new PPN per week",
+                                            "Cummulative number of PPN"),
+                           hidden = c(TRUE, FALSE, FALSE, TRUE)), "data1.js")
+file.copy("data1.js", "/media/ESS_webpages/PRRS/")
+file.copy("graph.html", "/media/ESS_webpages/PRRS/")
