@@ -15,9 +15,9 @@ time.count<-function(time,
                      count=c('freq', 'cumul'),
                      tmin=NULL,
                      tmax=NULL) {
-    if (!is.null(tmin)) {time <- time[time>=tmin]}
-    if (!is.null(tmax)) {time <- time[time<=tmax]}
-    time_running <- seq(tmin, tmax, 1)
+    if (!is.null(tmin)) {time <- time[time >= tmin]}
+    if (!is.null(tmax)) {time <- time[time <  tmax]}
+    time_running <- seq(tmin, tmax - 1, 1)
     time <- c(time, time_running)   #make sure all dates are included
     breaks = match.arg(breaks)
     count = match.arg(count)
@@ -33,41 +33,6 @@ time.count<-function(time,
     if (count=='cumul') { df$n <- cumsum(df$n) }
     return(df)
 }
-
-df <- read.csv2("/media/t/Falkenrapporter/PRRS-2017-falkenrapport.csv", stringsAsFactors = FALSE)
-df$Ankomstdatum <- as.Date(df$Ankomstdatum)
-weekly <- time.count(df$Ankomstdatum, "weeks", "cumul", tmin = as.Date("2017-01-01"), tmax = as.Date("2017-12-31"))
-weekly$weeks <- as.Date(weekly$weeks)
-weekly$cumul_sample <- weekly$n
-weekly$sample <- time.count(df$Ankomstdatum, "weeks", tmin = as.Date("2017-01-01"), tmax = as.Date("2017-12-31"))$n
-df2 <- df[!duplicated(df$PPN),]
-weekly$PPN <- time.count(df2$Ankomstdatum, "weeks", tmin = as.Date("2017-01-01"), tmax = as.Date("2017-12-31"))$n
-weekly$cumul_PPN <- time.count(df2$Ankomstdatum, "weeks", "cumul", tmin = as.Date("2017-01-01"), tmax = as.Date("2017-12-31"))$n
-weekly
-## Number of samples per week
-gg <- ggplot(weekly, aes(x = weeks, y = sample)) +
-    geom_bar(stat = "identity", fill = "#D22630", colour = "grey40", width = 5) +
-    scale_x_date(limits = as.Date(c("2016-12-01", "2018-01-01")), date_breaks = "month")
-gg
-## Cumulative number of samples per week
-gg <- ggplot(weekly, aes(x = weeks, y = cumul_sample)) +
-    geom_bar(stat = "identity", fill = "#D22630", colour = "grey40", width = 5) +
-    scale_x_date(limits = as.Date(c("2016-12-01", "2018-01-01")), date_breaks = "month")
-gg
-## number of new PPN per week
-gg <- ggplot(weekly, aes(x = weeks, y = PPN)) +
-    geom_bar(stat = "identity", fill = "#D22630", colour = "grey40", width = 5) +
-    scale_x_date(limits = as.Date(c("2016-12-01", "2018-01-01")), date_breaks = "month")
-gg
-## cumulative number of PPN per week
-gg <- ggplot(weekly, aes(x = weeks, y = cumul_PPN)) +
-    geom_bar(stat = "identity", fill = "#D22630", colour = "grey40", width = 5) +
-    scale_x_date(limits = as.Date(c("2016-12-01", "2018-01-01")), date_breaks = "month")
-gg
-
-
-## drop unneccessary columns
-weekly <- weekly[,names(weekly) != "n"]
 
 ## Convert df to json
 timeseries_json <- function(df,
@@ -97,27 +62,51 @@ timeseries_json <- function(df,
         warning("length of hidden not equal to the number of series, unhiding all series")
     }
     hiddennew <- hidden
-    hiddennew[hidden] <- "'true'"
-    hiddennew[!hidden] <- "'false'"
+    hiddennew[hidden] <- "true"
+    hiddennew[!hidden] <- "false"
     hidden <- hiddennew
+    names(hidden) <- names(df)[names(df) != x]
     names(series_label) <- names(df)[names(df) != x]
     labels <- paste0("['", paste(as.character(df[,x]), collapse = "', '"), "']")
+    ##
     datasets <- paste0("[", paste(lapply(names(df)[names(df) != x], function(y){
         label <- paste0("label: '", series_label[y], "',")
         data <- paste0("data: [", paste(df[,y], collapse = ", "), "],")
         backgroundColor <- paste0("backgroundColor:",  " '", col[y], "',")
-        hidden <- paste0("hidden: '", hidden[y], "'")
+        hidden <- paste0("hidden: ", hidden[y])
         paste("{",label, data, backgroundColor, hidden, "}", sep = "\n")
     }), collapse = ",\n"), "]")
+    ##
     paste0(dataname, " = {labels: ", labels, ",\ndatasets: ", datasets, "\n}")
 }
 
-writeLines(timeseries_json(df = weekly,
-                           x = "weeks",
-                           series_label = c("Cumulative number of Samples",
-                                            "Number of samples per week",
-                                            "Number of new PPN per week",
+df <- read.csv2("/media/t/Falkenrapporter/PRRS-2017-falkenrapport.csv", stringsAsFactors = FALSE)
+df$Ankomstdatum <- as.Date(df$Ankomstdatum)
+t_breaks <- as.Date(c("2014-01-01", "2015-01-01", "2016-01-01", "2017-01-01", "2018-01-01"))
+## and summarize by month
+monthly <- time.count(df$Ankomstdatum, "months", "freq", tmin = t_breaks[1], tmax = t_breaks[5])
+monthly$months <- as.Date(monthly$months)
+names(monthly)[names(monthly) == "n"] <- "count_sample"
+monthly$cumul_sample <- do.call("rbind", lapply(1:4, function(x){
+    time.count(df$Ankomstdatum, "months", "cumul", tmin = t_breaks[x], tmax = t_breaks[x + 1])
+}))$n
+monthly$count_PPN <- do.call("rbind", lapply(1:4, function(x){
+    temp <- df[df$Ankomstdatum >= t_breaks[x] & df$Ankomstdatum < t_breaks[x + 1],]
+    temp <- temp[!duplicated(temp$PPN), ]
+    time.count(temp$Ankomstdatum, "months", "freq", tmin = t_breaks[x], tmax = t_breaks[x + 1])
+}))$n
+monthly$cumul_PPN <- do.call("rbind", lapply(1:4, function(x){
+    temp <- df[df$Ankomstdatum >= t_breaks[x] & df$Ankomstdatum < t_breaks[x + 1],]
+    temp <- temp[!duplicated(temp$PPN), ]
+    time.count(temp$Ankomstdatum, "months", "cumul", tmin = t_breaks[x], tmax = t_breaks[x + 1])
+}))$n
+## Write to web
+writeLines(timeseries_json(df = monthly,
+                           x = "months",
+                           series_label = c("Number of samples per month",
+                                            "Cumulative number of samples",
+                                            "Number of new PPN per month",
                                             "Cummulative number of PPN"),
-                           hidden = c(TRUE, FALSE, FALSE, TRUE)), "data1.js")
-file.copy("data1.js", "/media/ESS_webpages/PRRS/")
-file.copy("graph.html", "/media/ESS_webpages/PRRS/")
+                           hidden = c(FALSE, TRUE, FALSE, TRUE)), "data1.js")
+file.copy("data1.js", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
+file.copy("graph.html", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
