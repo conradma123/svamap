@@ -15,8 +15,16 @@ time.count<-function(time,
                      count=c('freq', 'cumul'),
                      tmin=NULL,
                      tmax=NULL) {
-    if (!is.null(tmin)) {time <- time[time >= tmin]}
-    if (!is.null(tmax)) {time <- time[time <  tmax]}
+    if (!is.null(tmin)) {
+        time <- time[time >= tmin]
+    } else {
+        tmin <- min(time, na.rm = TRUE)
+    }
+    if (!is.null(tmax)) {
+        time <- time[time <  tmax]
+    } else {
+        tmax <- max(time, na.rm = TRUE)
+    }
     time_running <- seq(tmin, tmax - 1, 1)
     time <- c(time, time_running)   #make sure all dates are included
     breaks = match.arg(breaks)
