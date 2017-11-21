@@ -161,26 +161,25 @@ monthly$months <- as.Date(monthly$months)
 names(monthly)[names(monthly) == "n"] <- "count_sample"
 monthly$cumul <- time.count(df$Ankomstdatum, "months", "cumul", tmin = t_breaks[4], tmax = t_breaks[5])$n
 ## Take data from first 3 years and generate an 'expected':
-monthly$hist_count <- rowMeans(do.call("cbind", lapply(1:3, function(x){
+monthly$hist_count <- round(rowMeans(do.call("cbind", lapply(1:3, function(x){
     time.count(df$Ankomstdatum, "months", "freq", tmin = t_breaks[x], tmax = t_breaks[x+1])$n
-})))
-monthly$hist_cumul <- rowMeans(do.call("cbind", lapply(1:3, function(x){
+}))))
+monthly$hist_cumul <- round(rowMeans(do.call("cbind", lapply(1:3, function(x){
     time.count(df$Ankomstdatum, "months", "cumul", tmin = t_breaks[x], tmax = t_breaks[x+1])$n
-})))
+}))))
 monthly$months <- months(monthly$months)
-View(monthly)
-
+monthly <- monthly[,c(1,4,5,2,3)]
 ## Write to web
 writeLines(timeseries_json(df = monthly,
                            x = "months",
-                           series_label = c("Number of samples per month",
-                                            "Cumulative number of samples",
-                                            "Expected Number of samples per month",
-                                            "Expected Cummulative samples per month"),
-                           backgroundColor = c("#D22630BF", "#00A9CEBF", "#D22630", "#00A9CE"),
-                           hoverBackgroundColor = c("#D2263080", "#00A9CE80", "#D2263080", "#00A9CE80"),
+                           series_label = c("Expected Number of samples per month",
+                                            "Expected Cumulative samples per month",
+                                            "Number of samples per month",
+                                            "Cumulative number of samples"),
+                           backgroundColor = c("#860000", "#005D82", "#D22630", "#00A9CE"),
+                           hoverBackgroundColor = c("#6D0000", "#004469", "#B90D17", "#0090B5"),
                            hidden = c(FALSE, TRUE, FALSE, TRUE),
                            fill = FALSE,
-                           type = c("bar", "bar", "line", "line")), "data1.js")
+                           type = c("line", "line", "bar", "bar")), "data1.js")
 file.copy("data1.js", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
 file.copy("graph.html", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
