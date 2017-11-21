@@ -46,15 +46,40 @@ time.count<-function(time,
 timeseries_json <- function(df,
                             x,
                             dataname = "data",
-                            col = c("#D22630", "#00A9CE", "#43B02A", "#F2A900"),
+                            backgroundColor = c("#D22630", "#00A9CE", "#43B02A", "#F2A900"),
+                            hoverBackgroundColor = c("#D2263080", "#00A9CE80", "#43B02A80", "#F2A90080"),
+                            borderColor = NULL,
+                            type = c("bar"),
+                            pointRadius = NA,
+                            lineTension = NA,
+                            fill = NA,
                             hidden = FALSE,
                             series_label = NULL) {
+    ## Check if the data is in the dataframe
     stopifnot(x %in% names(df))
+    ## Chart types
+    stopifnot(length(type) != 0)
+    type <- rep(type, length.out = length(names(df)[names(df) != x]))
+    names(type) <- names(df)[names(df) != x]
+    ## Colours
     stopifnot(length(col) != 0)
-    if(length(names(df)[names(df) != x]) != length(col)) {
-        col <- rep(col[1], length(names(df)[names(df) != x]))
+    backgroundColor <- rep(backgroundColor, length.out = length(names(df)[names(df) != x]))
+    names(backgroundColor) <- names(df)[names(df) != x]
+    ## border colour
+    if(is.null(borderColor)){
+        borderColor <- backgroundColor
+    } else {
+        borderColor <- rep(borderColor, length.out = length(names(df)[names(df) != x]))
+        names(borderColor) <- names(df)[names(df) != x]
     }
-    names(col) <- names(df)[names(df) != x]
+    ## hoverBackgroundColor
+    if(is.null(hoverBackgroundColor)){
+        hoverBackgroundColor <- backgroundColor
+    } else {
+        hoverBackgroundColor <- rep(hoverBackgroundColor, length.out = length(names(df)[names(df) != x]))
+        names(hoverBackgroundColor) <- names(df)[names(df) != x]
+    }
+    ## Labels
     if(is.null(series_label)){
         series_label <- names(df)[names(df) != x]
     }
@@ -62,59 +87,108 @@ timeseries_json <- function(df,
         series_label <- names(df)[names(df) != x]
         warning("length of series_label not equal to the number of series, reverting to column names of dataframe")
     }
-    if(length(hidden) == 1) {
-        hidden <- rep(hidden, length(names(df)[names(df) != x]))
-    }
-    if(length(hidden) != length(names(df)[names(df) != x])){
-        hidden <- rep(FALSE, length(names(df)[names(df) != x]))
-        warning("length of hidden not equal to the number of series, unhiding all series")
-    }
+    names(series_label) <- names(df)[names(df) != x]
+    ## Hidden or unhidden series
+    stopifnot(is.logical(hidden))
+    hidden <- rep(hidden, length.out = length(names(df)[names(df) != x]))
     hiddennew <- hidden
     hiddennew[hidden] <- "true"
     hiddennew[!hidden] <- "false"
     hidden <- hiddennew
     names(hidden) <- names(df)[names(df) != x]
-    names(series_label) <- names(df)[names(df) != x]
+    ## Point radius and line tension and fill for line graphs
+    stopifnot(length(pointRadius) != 0)
+    pointRadius <- rep(pointRadius, length.out = length(names(df)[names(df) != x]))
+    names(pointRadius) <- names(df)[names(df) != x]
+    stopifnot(length(lineTension) != 0)
+    lineTension <- rep(lineTension, length.out = length(names(df)[names(df) != x]))
+    names(lineTension) <- names(df)[names(df) != x]
+    stopifnot(is.logical(fill))
+    stopifnot(length(fill) != 0)
+    fill <- rep(fill, length.out = length(names(df)[names(df) != x]))
+    fillnew <- fill
+    fillnew[fill] <- "true"
+    fillnew[!fill] <- "false"
+    fill <- fillnew
+    names(fill) <- names(df)[names(df) != x]
+    ## X axis labels
     labels <- paste0("['", paste(as.character(df[,x]), collapse = "', '"), "']")
     ##
-    datasets <- paste0("[", paste(lapply(names(df)[names(df) != x], function(y){
-        label <- paste0("label: '", series_label[y], "',")
-        data <- paste0("data: [", paste(df[,y], collapse = ", "), "],")
-        backgroundColor <- paste0("backgroundColor:",  " '", col[y], "',")
+    datasets <- paste0("[\n    ", paste(lapply(names(df)[names(df) != x], function(y){
+        label <- paste0("label: '", series_label[y], "'")
+        data <- paste0("data: [", paste(df[,y], collapse = ", "), "]")
+        backgroundColor_i <- paste0("backgroundColor: '", backgroundColor[y], "'")
+        borderColor_i <- paste0("borderColor: '", borderColor[y], "'")
+        hoverBackgroundColor_i <- paste0("hoverBackgroundColor: '", hoverBackgroundColor[y], "'")
+        if(is.na(pointRadius[y])) {
+            pointRadius_i <- NULL
+        } else {
+            pointRadius_i <- paste0("pointRadius: ", pointRadius[y])
+        }
+        if(is.na(lineTension[y])) {
+            lineTension_i <- NULL
+        } else {
+            lineTension_i <- paste0("lineTension: ", lineTension[y])
+        }
+        if(is.na(fill[y])) {
+            fill_i <- NULL
+        } else {
+            fill_i <- paste0("fill: ", fill[y])
+        }
         hidden <- paste0("hidden: ", hidden[y])
-        paste("{",label, data, backgroundColor, hidden, "}", sep = "\n")
-    }), collapse = ",\n"), "]")
+        type <- paste0("type: '", type[y], "'")
+        paste("{", paste(c(label,
+                           data,
+                           backgroundColor_i,
+                           borderColor_i,
+                           hoverBackgroundColor_i,
+                           pointRadius_i,
+                           lineTension_i,
+                           fill_i,
+                           hidden,
+                           type), collapse = ",\n"), "}")
+    }), collapse = ",\n    "), "]")
     ##
-    paste0(dataname, " = {labels: ", labels, ",\ndatasets: ", datasets, "\n}")
+    paste0(dataname, " = {\n    labels: ", labels, ",\n    datasets: ", datasets, "\n}")
 }
 
 df <- read.csv2("/media/t/Falkenrapporter/PRRS-2017-falkenrapport.csv", stringsAsFactors = FALSE)
 df$Ankomstdatum <- as.Date(df$Ankomstdatum)
 t_breaks <- as.Date(c("2014-01-01", "2015-01-01", "2016-01-01", "2017-01-01", "2018-01-01"))
-## and summarize by month
-monthly <- time.count(df$Ankomstdatum, "months", "freq", tmin = t_breaks[1], tmax = t_breaks[5])
+# Summarize the latest year by month
+monthly <- time.count(df$Ankomstdatum, "months", "freq", tmin = t_breaks[4], tmax = t_breaks[5])
 monthly$months <- as.Date(monthly$months)
 names(monthly)[names(monthly) == "n"] <- "count_sample"
-monthly$cumul_sample <- do.call("rbind", lapply(1:4, function(x){
-    time.count(df$Ankomstdatum, "months", "cumul", tmin = t_breaks[x], tmax = t_breaks[x + 1])
-}))$n
-monthly$count_PPN <- do.call("rbind", lapply(1:4, function(x){
-    temp <- df[df$Ankomstdatum >= t_breaks[x] & df$Ankomstdatum < t_breaks[x + 1],]
-    temp <- temp[!duplicated(temp$PPN), ]
-    time.count(temp$Ankomstdatum, "months", "freq", tmin = t_breaks[x], tmax = t_breaks[x + 1])
-}))$n
-monthly$cumul_PPN <- do.call("rbind", lapply(1:4, function(x){
-    temp <- df[df$Ankomstdatum >= t_breaks[x] & df$Ankomstdatum < t_breaks[x + 1],]
-    temp <- temp[!duplicated(temp$PPN), ]
-    time.count(temp$Ankomstdatum, "months", "cumul", tmin = t_breaks[x], tmax = t_breaks[x + 1])
-}))$n
+monthly$cumul <- time.count(df$Ankomstdatum, "months", "cumul", tmin = t_breaks[4], tmax = t_breaks[5])$n
+## Take data from first 3 years and generate an 'expected':
+monthly$hist_count <- rowMeans(do.call("cbind", lapply(1:3, function(x){
+    time.count(df$Ankomstdatum, "months", "freq", tmin = t_breaks[x], tmax = t_breaks[x+1])$n
+})))
+monthly$hist_cumul <- rowMeans(do.call("cbind", lapply(1:3, function(x){
+    time.count(df$Ankomstdatum, "months", "cumul", tmin = t_breaks[x], tmax = t_breaks[x+1])$n
+})))
+monthly$months <- months(monthly$months)
+View(monthly)
+
 ## Write to web
 writeLines(timeseries_json(df = monthly,
                            x = "months",
                            series_label = c("Number of samples per month",
                                             "Cumulative number of samples",
-                                            "Number of new PPN per month",
-                                            "Cummulative number of PPN"),
-                           hidden = c(FALSE, TRUE, FALSE, TRUE)), "data1.js")
-file.copy("data1.js", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
-file.copy("graph.html", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
+                                            "Expected Number of samples per month",
+                                            "Expected Cummulative samples per month"),
+                           backgroundColor = c("#D22630BF", "#00A9CEBF", "#D22630", "#00A9CE"),
+                           hoverBackgroundColor = c("#D2263080", "#00A9CE80", "#D2263080", "#00A9CE80"),
+                           hidden = c(FALSE, TRUE, FALSE, TRUE),
+                           fill = FALSE,
+                           type = c("bar", "bar", "line", "line")), "data1.js")
+## file.copy("data1.js", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
+## file.copy("graph.html", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
+
+fill: false,
+borderColor: '#43B02A',
+backgroundColor:'#43B02A',
+hidden: false,
+type: 'line',
+pointRadius: 1,
+lineTension: 0.2
