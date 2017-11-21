@@ -182,13 +182,5 @@ writeLines(timeseries_json(df = monthly,
                            hidden = c(FALSE, TRUE, FALSE, TRUE),
                            fill = FALSE,
                            type = c("bar", "bar", "line", "line")), "data1.js")
-## file.copy("data1.js", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
-## file.copy("graph.html", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
-
-fill: false,
-borderColor: '#43B02A',
-backgroundColor:'#43B02A',
-hidden: false,
-type: 'line',
-pointRadius: 1,
-lineTension: 0.2
+file.copy("data1.js", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
+file.copy("graph.html", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
