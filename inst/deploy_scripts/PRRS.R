@@ -243,3 +243,38 @@ file.copy("data1.js", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
 file.copy("graph_abbatoir.html", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
 file.copy("data2.js", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
 file.copy("graph_sows.html", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
+
+
+## To customize the axes one can add options to the html and then
+## assign dataseries in the .js with yAxisID 'B' in the data for
+## example, then that dataseries follows that axis. You can add an
+## axis on the right and left if you wish and give them labels. The
+## definition for two axes could be something like this in the html:
+## options: {
+##     scales: {
+##         yAxes: [{
+##             id: 'B',
+##             type: 'linear',
+##             position: 'right',
+##             ticks: {
+##       	  max: 100,
+##       	  min:0
+##             },
+##             scaleLabel: {
+##       	  display: true,
+##       	  labelString: '3-Month moving average percent Positive'
+##             }
+##         }, {
+##             id: 'A',
+##             type: 'linear',
+##             position: 'left',
+##             ticks: {
+##       	  beginAtZero:true
+##             },
+##             scaleLabel: {
+##       	  display: true,
+##       	  labelString: 'Number of Samples'
+##             }
+##         }]
+##     }
+## }
