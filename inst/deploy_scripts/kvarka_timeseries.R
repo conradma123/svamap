@@ -46,6 +46,7 @@ writeLines(timeseries_json(df = df,
                            hoverBackgroundColor = c("#505050", "#B90D17", "#00769B"),
                            fill = c(FALSE),
                            hidden = c(FALSE, FALSE, FALSE),
+                           pointRadius = 0,
                            yAxisID = c("a", "b", "b")), data)
 file.copy(graph, "/media/ESS_webpages/kvarka/kvarka_timeseries.html", overwrite = TRUE)
 file.copy(data, "/media/ESS_webpages/kvarka/kvarka_data.js", overwrite = TRUE)

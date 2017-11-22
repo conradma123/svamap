@@ -37,6 +37,7 @@ writeLines(timeseries_json(df = fix_data(df_abbatoir, t_breaks),
                            hoverBackgroundColor = c("#6D0000", "#004469", "#B90D17", "#0090B5"),
                            hidden = c(FALSE, TRUE, FALSE, TRUE),
                            fill = FALSE,
+                           pointRadius = 2,
                            type = c("line", "line", "bar", "bar")), data)
 my_y_axis <- yAxes(list(yAxis("a", "linear", "left", NULL, NULL, display = TRUE, labelString = "Number of finisher samples collected")))
 writeLines(timeseries_html("data1", "data1.js", my_y_axis), graph)
@@ -54,6 +55,7 @@ writeLines(timeseries_json(df = fix_data(df_sows, t_breaks),
                            hoverBackgroundColor = c("#6D0000", "#004469", "#B90D17", "#0090B5"),
                            hidden = c(FALSE, TRUE, FALSE, TRUE),
                            fill = FALSE,
+                           pointRadius = 2,
                            yAxisID = c("a", "a", "a", "a"),
                            type = c("line", "line", "bar", "bar")), data)
 my_y_axis <- yAxes(list(yAxis(id = "a", type = "linear", position = "left", max = NULL, min = NULL, display = TRUE, labelString = "Number of sow samples collected")))
