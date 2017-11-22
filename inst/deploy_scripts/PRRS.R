@@ -152,26 +152,68 @@ timeseries_json <- function(df,
     paste0(dataname, " = {\n    labels: ", labels, ",\n    datasets: ", datasets, "\n}")
 }
 
+timeseries_html <- function(dataname = "data", datafilename = "data.js") {
+    head <- c("    <title>Bar Chart</title>",
+              "    <script src=\"http://www.chartjs.org/dist/2.7.1/Chart.bundle.js\"></script>",
+              paste0("    <script src='", datafilename, "'></script>"))
+
+    body <- c("    <canvas id=\"myChart\" width=\"400\"></canvas>",
+              "    <script>",
+              "      var ctx = document.getElementById(\"myChart\").getContext('2d');",
+              "      var myChart = new Chart(ctx, {",
+              "\t  type: 'bar',",
+              paste0("\t  data: ", dataname, ","),
+              "\t  options: {",
+              "\t      scales: {",
+              "\t\t  yAxes: [{",
+              "\t\t      ticks: {",
+              "\t\t\t  beginAtZero:true",
+              "\t\t      }",
+              "\t\t  }]",
+              "\t      }",
+              "\t  }",
+              "      });",
+              "    </script>")
+    html <- c("<!doctype html>",
+              "<html>",
+              "  <head>",
+              head,
+              "  </head>",
+              "  <body>",
+              body,
+              "  </body>",
+              "</html>")
+    return(html)
+}
+
 df <- read.csv2("/media/t/Falkenrapporter/PRRS-2017-falkenrapport.csv", stringsAsFactors = FALSE)
 df$Ankomstdatum <- as.Date(df$Ankomstdatum)
 t_breaks <- as.Date(c("2014-01-01", "2015-01-01", "2016-01-01", "2017-01-01", "2018-01-01"))
 # Summarize the latest year by month
-monthly <- time.count(df$Ankomstdatum, "months", "freq", tmin = t_breaks[4], tmax = t_breaks[5])
-monthly$months <- as.Date(monthly$months)
-names(monthly)[names(monthly) == "n"] <- "count_sample"
-monthly$cumul <- time.count(df$Ankomstdatum, "months", "cumul", tmin = t_breaks[4], tmax = t_breaks[5])$n
-## Take data from first 3 years and generate an 'expected':
-monthly$hist_count <- round(rowMeans(do.call("cbind", lapply(1:3, function(x){
-    time.count(df$Ankomstdatum, "months", "freq", tmin = t_breaks[x], tmax = t_breaks[x+1])$n
-}))))
-monthly$hist_cumul <- round(rowMeans(do.call("cbind", lapply(1:3, function(x){
-    time.count(df$Ankomstdatum, "months", "cumul", tmin = t_breaks[x], tmax = t_breaks[x+1])$n
-}))))
-monthly$months <- months(monthly$months)
-monthly <- monthly[,c(1,4,5,2,3)]
+
+fix_data <- function(df, t_breaks) {
+    monthly <- time.count(df$Ankomstdatum, "months", "freq", tmin = t_breaks[4], tmax = t_breaks[5])
+    monthly$months <- as.Date(monthly$months)
+    names(monthly)[names(monthly) == "n"] <- "count_sample"
+    monthly$cumul <- time.count(df$Ankomstdatum, "months", "cumul", tmin = t_breaks[4], tmax = t_breaks[5])$n
+    ## Take data from first 3 years and generate an 'expected':
+    monthly$hist_count <- round(rowMeans(do.call("cbind", lapply(1:3, function(x){
+        time.count(df$Ankomstdatum, "months", "freq", tmin = t_breaks[x], tmax = t_breaks[x+1])$n
+    }))))
+    monthly$hist_cumul <- round(rowMeans(do.call("cbind", lapply(1:3, function(x){
+        time.count(df$Ankomstdatum, "months", "cumul", tmin = t_breaks[x], tmax = t_breaks[x+1])$n
+    }))))
+    monthly$months <- months(monthly$months)
+    monthly <- monthly[,c(1,4,5,2,3)]
+    return(monthly)
+}
+df_abbatoir <- df[df$Överordnadeuppdrag == "Ö09-022",]
+df_sows <- df[df$Överordnadeuppdrag == "Ö09-021",]
+
 ## Write to web
-writeLines(timeseries_json(df = monthly,
+writeLines(timeseries_json(df = fix_data(df_abbatoir, t_breaks),
                            x = "months",
+                           dataname = "data1",
                            series_label = c("Expected Number of samples per month",
                                             "Expected Cumulative samples per month",
                                             "Number of samples per month",
@@ -181,5 +223,23 @@ writeLines(timeseries_json(df = monthly,
                            hidden = c(FALSE, TRUE, FALSE, TRUE),
                            fill = FALSE,
                            type = c("line", "line", "bar", "bar")), "data1.js")
+writeLines(timeseries_html("data1", "data1.js"), "graph_abbatoir.html")
+
+writeLines(timeseries_json(df = fix_data(df_sows, t_breaks),
+                           x = "months",
+                           dataname = "data2",
+                           series_label = c("Expected Number of samples per month",
+                                            "Expected Cumulative samples per month",
+                                            "Number of samples per month",
+                                            "Cumulative number of samples"),
+                           backgroundColor = c("#860000", "#005D82", "#D22630", "#00A9CE"),
+                           hoverBackgroundColor = c("#6D0000", "#004469", "#B90D17", "#0090B5"),
+                           hidden = c(FALSE, TRUE, FALSE, TRUE),
+                           fill = FALSE,
+                           type = c("line", "line", "bar", "bar")), "data2.js")
+writeLines(timeseries_html("data2", "data2.js"), "graph_sows.html")
+
 file.copy("data1.js", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
-file.copy("graph.html", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
+file.copy("graph_abbatoir.html", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
+file.copy("data2.js", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
+file.copy("graph_sows.html", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
