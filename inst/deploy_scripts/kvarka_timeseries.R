@@ -50,13 +50,20 @@ df$frac <- ma(df$frac, 1, 1)
 df <- df[,c(1, 4, 2, 3)]
 df$months <- paste0(months(as.POSIXlt(as.Date(df$months))),"-" ,as.POSIXlt(as.Date(df$months))$year+1900)
 ## Write to web
-writeLines(timeseries_html("data3", "data3.js"), "foo.html")
+my_y_axis <- yAxes(list(yAxis("a", "linear", "right", 0, 100, display = TRUE, labelString = "3-month moving average of percent positive"),
+                        yAxis("b", "linear", "left", NULL, NULL, display = TRUE, labelString = "Number of samples per month")))
+writeLines(timeseries_html("data", "kvarka_data.js", yAxes = my_y_axis), "kvarka_timeseries.html")
 writeLines(timeseries_json(df = df,
-                           dataname = "data3",
+                           dataname = "data",
                            x = "months",
                            series_label = c("Percent (3-month moving average)",
                                             "Positive",
                                             "Negative"),
                            type = c("line", "bar", "bar"),
+                           backgroundColor = c("#696969", "#D22630", "#00A9CE"),
+                           hoverBackgroundColor = c("#505050", "#B90D17", "#00769B"),
                            fill = c(FALSE),
-                           hidden = c(FALSE, FALSE, FALSE)), "data3.js")
+                           hidden = c(FALSE, FALSE, FALSE),
+                           yAxisID = c("a", "b", "b")), "kvarka_data.js")
+file.copy("kvarka_timeseries.html", "/media/ESS_webpages/kvarka/", overwrite = TRUE)
+file.copy("kvarka_data.js", "/media/ESS_webpages/kvarka/", overwrite = TRUE)

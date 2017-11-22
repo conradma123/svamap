@@ -1,7 +1,5 @@
 library(svamap)
-library(ggplot2)
 ##' @title time.count
-##'
 ##'
 ##' @param time a vector of dates
 ##' @param breaks one of c('days', 'weeks', 'months', 'years') to split the data by
@@ -41,20 +39,20 @@ time.count<-function(time,
     if (count=='cumul') { df$n <- cumsum(df$n) }
     return(df)
 }
-
 ## Convert df to json
 timeseries_json <- function(df,
                             x,
                             dataname = "data",
                             backgroundColor = c("#D22630", "#00A9CE", "#43B02A", "#F2A900"),
-                            hoverBackgroundColor = c("#D2263080", "#00A9CE80", "#43B02A80", "#F2A90080"),
+                            hoverBackgroundColor = c("#D22630", "#00A9CE", "#43B02A", "#F2A900"),
                             borderColor = NULL,
                             type = c("bar"),
                             pointRadius = NA,
                             lineTension = NA,
                             fill = NA,
                             hidden = FALSE,
-                            series_label = NULL) {
+                            series_label = NULL,
+                            yAxisID = NULL) {
     ## Check if the data is in the dataframe
     stopifnot(x %in% names(df))
     ## Chart types
@@ -113,7 +111,13 @@ timeseries_json <- function(df,
     names(fill) <- names(df)[names(df) != x]
     ## X axis labels
     labels <- paste0("['", paste(as.character(df[,x]), collapse = "', '"), "']")
-    ##
+    ## Y Axis assignment
+    if(is.null(yAxisID)){
+        yAxisID <- rep(NA, length(names(df)[names(df) != x]))
+    } else {
+        stopifnot(length(yAxisID) == length(names(df)[names(df) != x]))
+    }
+    names(yAxisID) <- names(df)[names(df) != x]
     datasets <- paste0("[\n    ", paste(lapply(names(df)[names(df) != x], function(y){
         label <- paste0("label: '", series_label[y], "'")
         data <- paste0("data: [", paste(df[,y], collapse = ", "), "]")
@@ -135,10 +139,16 @@ timeseries_json <- function(df,
         } else {
             fill_i <- paste0("fill: ", fill[y])
         }
+        if(is.na(yAxisID[y])) {
+            yAxisID_i <- NULL
+        } else {
+            yAxisID_i <- paste0("yAxisID: '", yAxisID[y], "'")
+        }
         hidden <- paste0("hidden: ", hidden[y])
         type <- paste0("type: '", type[y], "'")
         paste("{", paste(c(label,
                            data,
+                           yAxisID_i,
                            backgroundColor_i,
                            borderColor_i,
                            hoverBackgroundColor_i,
@@ -151,8 +161,10 @@ timeseries_json <- function(df,
     ##
     paste0(dataname, " = {\n    labels: ", labels, ",\n    datasets: ", datasets, "\n}")
 }
-
-timeseries_html <- function(dataname = "data", datafilename = "data.js") {
+timeseries_html <- function(dataname = "data",
+                            datafilename = "data.js",
+                            yAxes) {
+    stopifnot(class(yAxes) == "yAxes")
     head <- c("    <title>Bar Chart</title>",
               "    <script src=\"http://www.chartjs.org/dist/2.7.1/Chart.bundle.js\"></script>",
               paste0("    <script src='", datafilename, "'></script>"))
@@ -165,11 +177,7 @@ timeseries_html <- function(dataname = "data", datafilename = "data.js") {
               paste0("\t  data: ", dataname, ","),
               "\t  options: {",
               "\t      scales: {",
-              "\t\t  yAxes: [{",
-              "\t\t      ticks: {",
-              "\t\t\t  beginAtZero:true",
-              "\t\t      }",
-              "\t\t  }]",
+              "\t\t  yAxes:", yAxes,
               "\t      }",
               "\t  }",
               "      });",
@@ -185,12 +193,67 @@ timeseries_html <- function(dataname = "data", datafilename = "data.js") {
               "</html>")
     return(html)
 }
+yAxes <- function(x) {
+    stopifnot(is.list(x))
+    yAxes <- paste0("[", paste(x, collapse = ",\n"), "]")
+    class(yAxes) <- "yAxes"
+    return(yAxes)
+}
+yAxis <- function(id,
+                  type = c("linear"),
+                  position = c('left', 'right'),
+                  min,
+                  max,
+                  display = TRUE,
+                  labelString) {
+    stopifnot(length(id) == 1)
+    stopifnot(is.character(id))
+    stopifnot(length(type) == 1)
+    stopifnot(is.character(type))
+    stopifnot(length(position) == 1)
+    match.arg(position)
+    match.arg(type)
+    id <- paste0("id:'", id, "'")
+    type <- paste0("type:'", type, "'")
+    position <- paste0("position:'", position, "'")
+    if(!is.null(ticks(min, max))) {
+        ticks_loc<- paste("ticks:", ticks(min, max))
+    } else {
+        ticks_loc<- NULL
+    }
+    scaleLabel <- paste("scaleLabel:", scaleLabel(display, labelString))
+    yAxis <- paste0("{", paste(c(id,
+                                 type,
+                                 position,
+                                 ticks_loc,
+                                 scaleLabel), collapse = ",\n"),
+                    "}")
+    class(yAxis) <- "yAxis"
+    return(yAxis)
+}
+ticks <- function(min, max) {
+    if(is.null(min) & is.null(max)) return(NULL)
+    stopifnot(max > min)
+    ticks <- paste0("{max:", max, ",min:", min, "}")
+}
+scaleLabel <- function(display, labelString) {
+    stopifnot(is.logical(display))
+    stopifnot(length(display) == 1)
+    stopifnot(is.character(labelString))
+    stopifnot(length(labelString) == 1)
+    if(display) {
+        display <- 'true'
+    } else {
+        display <- 'false'
+    }
+    paste0("{display:", display, ",labelString: '", labelString, "'}")
+}
 
+### Clean data
 df <- read.csv2("/media/t/Falkenrapporter/PRRS-2017-falkenrapport.csv", stringsAsFactors = FALSE)
 df$Ankomstdatum <- as.Date(df$Ankomstdatum)
 t_breaks <- as.Date(c("2014-01-01", "2015-01-01", "2016-01-01", "2017-01-01", "2018-01-01"))
 # Summarize the latest year by month
-
 fix_data <- function(df, t_breaks) {
     monthly <- time.count(df$Ankomstdatum, "months", "freq", tmin = t_breaks[4], tmax = t_breaks[5])
     monthly$months <- as.Date(monthly$months)
@@ -209,7 +272,6 @@ fix_data <- function(df, t_breaks) {
 }
 df_abbatoir <- df[df$Överordnadeuppdrag == "Ö09-022",]
 df_sows <- df[df$Överordnadeuppdrag == "Ö09-021",]
-
 ## Write to web
 writeLines(timeseries_json(df = fix_data(df_abbatoir, t_breaks),
                            x = "months",
@@ -223,8 +285,8 @@ writeLines(timeseries_json(df = fix_data(df_abbatoir, t_breaks),
                            hidden = c(FALSE, TRUE, FALSE, TRUE),
                            fill = FALSE,
                            type = c("line", "line", "bar", "bar")), "data1.js")
-writeLines(timeseries_html("data1", "data1.js"), "graph_abbatoir.html")
-
+my_y_axis <- yAxes(list(yAxis("a", "linear", "left", NULL, NULL, display = TRUE, labelString = "Number of finisher samples collected")))
+writeLines(timeseries_html("data1", "data1.js", my_y_axis), "graph_abbatoir.html")
 writeLines(timeseries_json(df = fix_data(df_sows, t_breaks),
                            x = "months",
                            dataname = "data2",
@@ -236,45 +298,11 @@ writeLines(timeseries_json(df = fix_data(df_sows, t_breaks),
                            hoverBackgroundColor = c("#6D0000", "#004469", "#B90D17", "#0090B5"),
                            hidden = c(FALSE, TRUE, FALSE, TRUE),
                            fill = FALSE,
+                           yAxisID = c("a", "a", "a", "a"),
                            type = c("line", "line", "bar", "bar")), "data2.js")
-writeLines(timeseries_html("data2", "data2.js"), "graph_sows.html")
-
+my_y_axis <- yAxes(list(yAxis(id = "a", type = "linear", position = "left", max = NULL, min = NULL, display = TRUE, labelString = "Number of sow samples collected")))
+writeLines(timeseries_html("data2", "data2.js", my_y_axis), "graph_sows.html")
 file.copy("data1.js", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
 file.copy("graph_abbatoir.html", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
 file.copy("data2.js", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
 file.copy("graph_sows.html", "/media/ESS_webpages/PRRS/", overwrite = TRUE)
-
-
-## To customize the axes one can add options to the html and then
-## assign dataseries in the .js with yAxisID 'B' in the data for
-## example, then that dataseries follows that axis. You can add an
-## axis on the right and left if you wish and give them labels. The
-## definition for two axes could be something like this in the html:
-## options: {
-##     scales: {
-##         yAxes: [{
-##             id: 'B',
-##             type: 'linear',
-##             position: 'right',
-##             ticks: {
-##       	  max: 100,
-##       	  min:0
-##             },
-##             scaleLabel: {
-##       	  display: true,
-##       	  labelString: '3-Month moving average percent Positive'
-##             }
-##         }, {
-##             id: 'A',
-##             type: 'linear',
-##             position: 'left',
-##             ticks: {
-##       	  beginAtZero:true
-##             },
-##             scaleLabel: {
-##       	  display: true,
-##       	  labelString: 'Number of Samples'
-##             }
-##         }]
-##     }
-## }
