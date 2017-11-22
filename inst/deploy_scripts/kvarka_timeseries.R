@@ -1,17 +1,5 @@
 library(svamap)
-library(sp)
-library(rgdal)
-library(RCurl)
 ##
-## Load kommuner from svamap package and change encoding --> peraphs to fix
-load(file = system.file("data/kommuner.rda", package = "svamap"))
-Encoding(kommuner@data$KnNamn) <- "UTF-8"
-##
-## Load postnummer data from svar package
-load(file = system.file("data/postnummer2015.rda", package = "svar"))
-postnummer2015$POSTALCODE <- as.character(postnummer2015$POSTALCODE)
-##
-## Load kvarka data. Change path from /media/t/ to T:/ to work locally
 kvarka <- read.csv2(file = "/media/t/Falkenrapporter/E15-026 Grundrapport.csv",
                     header = TRUE, stringsAsFactors = FALSE, encoding = "UTF-8",
                     na.strings = c("NA", " ", ""))
@@ -26,33 +14,27 @@ kvarka_data_map <- data.frame(uppdrag = kvarka$Uppdragid,
 ##
 kvarka_data_map$date <- as.Date(kvarka_data_map$date)
 ##
-
-df <- time.count(kvarka_data_map$date[kvarka_data_map$status == 1],
+df <- time_count(kvarka_data_map$date[kvarka_data_map$status == 1],
            "months",
            "freq",
            tmin = min(kvarka_data_map$date),
            tmax = max(kvarka_data_map$date))
 names(df)[names(df) == "n"] <- "pos"
-df$neg <- time.count(kvarka_data_map$date[kvarka_data_map$status == 0],
+df$neg <- time_count(kvarka_data_map$date[kvarka_data_map$status == 0],
            "months",
            "freq",
            tmin = min(kvarka_data_map$date),
            tmax = max(kvarka_data_map$date))$n
 df$frac <- 100*df$pos/(df$pos+df$neg)
-ma <- function(x, left_interval = 1, right_interval = 1, na.rm = TRUE) {
-    do.call("c", lapply(seq_len(length(x)), FUN = function(y){
-        a <- ifelse(y-left_interval < 0, 0, y-left_interval)
-        b <- ifelse(y+right_interval > length(x), length(x), y+right_interval)
-        mean(x[a:b], na.rm = na.rm)
-    }))
-}
-df$frac <- ma(df$frac, 1, 1)
+df$frac <- round(svamap::ma(df$frac, 1, 1), 1)
 df <- df[,c(1, 4, 2, 3)]
 df$months <- paste0(months(as.POSIXlt(as.Date(df$months))),"-" ,as.POSIXlt(as.Date(df$months))$year+1900)
 ## Write to web
+data <- tempfile()
+graph <- tempfile()
 my_y_axis <- yAxes(list(yAxis("a", "linear", "right", 0, 100, display = TRUE, labelString = "3-month moving average of percent positive"),
                         yAxis("b", "linear", "left", NULL, NULL, display = TRUE, labelString = "Number of samples per month")))
-writeLines(timeseries_html("data", "kvarka_data.js", yAxes = my_y_axis), "kvarka_timeseries.html")
+writeLines(timeseries_html("data", "kvarka_data.js", yAxes = my_y_axis), graph)
 writeLines(timeseries_json(df = df,
                            dataname = "data",
                            x = "months",
@@ -64,6 +46,6 @@ writeLines(timeseries_json(df = df,
                            hoverBackgroundColor = c("#505050", "#B90D17", "#00769B"),
                            fill = c(FALSE),
                            hidden = c(FALSE, FALSE, FALSE),
-                           yAxisID = c("a", "b", "b")), "kvarka_data.js")
-file.copy("kvarka_timeseries.html", "/media/ESS_webpages/kvarka/", overwrite = TRUE)
-file.copy("kvarka_data.js", "/media/ESS_webpages/kvarka/", overwrite = TRUE)
+                           yAxisID = c("a", "b", "b")), data)
+file.copy(graph, "/media/ESS_webpages/kvarka/kvarka_timeseries.html", overwrite = TRUE)
+file.copy(data, "/media/ESS_webpages/kvarka/kvarka_data.js", overwrite = TRUE)
