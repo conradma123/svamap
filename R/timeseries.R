@@ -220,6 +220,7 @@ timeseries_html <- function(dataname = "data",
                             yAxes) {
     stopifnot(class(yAxes) == "yAxes")
     head <- c("    <title>Bar Chart</title>",
+              "    <meta charset='utf-8' />",
               "    <script src=\"http://www.chartjs.org/dist/2.7.1/Chart.bundle.js\"></script>",
               paste0("    <script src='", datafilename, "'></script>"))
 

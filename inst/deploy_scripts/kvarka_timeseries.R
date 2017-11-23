@@ -14,17 +14,25 @@ kvarka_data_map <- data.frame(uppdrag = kvarka$Uppdragid,
 ##
 kvarka_data_map$date <- as.Date(kvarka_data_map$date)
 ##
-df <- time_count(kvarka_data_map$date[kvarka_data_map$status == 1],
+## Clean up multiple samples per Uppdrag
+status <- tapply(kvarka_data_map$status,
+       kvarka_data_map$uppdrag, max)
+kvarka_data <- data.frame(uppdrag = names(status),
+                          status = status,
+                          stringsAsFactors = FALSE)
+kvarka_data$date <- kvarka_data_map$date[match(kvarka_data$uppdrag, kvarka_data_map$uppdrag)]
+##Count over time
+df <- time_count(kvarka_data$date[kvarka_data$status == 1],
            "months",
            "freq",
-           tmin = min(kvarka_data_map$date),
-           tmax = max(kvarka_data_map$date))
+           tmin = min(kvarka_data$date),
+           tmax = max(kvarka_data$date))
 names(df)[names(df) == "n"] <- "pos"
-df$neg <- time_count(kvarka_data_map$date[kvarka_data_map$status == 0],
+df$neg <- time_count(kvarka_data$date[kvarka_data$status == 0],
            "months",
            "freq",
-           tmin = min(kvarka_data_map$date),
-           tmax = max(kvarka_data_map$date))$n
+           tmin = min(kvarka_data$date),
+           tmax = max(kvarka_data$date))$n
 df$frac <- 100*df$pos/(df$pos+df$neg)
 df$frac <- round(svamap::ma(df$frac, 1, 1), 1)
 df <- df[,c(1, 4, 2, 3)]
@@ -33,14 +41,14 @@ df$months <- paste0(months(as.POSIXlt(as.Date(df$months))),"-" ,as.POSIXlt(as.Da
 data <- tempfile()
 graph <- tempfile()
 my_y_axis <- yAxes(list(yAxis("a", "linear", "right", 0, 100, display = TRUE, labelString = "3-month moving average of percent positive"),
-                        yAxis("b", "linear", "left", NULL, NULL, display = TRUE, labelString = "Number of samples per month")))
+                        yAxis("b", "linear", "left", NULL, NULL, display = TRUE, labelString = "Antal Uppdrag per månad")))
 writeLines(timeseries_html("data", "kvarka_data.js", yAxes = my_y_axis), graph)
 writeLines(timeseries_json(df = df,
                            dataname = "data",
                            x = "months",
                            series_label = c("Percent (3-month moving average)",
-                                            "Positive",
-                                            "Negative"),
+                                            "Positiva uppdrag",
+                                            "Negativa uppdrag"),
                            type = c("line", "bar", "bar"),
                            backgroundColor = c("#696969", "#D22630", "#00A9CE"),
                            hoverBackgroundColor = c("#505050", "#B90D17", "#00769B"),
