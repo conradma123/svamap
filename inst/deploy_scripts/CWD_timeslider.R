@@ -55,23 +55,16 @@ svamap::write_page(data = path_to_data,
 ## Deploy map to Azure server. This is SVA's external website and is
 ## administered by a company "Episerver hosting" the contact for this
 ## company at SVA is the communications department.
-## temp <- readLines("~/.svaftp_credentials")
-## cred <- paste0("ftp://", temp[2], ":", temp[3], "@", temp[1], "/MAPS/CWD/")
-## svamap::write_page(data = path_to_data,
-##                    template = "CWD/map.html",
-##                    overwrite = TRUE,
-##                    browse = FALSE,
-##                    ftp = cred)
+temp <- readLines("~/.svaftp_credentials")
+cred <- paste0("ftp://", temp[2], ":", temp[3], "@", temp[1], "/MAPS/CWD_timeslider/")
+svamap::write_page(data = path_to_data,
+                   template = "CWD_timeslider/map.html",
+                   overwrite = TRUE,
+                   browse = FALSE,
+                   ftp = cred)
 ##
 ##
 library(git2r)
 repo <- repository("/media/ESS_webpages/CWD_timeslider/")
 add(repo, "*")
 commit(repo, "Automatic backup commit")
-##test Deploy map
-########################
-## svamap::write_page(data = path_to_data,
-##                    path = "/tmp/",
-##                    template = "map3",
-##                    overwrite = TRUE,
-##                    browse = TRUE)
