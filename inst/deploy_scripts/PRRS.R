@@ -39,7 +39,7 @@ writeLines(timeseries_json(df = fix_data(df_abbatoir, t_breaks),
                            fill = FALSE,
                            pointRadius = 2,
                            type = c("line", "line", "bar", "bar")), data)
-my_y_axis <- yAxes(list(yAxis("a", "linear", "left", NULL, NULL, display = TRUE, labelString = "Number of finisher samples collected")))
+my_y_axis <- yAxes(list(yAxis("a", "linear", "left", NULL, NULL, display = TRUE, labelString = "Number of samples collected at slaughter")))
 writeLines(timeseries_html("data1", "data1.js", my_y_axis), graph)
 file.copy(data, "/media/ESS_webpages/PRRS/data1.js", overwrite = TRUE)
 file.copy(graph, "/media/ESS_webpages/PRRS/graph_abbatoir.html", overwrite = TRUE)
@@ -58,7 +58,7 @@ writeLines(timeseries_json(df = fix_data(df_sows, t_breaks),
                            pointRadius = 2,
                            yAxisID = c("a", "a", "a", "a"),
                            type = c("line", "line", "bar", "bar")), data)
-my_y_axis <- yAxes(list(yAxis(id = "a", type = "linear", position = "left", max = NULL, min = NULL, display = TRUE, labelString = "Number of sow samples collected")))
+my_y_axis <- yAxes(list(yAxis(id = "a", type = "linear", position = "left", max = NULL, min = NULL, display = TRUE, labelString = "Number of samples collected on farms")))
 writeLines(timeseries_html("data2", "data2.js", my_y_axis), graph)
 file.copy(data, "/media/ESS_webpages/PRRS/data2.js", overwrite = TRUE)
 file.copy(graph, "/media/ESS_webpages/PRRS/graph_sows.html", overwrite = TRUE)
