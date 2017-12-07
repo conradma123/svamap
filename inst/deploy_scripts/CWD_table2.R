@@ -39,7 +39,6 @@ names(df) <- c("Län", "Antal undersökta")
 ##
 ############################
 head <- hlt::html_head(
-                 hlt::html_comment(paste("Page generated with\n'hlt' version:", packageVersion("hlt"), "\n svamap version:", packageVersion("svamap"), "\nat:",Sys.time())) +
                  hlt::html_meta(charset = "utf-8") +
                  hlt::html_meta("http-equiv" = "x-ua-compatible", content="IE=edge") +
                  hlt::html_meta(NAME = "ROBOTS", CONTENT = "NOINDEX, NOFOLLOW") +
@@ -68,7 +67,11 @@ hlt::tag_attr(table) <- list(id = "table1", class = "svatablegrayheader", style 
 for(i in seq_len(length(table$content[[3]]$content))) {
         hlt::tag_attr(table$content[[3]]$content[[i]]$content[[2]]) <- list(align = "right")
 }
-page <- hlt::html_html(head + hlt::html_body(table))
+page <- hlt::html_html(
+                 hlt::html_comment(paste("Page generated with 'hlt' version:", packageVersion("hlt"), "svamap version:", packageVersion("svamap"), "at:",Sys.time())) +
+                 head +
+                 hlt::html_body(table)
+             )
 tab <- tempfile()
 capture.output(file = tab, print(page))
 ## Deploy map to Azure server. This is SVA's external website and is
