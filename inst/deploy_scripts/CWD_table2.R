@@ -39,6 +39,7 @@ names(df) <- c("Län", "Antal undersökta")
 ##
 ############################
 head <- hlt::html_head(
+                 hlt::html_comment(paste("Page generated with\n'hlt' version:", packageVersion("hlt"), "\n svamap version:", packageVersion("svamap"), "\nat:",Sys.time())) +
                  hlt::html_meta(charset = "utf-8") +
                  hlt::html_meta("http-equiv" = "x-ua-compatible", content="IE=edge") +
                  hlt::html_meta(NAME = "ROBOTS", CONTENT = "NOINDEX, NOFOLLOW") +
